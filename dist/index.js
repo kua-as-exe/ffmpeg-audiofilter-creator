@@ -36,73 +36,173 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var child_process_1 = require("child_process");
 var utils_1 = require("./src/utils");
 var ffmpegPath = './src/lib/ffmpeg.exe';
 var main = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var inputs, complex, processFilters, processParams, getInputs, getFilterComplex, ffmpegCommand;
+    var inputs, complex, processFilters, processParams, getInputs, acompressor, flanger, volume, getFilterComplex, ffmpegCommand, t;
     return __generator(this, function (_a) {
-        inputs = [
-            {
-                id: 0,
-                path: './video.mp4',
-                params: {
-                    before: [
-                        { key: '--to', value: 5 }
+        switch (_a.label) {
+            case 0:
+                inputs = [
+                    /*{
+                        id: 0,
+                        path: './video.mp4',
+                        params: {
+                            before: [
+                                { key: '--to', value: 5}
+                            ],
+                            after: [
+                                { key: '-t', value: 10 }
+                            ]
+                        }
+                    },{
+                        id: 1,
+                        path: './video2.mp4',
+                        params: {
+                            before: [
+                                { key: '--to', value: 6}
+                            ],
+                            after: [
+                                { key: '-t', value: 2 }
+                            ]
+                        }
+                    }*/
+                    {
+                        id: 0,
+                        path: 'C:\\Users\\Jorge Arreola\\Music\\Videoder\\RUMINE.mp3',
+                        params: {
+                            before: [],
+                            after: [
+                                { key: '-t', value: '1:00' }
+                            ]
+                        }
+                    }
+                ];
+                complex = {};
+                processFilters = function (filter, index, arrayFilters) { return [filter.key, filter.value].join(" "); };
+                processParams = function (params) { return params.map(processFilters).join(" ") || ""; };
+                getInputs = function (inputs) {
+                    var lines = [];
+                    inputs.forEach(function (input) {
+                        var _a, _b;
+                        input.line = [
+                            processParams((_a = input.params) === null || _a === void 0 ? void 0 : _a.before),
+                            '-i',
+                            "'" + input.path + "'",
+                            processParams((_b = input.params) === null || _b === void 0 ? void 0 : _b.after),
+                        ].join(" ");
+                        lines.push(input.line);
+                    });
+                    return lines.join(" ");
+                };
+                acompressor = new utils_1.Filter({
+                    metadata: {
+                        name: 'acompressor',
+                        label: 'acompressor'
+                    },
+                    default_values: [],
+                    func: [
+                        function (params, filter, resolve) {
+                            console.log("ACOMPRESSOR FUNCIONANDO", params);
+                            resolve();
+                        }
                     ],
-                    after: [
-                        { key: '-t', value: 10 }
-                    ]
-                }
-            }, {
-                id: 1,
-                path: './video2.mp4',
-                params: {
-                    before: [
-                        { key: '--to', value: 6 }
+                    structure: {
+                        inputs: 1,
+                        outputs: 1
+                    }
+                });
+                flanger = new utils_1.Filter({
+                    metadata: {
+                        name: 'flanger',
+                        label: 'flanger'
+                    },
+                    default_values: [],
+                    func: [
+                        function (params, filter, resolve) {
+                            console.log("FLANGER FUNCIONANDO", params);
+                            resolve();
+                        }
                     ],
-                    after: [
-                        { key: '-t', value: 2 }
-                    ]
-                }
-            }
-        ];
-        complex = {};
-        processFilters = function (filter, index, arrayFilters) { return [filter.key, filter.value].join(" "); };
-        processParams = function (params) { return params.map(processFilters).join(" ") || ""; };
-        getInputs = function (inputs) {
-            var lines = [];
-            inputs.forEach(function (input) {
-                var _a, _b;
-                input.line = [
-                    processParams((_a = input.params) === null || _a === void 0 ? void 0 : _a.before),
-                    '-i',
-                    "'" + input.path + "'",
-                    processParams((_b = input.params) === null || _b === void 0 ? void 0 : _b.after),
-                ].join(" ");
-                lines.push(input.line);
-            });
-            return lines.join(" ");
-        };
-        getFilterComplex = function () {
-            var af = utils_1.audioFilter.call(inputs, {
-                'test': 'x',
-                'number': 10,
-                'data1': 6
-            });
-            console.log(af);
-            return [af].join(';');
-        };
-        ffmpegCommand = [
-            ffmpegPath,
-            getInputs(inputs),
-            '--filter_complex',
-            '"',
-            getFilterComplex(),
-            '"',
-        ];
-        console.log(ffmpegCommand);
-        console.log(ffmpegCommand.join(" "));
-        return [2 /*return*/];
+                    structure: {
+                        inputs: 1,
+                        outputs: 1
+                    }
+                });
+                volume = new utils_1.Filter({
+                    metadata: {
+                        name: 'volume',
+                        label: 'volume'
+                    },
+                    default_values: [],
+                    func: [
+                        function (params, filter, resolve) {
+                            console.log("VOLUME FUNCIONANDO", params);
+                            resolve();
+                        }
+                    ],
+                    structure: {
+                        inputs: 1,
+                        outputs: 1
+                    }
+                });
+                getFilterComplex = function () {
+                    /*let af = audioFilter.call(
+                        inputs,
+                        {
+                            'test': 'x',
+                            'number': 4,
+                            'data1': 17
+                        }
+                    )*/
+                    return [
+                        acompressor.call(inputs, {
+                            threshold: 0.5,
+                            ratio: 20,
+                            attack: 0.01,
+                            release: 0.01,
+                            makeup: 1.25,
+                        }),
+                        flanger.call([], {
+                            delay: 10,
+                            regen: 50,
+                            width: 100,
+                            speed: 2
+                        }),
+                        volume.call([], {
+                            volume: 2
+                        }),
+                        acompressor.call([], {
+                            threshold: 0.5,
+                            ratio: 20,
+                            attack: 0.01,
+                            release: 0.01,
+                            makeup: 1.25,
+                        }),
+                    ].join(',');
+                };
+                ffmpegCommand = [
+                    ffmpegPath,
+                    getInputs(inputs),
+                    '-filter_complex',
+                    '"',
+                    getFilterComplex(),
+                    '"',
+                    '-y',
+                    "'C:\\Users\\Jorge Arreola\\Music\\Videoder\\RUMINE_REMASTERED_3.mp3'"
+                ];
+                console.log(ffmpegCommand);
+                console.log(ffmpegCommand.join(" "));
+                return [4 /*yield*/, child_process_1.spawnSync("powershell.exe", ffmpegCommand)];
+            case 1:
+                t = _a.sent();
+                console.log(t.stdout.toString());
+                console.log(t.output.toString());
+                console.log(t.stderr.toString());
+                t.output.forEach(function (t) { return console.log; });
+                return [2 /*return*/];
+        }
     });
 }); };
 main();

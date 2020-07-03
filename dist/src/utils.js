@@ -11,7 +11,13 @@ var Filter = /** @class */ (function () {
         this.output = '';
         this.line = '';
         this.resolveFunction = function () {
-            var inputs = _this.inputs.map(function (input) { return exports.inBrackets(input.id); }).join(''); // pass all the imputs to a format "[a][b][c]"
+            var inputs;
+            if (_this.inputs.length == 0) {
+                inputs = [];
+            }
+            else {
+                inputs = _this.inputs.map(function (input) { return exports.inBrackets(input.id); }).join(''); // pass all the imputs to a format "[a][b][c]"
+            }
             var filterParams = [];
             Object.keys(_this.params).forEach(function (key) {
                 var param = key + '=' + _this.params[key]; //convert the param to a ffmpeg filter-complex syntax
@@ -23,7 +29,8 @@ var Filter = /** @class */ (function () {
                 _this.output,
                 exports.getRandomNumber()
             ].join('_');
-            _this.output = exports.inBrackets(outString);
+            //this.output = inBrackets(outString);
+            _this.output = "";
             var line = [
                 inputs,
                 _this.metadata.label,
@@ -46,6 +53,7 @@ var Filter = /** @class */ (function () {
         this.def_params.forEach(function (param) { return default_params[param.key] = param.value; }); // prepare the default params
         this.params = Object.assign({}, default_params, params); // merge params and default params
         this.func.forEach(function (f) { return f(_this.params, _this, _this.resolveFunction); });
+        console.log("AKI HAY OTRA COSA", this.line);
         return this.line;
     };
     return Filter;
@@ -64,7 +72,7 @@ exports.audioFilter = new Filter({
             console.log(1, params);
         }, function (params, filter, resolve) {
             console.log(2, params);
-            filter.output = params.number + 1 || 'NULL';
+            filter.output = params.numero;
             resolve();
         }
     ],

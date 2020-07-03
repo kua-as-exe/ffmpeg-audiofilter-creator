@@ -5,7 +5,8 @@ export interface Param{
     definition?: {
         min?: number;
         max?: number;
-        options?: string[]
+        options?: string[];
+        editable?: boolean;
     };
     metadata?: {
         
@@ -61,8 +62,14 @@ export class Filter{
     }
 
     private resolveFunction = () => {
-        let inputs = this.inputs.map( input => inBrackets(input.id)).join(''); // pass all the imputs to a format "[a][b][c]"
-            
+        let inputs
+        if (this.inputs.length == 0) {
+            inputs = [];
+        }
+        else {
+            inputs = this.inputs.map( input => inBrackets(input.id)).join(''); // pass all the imputs to a format "[a][b][c]"
+        }
+
         let filterParams:string[] = [];
         Object.keys(this.params).forEach( (key:any) => { //take the JSON params keys to push to the filterParams array 
             let param = key+'='+this.params[key]; //convert the param to a ffmpeg filter-complex syntax
@@ -75,7 +82,8 @@ export class Filter{
             this.output,
             getRandomNumber()
         ].join('_')
-        this.output = inBrackets(outString);
+        //this.output = inBrackets(outString);
+        this.output = "";
 
         let line = [
             inputs,
@@ -95,31 +103,39 @@ export class Filter{
 
         this.params = Object.assign({}, default_params, params); // merge params and default params
         
-        this.func.forEach( f => f(this.params, this, this.resolveFunction));
+        this.func.forEach( 
+             (f) => f(this.params, this, this.resolveFunction));
+
+        console.log("AKI HAY OTRA COSA", this.line)
         return this.line
     }
 }
 
-export const audioFilter = new Filter({
-    metadata: {
-        name:'audio-filter',
-        label:'aFilter'
-    },
-    default_values: [
-        { key: 'data1', value: 5, definition: {min:1, max: 10} }
-    ],
-    func: [ 
-        (params: any, filter: Filter, resolve: Function) => {
-            console.log(1, params);
+export const audioFilter = new Filter(
+    {
+        metadata: {
+            name:'audio-filter',
+            label:'aFilter'
+        },
+        default_values: [
+            { key: 'data1', value: 5, definition: {min:1, max: 10} }
+        ],
+        func: [ 
+            (params: any, filter: Filter, resolve: Function) => {
+                console.log(1, params);
 
-        },(params: any, filter: Filter, resolve: Function) => {
-            console.log(2, params);
-            filter.output = params.number + 1 || 'NULL';
-            resolve()
+            },(params: any, filter: Filter, resolve: Function) => {
+                console.log(2, params);
+                filter.output = params.numero;
+                resolve()
+            }
+        ],
+        structure: {
+            inputs: 1,
+            outputs: 1
         }
-    ],
-    structure: {
-        inputs: 1,
-        outputs: 1
     }
-});
+
+);
+
+
