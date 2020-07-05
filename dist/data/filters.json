@@ -1,0 +1,32 @@
+[
+    {
+        "name":"acompressor",
+        "label":"acompressor",
+        "description": "",
+        "default_params": [],
+        "structure": {
+            "inputs": 1,
+            "outputs": 1
+        }
+    },{
+        "name":"flanger",
+        "label":"flanger",
+        "description": "",
+        "default_params": [],
+        "structure": {
+            "inputs": 1,
+            "outputs": 1
+        }
+    },{
+        "name":"volume",
+        "label":"volume",
+        "description": "",
+        "default_params": [
+            { "key": "wtf", "value": "idk"}
+        ],
+        "structure": {
+            "inputs": 1,
+            "outputs": 1
+        }
+    }
+]

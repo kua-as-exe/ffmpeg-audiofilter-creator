@@ -1,5 +1,6 @@
 import { spawnSync } from 'child_process';
-import { Filter, Input, Param, audioFilter } from './src/utils'
+import { Filter, Input, Param, FilterOptions } from './src/utils'
+import { readFileSync } from 'fs';
 
 const ffmpegPath = './src/lib/ffmpeg.exe';
 
@@ -62,60 +63,32 @@ const main = async () => {
         return lines.join(" ");
     }
     
-    var acompressor = new Filter({
-        metadata: {
-            name:'acompressor',
-            label:'acompressor'
-        },
-        default_values: [],
-        func: [ 
-            (params: any, filter: Filter, resolve: Function) => {
-                console.log("ACOMPRESSOR FUNCIONANDO", params);
-                resolve()
-            }
-        ],
-        structure: {
-            inputs: 1,
-            outputs: 1
-        }
-    });
+    
+    const filtersData: FilterOptions[] = 
+        JSON.parse(
+            await readFileSync('./dist/data/filters.json')
+                .toString())
+    
+    const filters = filtersData.map( (filter) => new Filter(filter))
+    //console.log(filters);
 
-    var flanger = new Filter({
-        metadata: {
-            name:'flanger',
-            label:'flanger'
+    const searchFilter = ( filterName:string ): Filter => filters.filter( filter => filter.name == filterName)[0];
+    //filtersData.forEach()
+            
+    //console.log(searchFilter("volume"))
+    //console.log(searchFilter("volume2"))
+    let volume: Filter = searchFilter("volume");
+    let out;
+    if(volume) out = volume.call(
+        {
+            "param1":"xd",
+            "param2":"xd2",
         },
-        default_values: [],
-        func: [ 
-            (params: any, filter: Filter, resolve: Function) => {
-                console.log("FLANGER FUNCIONANDO", params);
-                resolve()
-            }
-        ],
-        structure: {
-            inputs: 1,
-            outputs: 1
-        }
-    });
+        ["a", "b"],
+        //{"final": true}
+    )
 
-    var volume = new Filter({
-        metadata: {
-            name:'volume',
-            label:'volume'
-        },
-        default_values: [],
-        func: [ 
-            (params: any, filter: Filter, resolve: Function) => {
-                console.log("VOLUME FUNCIONANDO", params);
-                resolve()
-            }
-        ],
-        structure: {
-            inputs: 1,
-            outputs: 1
-        }
-    });
-
+    console.log(out);
 
 
     const getFilterComplex = () => {
@@ -130,7 +103,7 @@ const main = async () => {
         )*/
         
         return [
-            acompressor.call(
+            /*acompressor.call(
                 inputs, 
                 {
                     threshold: 0.5,
@@ -156,9 +129,9 @@ const main = async () => {
                     attack: 0.01,
                     release: 0.01,
                     makeup: 1.25,
-            }),
+            }),*/
         //].join(';')
-        ].join(',')
+        ].join(';')
     }
 
     
@@ -173,15 +146,13 @@ const main = async () => {
             '-y',
             "'C:\\Users\\Jorge Arreola\\Music\\Videoder\\RUMINE_REMASTERED_3.mp3'"
         ]
-        console.log(ffmpegCommand);
-        console.log(ffmpegCommand.join(" "));
+        //console.log(ffmpegCommand);
+        //console.log(ffmpegCommand.join(" "));
         
-        let t = await spawnSync("powershell.exe", ffmpegCommand);
-        console.log(t.stdout.toString());
-        console.log(t.output.toString());
-        console.log(t.stderr.toString());
-
-        t.output.forEach(t => console.log);
+        //let t = await spawnSync("powershell.exe", ffmpegCommand);
+        //console.log(t.stdout.toString());
+        //console.log(t.output.toString());
+        //console.log(t.stderr.toString());
 }
 
 main();

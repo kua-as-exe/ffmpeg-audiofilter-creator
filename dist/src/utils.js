@@ -1,83 +1,83 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.audioFilter = exports.Filter = exports.getRandomNumber = exports.inBrackets = void 0;
+exports.Filter = exports.getRandomNumber = exports.inBrackets = void 0;
 exports.inBrackets = function (str) { return '[' + str + ']'; };
 exports.getRandomNumber = function () { return String(Math.random()).slice(2, 7); }; // from (example) "0.0744077323733392" takes to the 3rd to the 7th character
 var Filter = /** @class */ (function () {
     function Filter(FilterOptions) {
-        var _this = this;
-        this.inputs = [];
-        this.params = [];
-        this.output = '';
-        this.line = '';
-        this.resolveFunction = function () {
-            var inputs;
-            if (_this.inputs.length == 0) {
-                inputs = [];
-            }
-            else {
-                inputs = _this.inputs.map(function (input) { return exports.inBrackets(input.id); }).join(''); // pass all the imputs to a format "[a][b][c]"
-            }
-            var filterParams = [];
-            Object.keys(_this.params).forEach(function (key) {
-                var param = key + '=' + _this.params[key]; //convert the param to a ffmpeg filter-complex syntax
-                filterParams.push(param);
-            });
-            var outString = [
-                _this.metadata.name.toUpperCase(),
-                _this.metadata.label,
-                _this.output,
-                exports.getRandomNumber()
-            ].join('_');
-            //this.output = inBrackets(outString);
-            _this.output = "";
-            var line = [
-                inputs,
-                _this.metadata.label,
-                '=',
-                filterParams.join(':'),
-                _this.output
-            ].join('');
-            _this.line = line;
-        };
-        var default_values = FilterOptions.default_values, func = FilterOptions.func, structure = FilterOptions.structure, metadata = FilterOptions.metadata;
-        this.def_params = default_values;
-        this.func = func;
-        this.structure = structure;
-        this.metadata = metadata;
+        var default_params = FilterOptions.default_params, func = FilterOptions.func, structure = FilterOptions.structure, name = FilterOptions.name, label = FilterOptions.label, description = FilterOptions.description;
+        this.def_params = default_params;
+        //this.func = func || [];
+        this.structure = structure || { inputs: 1, outputs: 1 };
+        this.name = name || "";
+        this.label = label || "";
+        this.description = description || "";
     }
-    Filter.prototype.call = function (inputs, params) {
-        var _this = this;
-        this.inputs = inputs;
+    Filter.prototype.call = function (_params, _inputs, _options) {
+        // INPUTS
+        //let inputs = _inputs.map( input => inBrackets(input.id)).join(''); // pass all the imputs to a format "[a][b][c]"
+        var inputs = _inputs.map(function (input) { return exports.inBrackets(input); }).join(''); // pass all the strings imputs to a format "[a][b][c]"
+        // PARAMS        
+        var filterParams = [];
         var default_params = {};
         this.def_params.forEach(function (param) { return default_params[param.key] = param.value; }); // prepare the default params
-        this.params = Object.assign({}, default_params, params); // merge params and default params
-        this.func.forEach(function (f) { return f(_this.params, _this, _this.resolveFunction); });
-        console.log("AKI HAY OTRA COSA", this.line);
-        return this.line;
+        var params = Object.assign({}, default_params, _params); // merge params and default params
+        //Convert the filters in to a ffmpeg syntax
+        var filtersKeysList = Object.keys(params); //take the JSON params keys to push to the filterParams array 
+        filtersKeysList.forEach(function (key) {
+            return filterParams.push(key + '=' + params[key]);
+        }); //convert the param to a ffmpeg filter-complex syntax
+        // OUTPUTS
+        var outputs = [];
+        for (var output = 0; output < this.structure.outputs; output++) {
+            var outputString = [this.name.toUpperCase(), this.label, exports.getRandomNumber()].join('_');
+            outputs.push(outputString);
+        }
+        if (_options === null || _options === void 0 ? void 0 : _options.final)
+            outputs = []; // reset the outputs if its the last filter
+        var lineOutputs = outputs.map(function (output) { return exports.inBrackets(output); });
+        // FINAL LINE (ffmpeg string)
+        var line = [
+            inputs,
+            this.label,
+            '=',
+            filterParams.join(':'),
+            lineOutputs.join('')
+        ].join('');
+        //this.func.forEach( (f) => f(this.params, this, this.resolveFunction));
+        return {
+            line: line,
+            outputs: outputs
+        };
     };
     return Filter;
 }());
 exports.Filter = Filter;
-exports.audioFilter = new Filter({
-    metadata: {
-        name: 'audio-filter',
-        label: 'aFilter'
-    },
-    default_values: [
-        { key: 'data1', value: 5, definition: { min: 1, max: 10 } }
-    ],
-    func: [
-        function (params, filter, resolve) {
-            console.log(1, params);
-        }, function (params, filter, resolve) {
-            console.log(2, params);
-            filter.output = params.numero;
-            resolve();
+/*export const audioFilter = new Filter(
+    {
+        metadata: {
+            name:'audio-filter',
+            label:'aFilter'
+        },
+        default_values: [
+            { key: 'data1', value: 5, definition: {min:1, max: 10} }
+        ],
+        func: [
+            (params: any, filter: Filter, resolve: Function) => {
+                console.log(1, params);
+
+            },(params: any, filter: Filter, resolve: Function) => {
+                console.log(2, params);
+                filter.output = params.numero;
+                resolve()
+            }
+        ],
+        structure: {
+            inputs: 1,
+            outputs: 1
         }
-    ],
-    structure: {
-        inputs: 1,
-        outputs: 1
     }
-});
+
+);
+
+*/ 

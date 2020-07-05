@@ -36,13 +36,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var child_process_1 = require("child_process");
 var utils_1 = require("./src/utils");
+var fs_1 = require("fs");
 var ffmpegPath = './src/lib/ffmpeg.exe';
 var main = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var inputs, complex, processFilters, processParams, getInputs, acompressor, flanger, volume, getFilterComplex, ffmpegCommand, t;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var inputs, complex, processFilters, processParams, getInputs, filtersData, _a, _b, filters, searchFilter, volume, out, getFilterComplex, ffmpegCommand;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
             case 0:
                 inputs = [
                     /*{
@@ -96,57 +96,20 @@ var main = function () { return __awaiter(void 0, void 0, void 0, function () {
                     });
                     return lines.join(" ");
                 };
-                acompressor = new utils_1.Filter({
-                    metadata: {
-                        name: 'acompressor',
-                        label: 'acompressor'
-                    },
-                    default_values: [],
-                    func: [
-                        function (params, filter, resolve) {
-                            console.log("ACOMPRESSOR FUNCIONANDO", params);
-                            resolve();
-                        }
-                    ],
-                    structure: {
-                        inputs: 1,
-                        outputs: 1
-                    }
-                });
-                flanger = new utils_1.Filter({
-                    metadata: {
-                        name: 'flanger',
-                        label: 'flanger'
-                    },
-                    default_values: [],
-                    func: [
-                        function (params, filter, resolve) {
-                            console.log("FLANGER FUNCIONANDO", params);
-                            resolve();
-                        }
-                    ],
-                    structure: {
-                        inputs: 1,
-                        outputs: 1
-                    }
-                });
-                volume = new utils_1.Filter({
-                    metadata: {
-                        name: 'volume',
-                        label: 'volume'
-                    },
-                    default_values: [],
-                    func: [
-                        function (params, filter, resolve) {
-                            console.log("VOLUME FUNCIONANDO", params);
-                            resolve();
-                        }
-                    ],
-                    structure: {
-                        inputs: 1,
-                        outputs: 1
-                    }
-                });
+                _b = (_a = JSON).parse;
+                return [4 /*yield*/, fs_1.readFileSync('./dist/data/filters.json')
+                        .toString()];
+            case 1:
+                filtersData = _b.apply(_a, [_c.sent()]);
+                filters = filtersData.map(function (filter) { return new utils_1.Filter(filter); });
+                searchFilter = function (filterName) { return filters.filter(function (filter) { return filter.name == filterName; })[0]; };
+                volume = searchFilter("volume");
+                if (volume)
+                    out = volume.call({
+                        "param1": "xd",
+                        "param2": "xd2",
+                    }, ["a", "b"]);
+                console.log(out);
                 getFilterComplex = function () {
                     /*let af = audioFilter.call(
                         inputs,
@@ -157,30 +120,35 @@ var main = function () { return __awaiter(void 0, void 0, void 0, function () {
                         }
                     )*/
                     return [
-                        acompressor.call(inputs, {
+                    /*acompressor.call(
+                        inputs,
+                        {
                             threshold: 0.5,
                             ratio: 20,
                             attack: 0.01,
                             release: 0.01,
                             makeup: 1.25,
-                        }),
-                        flanger.call([], {
-                            delay: 10,
-                            regen: 50,
-                            width: 100,
-                            speed: 2
-                        }),
-                        volume.call([], {
-                            volume: 2
-                        }),
-                        acompressor.call([], {
+                    }),
+                    flanger.call([], {
+                        delay:10,
+                        regen:50,
+                        width:100,
+                        speed:2
+                    }),
+                    volume.call([], {
+                        volume: 2
+                    }),
+                    acompressor.call(
+                        [],
+                        {
                             threshold: 0.5,
                             ratio: 20,
                             attack: 0.01,
                             release: 0.01,
                             makeup: 1.25,
-                        }),
-                    ].join(',');
+                    }),*/
+                    //].join(';')
+                    ].join(';');
                 };
                 ffmpegCommand = [
                     ffmpegPath,
@@ -192,15 +160,6 @@ var main = function () { return __awaiter(void 0, void 0, void 0, function () {
                     '-y',
                     "'C:\\Users\\Jorge Arreola\\Music\\Videoder\\RUMINE_REMASTERED_3.mp3'"
                 ];
-                console.log(ffmpegCommand);
-                console.log(ffmpegCommand.join(" "));
-                return [4 /*yield*/, child_process_1.spawnSync("powershell.exe", ffmpegCommand)];
-            case 1:
-                t = _a.sent();
-                console.log(t.stdout.toString());
-                console.log(t.output.toString());
-                console.log(t.stderr.toString());
-                t.output.forEach(function (t) { return console.log; });
                 return [2 /*return*/];
         }
     });

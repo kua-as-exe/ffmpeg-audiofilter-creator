@@ -22,11 +22,10 @@ export interface Input{
     line?: string;
 }
 export interface FilterOptions { 
-    metadata: {
-        name: string,
-        label: string
-    };
-    default_values: Param[];
+    name: string,
+    label: string,
+    description?: string;
+    default_params: Param[];
     func: Function[];
     structure: {
         inputs: number;
@@ -38,80 +37,75 @@ export const inBrackets = (str: string | number) => '['+str+']';
 export const getRandomNumber = () => String(Math.random()).slice(2,7); // from (example) "0.0744077323733392" takes to the 3rd to the 7th character
 
 export class Filter{
-    inputs: Input[] = [];
+    //inputs: Input[] = [];
+    //outputs: string[] = [];
     def_params: Param[];
-    params: Param[] = [];
-    func: Function[];
+    //params: Param[] = [];
+    //func: Function[];
+    name: string;
+    label: string;
+    description: string;
+    //line = '';
     structure: {
         inputs: number;
         outputs: number;
     }
-    output: string = '';
-    metadata: {
-        name: string;
-        label:string;
-    };
-    line = '';
-
+    
     constructor( FilterOptions: FilterOptions){
-        let {default_values, func, structure, metadata} = FilterOptions;
-        this.def_params = default_values;
-        this.func = func;
-        this.structure = structure;
-        this.metadata = metadata
+        let {default_params, func, structure, name, label, description} = FilterOptions;
+        this.def_params = default_params;
+        //this.func = func || [];
+        this.structure = structure || { inputs: 1, outputs:1 };
+        this.name = name || "";
+        this.label = label || "";
+        this.description = description || "";
     }
 
-    private resolveFunction = () => {
-        let inputs
-        if (this.inputs.length == 0) {
-            inputs = [];
-        }
-        else {
-            inputs = this.inputs.map( input => inBrackets(input.id)).join(''); // pass all the imputs to a format "[a][b][c]"
-        }
+    call( _params: Object, _inputs: string[], _options?: any): {line: string, outputs: string[]} {
 
+// INPUTS
+        //let inputs = _inputs.map( input => inBrackets(input.id)).join(''); // pass all the imputs to a format "[a][b][c]"
+        let inputs = _inputs.map( input => inBrackets(input) ).join(''); // pass all the strings imputs to a format "[a][b][c]"
+        
+// PARAMS        
         let filterParams:string[] = [];
-        Object.keys(this.params).forEach( (key:any) => { //take the JSON params keys to push to the filterParams array 
-            let param = key+'='+this.params[key]; //convert the param to a ffmpeg filter-complex syntax
-            filterParams.push(param);
-        })
 
-        let outString = [
-            this.metadata.name.toUpperCase(),
-            this.metadata.label,
-            this.output,
-            getRandomNumber()
-        ].join('_')
-        //this.output = inBrackets(outString);
-        this.output = "";
-
-        let line = [
-            inputs,
-            this.metadata.label,
-            '=',
-            filterParams.join(':'), //concat all the params with the ffmpeg filter-complex syntax
-            this.output
-        ].join('');
-
-        this.line = line;
-    }
-
-    call(inputs: Input[], params: Object){
-        this.inputs = inputs;
         let default_params: any = {};
         this.def_params.forEach( param => default_params[param.key] = param.value); // prepare the default params
+        let params:any = Object.assign({}, default_params, _params); // merge params and default params
+    
+        //Convert the filters in to a ffmpeg syntax
+        let filtersKeysList = Object.keys(params); //take the JSON params keys to push to the filterParams array 
+        filtersKeysList.forEach( (key:any) =>  
+            filterParams.push(key+'='+params[key])) //convert the param to a ffmpeg filter-complex syntax
 
-        this.params = Object.assign({}, default_params, params); // merge params and default params
-        
-        this.func.forEach( 
-             (f) => f(this.params, this, this.resolveFunction));
+// OUTPUTS
+        let outputs = [];
+        for(var output = 0; output < this.structure.outputs; output++){
+            let outputString = [ this.name.toUpperCase(), this.label, getRandomNumber() ].join('_');
+            outputs.push(outputString);
+        }
+        if(_options?.final) outputs = []; // reset the outputs if its the last filter
+        let lineOutputs = outputs.map( output => inBrackets(output) )
 
-        console.log("AKI HAY OTRA COSA", this.line)
-        return this.line
+// FINAL LINE (ffmpeg string)
+        let line = [
+            inputs,
+            this.label,
+            '=',
+            filterParams.join(':'), //concat all the params with the ffmpeg filter-complex syntax
+            lineOutputs.join('')
+        ].join('');
+       
+        //this.func.forEach( (f) => f(this.params, this, this.resolveFunction));
+        return {
+            line: line,
+            outputs: outputs
+        }
     }
 }
 
-export const audioFilter = new Filter(
+/*export const audioFilter = new Filter(
     {
         metadata: {
             name:'audio-filter',
@@ -138,4 +132,4 @@ export const audioFilter = new Filter(
 
 );
 
-
+*/
