@@ -51,13 +51,9 @@ const main = async () => {
     const searchFilter = ( filterName:string ): Filter => filters.filter( filter => filter.name == filterName)[0];
     //filtersData.forEach()
 
-    const effectsChain: any = {
-        'alimiter':{},
-        'deesser':{},
-        'agate': {},
-        'acompressor':{},
-        'volume':{},
-    }
+
+    const effectsChain: any = JSON.parse(await readFileSync('./dist/data/configuration.json').toString())
+    console.log(effectsChain)
 
     const getFilterComplex = () => {
 

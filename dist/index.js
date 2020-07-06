@@ -48,13 +48,8 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const filters = filtersData.map((filter) => new utils_1.Filter(filter));
     const searchFilter = (filterName) => filters.filter(filter => filter.name == filterName)[0];
     //filtersData.forEach()
-    const effectsChain = {
-        'alimiter': {},
-        'deesser': {},
-        'agate': {},
-        'acompressor': {},
-        'volume': {},
-    };
+    const effectsChain = JSON.parse(yield fs_1.readFileSync('./dist/data/configuration.json').toString());
+    console.log(effectsChain);
     const getFilterComplex = () => {
         let keys = Object.keys(effectsChain);
         let last_outputs = [];

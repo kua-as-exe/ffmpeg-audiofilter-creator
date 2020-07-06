@@ -85,5 +85,21 @@
             "inputs": 1,
             "outputs": 1
         }
+    },
+    
+    {
+        "name":"deesser",
+        "label":"deesser",
+        "description": "reducir las sibilancias (eses, tes, y des) de la voz",
+        "default_params": [
+            {"key": "i", "value": 0.5},
+            {"key": "m", "value": 0.6},
+            {"key": "f", "value": 0.87},
+            {"key": "s", "value": "i"}
+        ],
+        "structure": {
+            "inputs": 1,
+            "outputs": 1
+        }
     }
 ]
