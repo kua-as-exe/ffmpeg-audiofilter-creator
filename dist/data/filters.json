@@ -2,7 +2,7 @@
     {
         "name":"acompressor",
         "label":"acompressor",
-        "description": "normalizar el volumen de la pista y disminuir posibles picos de volumen provocados por los filtros anteriores",
+        "description": "jorge jorge jorge jorge jorge jorge pero jorge",
         "default_params": [
             {"key": "level_in", "value": 1.2},
             {"key": "threshold", "value": 0.475},
