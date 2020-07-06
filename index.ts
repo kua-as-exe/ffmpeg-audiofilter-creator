@@ -1,49 +1,27 @@
 import { spawnSync } from 'child_process';
 import { Filter, Input, Param, FilterOptions } from './src/utils'
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
+import { join } from 'path';
 
 const ffmpegPath = './src/lib/ffmpeg.exe';
 
 const main = async () => {
 
-    let inputs: Input[] = [
-        /*{
-            id: 0,
-            path: './video.mp4',
-            params: {
-                before: [
-                    { key: '--to', value: 5}
-                ],
-                after: [
-                    { key: '-t', value: 10 }
-                ]
-            }
-        },{
-            id: 1,
-            path: './video2.mp4',
-            params: {
-                before: [
-                    { key: '--to', value: 6}
-                ],
-                after: [
-                    { key: '-t', value: 2 }
-                ]
-            }
-        }*/
-        {
-            id: 0,
-            path: 'C:\\Users\\Jorge Arreola\\Music\\Videoder\\RUMINE.mp3',
+    let input_files = readdirSync('./media/to_process')
+    let inputs: Input[] = [];
+    
+    input_files.forEach( (file, index) => {
+        inputs.push({
+            id: index,
+            path: join('./media/to_process', file),
             params: {
                 before: [],
-                after: [
-                    { key: '-t', value: '1:00' }
-                ]
+                after: []
             }
         }
-    ]
-    let complex = {
-
-    }
+            
+        )
+    })
 
 
     const processFilters = (filter: any, index:number, arrayFilters: any[]) => [filter.key, filter.value].join(" ");
@@ -70,72 +48,51 @@ const main = async () => {
                 .toString())
     
     const filters = filtersData.map( (filter) => new Filter(filter))
-    //console.log(filters);
-
     const searchFilter = ( filterName:string ): Filter => filters.filter( filter => filter.name == filterName)[0];
     //filtersData.forEach()
-            
-    //console.log(searchFilter("volume"))
-    //console.log(searchFilter("volume2"))
-    let volume: Filter = searchFilter("volume");
-    let out;
-    if(volume) out = volume.call(
-        {
-            "param1":"xd",
-            "param2":"xd2",
-        },
-        ["a", "b"],
-        //{"final": true}
-    )
 
-    console.log(out);
-
+    const effectsChain: any = {
+        'alimiter':{},
+        'deesser':{},
+        'agate': {},
+        'acompressor':{},
+        'volume':{},
+    }
 
     const getFilterComplex = () => {
 
-        /*let af = audioFilter.call(
-            inputs,
-            {
-                'test': 'x',
-                'number': 4,
-                'data1': 17
-            }
-        )*/
-        
-        return [
-            /*acompressor.call(
-                inputs, 
-                {
-                    threshold: 0.5,
-                    ratio: 20,
-                    attack: 0.01,
-                    release: 0.01,
-                    makeup: 1.25,
-            }),
-            flanger.call([], {
-                delay:10,
-                regen:50,
-                width:100,
-                speed:2
-            }),
-            volume.call([], {
-                volume: 2
-            }),
-            acompressor.call(
-                [], 
-                {
-                    threshold: 0.5,
-                    ratio: 20,
-                    attack: 0.01,
-                    release: 0.01,
-                    makeup: 1.25,
-            }),*/
-        //].join(';')
-        ].join(';')
+        let keys = Object.keys(effectsChain);
+
+        let last_outputs: string[] = [];
+        let effects_lines: string[] = []
+
+        keys.forEach( (effect, index, array) => {
+            let filter:Filter = searchFilter(effect);
+            if(!filter) return; // break if filter doesnt exists
+
+            let options: any = {}
+            if(index == array.length-1) options['final'] = true; // add final option if last
+
+            let params: object = effectsChain[effect] // take the params
+            let out = filter.call(params, last_outputs, options); // call the filter
+            effects_lines.push(out.line) // save the line
+            last_outputs = out.outputs; // save the output
+        })
+
+        //console.log(effects_lines)
+
+        return effects_lines.join(';')
     }
 
+    //console.log(getFilterComplex());
     
-        
+    await inputs.forEach( async (input, index) => {
+
+        let nombre_del_archivo = input_files[index];
+
+        console.log("---------------------------------------------------------------")
+        console.log("\n\nPROCESANDO ARCHIVO: ", nombre_del_archivo)
+
         let ffmpegCommand = [
             ffmpegPath,
             getInputs(inputs),
@@ -144,15 +101,19 @@ const main = async () => {
             getFilterComplex(),
             '"',
             '-y',
-            "'C:\\Users\\Jorge Arreola\\Music\\Videoder\\RUMINE_REMASTERED_3.mp3'"
+            join("'./media/processed", nombre_del_archivo+"'")
         ]
-        //console.log(ffmpegCommand);
-        //console.log(ffmpegCommand.join(" "));
+        console.log(ffmpegCommand.join(" "));
+        console.log(ffmpegCommand);
         
-        //let t = await spawnSync("powershell.exe", ffmpegCommand);
-        //console.log(t.stdout.toString());
-        //console.log(t.output.toString());
-        //console.log(t.stderr.toString());
+        let t = await spawnSync("powershell.exe", ffmpegCommand);
+        console.log(t.stdout.toString());
+        console.log(t.output.toString());
+        console.log(t.stderr.toString());
+    })
+
+        
+    
 }
 
 main();

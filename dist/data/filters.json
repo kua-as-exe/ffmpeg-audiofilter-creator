@@ -2,8 +2,32 @@
     {
         "name":"acompressor",
         "label":"acompressor",
+        "description": "normalizar el volumen de la pista y disminuir posibles picos de volumen provocados por los filtros anteriores",
+        "default_params": [
+            {"key": "level_in", "value": 1.2},
+            {"key": "threshold", "value": 0.475},
+            {"key": "ratio", "value": 8},
+            {"key": "attack", "value": 5},
+            {"key": "release", "value": 195},
+            {"key": "makeup", "value": 1.25},
+            {"key": "knee", "value": 3.5},
+            {"key": "detection", "value": "peak"},
+            {"key": "mix", "value": 0.85}
+        ],
+        "structure": {
+            "inputs": 1,
+            "outputs": 1
+        }
+    },{
+        "name":"alimiter",
+        "label":"alimiter",
         "description": "",
-        "default_params": [],
+        "default_params": [
+            {"key": "level_in", "value": 1.5},
+            {"key": "limit", "value": 0.95},
+            {"key": "attack", "value": 1},
+            {"key": "release", "value": 80}
+        ],
         "structure": {
             "inputs": 1,
             "outputs": 1
@@ -22,8 +46,41 @@
         "label":"volume",
         "description": "",
         "default_params": [
-            { "key": "wtf", "value": "idk"}
+            { "key": "volume", "value": 1}
         ],
+        "structure": {
+            "inputs": 1,
+            "outputs": 1
+        }
+    },{
+        "name":"deesser",
+        "label":"deesser",
+        "description": "reducir las sibilancias (eses, tes, y des) de la voz",
+        "default_params": [
+            {"key": "i", "value": 0.5},
+            {"key": "m", "value": 0.6},
+            {"key": "f", "value": 0.87},
+            {"key": "s", "value": "o"}
+        ],
+        "structure": {
+            "inputs": 1,
+            "outputs": 1
+        }
+    },{
+        "name":"agate",
+        "label":"agate",
+        "description": "eliminar o reducir el ruido ambiental o blanco del audio original",
+        "default_params": [
+            {"key" : "mode", "value": "downward"},
+            {"key" : "range", "value": 0.7},
+            {"key" : "threshold", "value": 0.7},
+            {"key" : "attack", "value": 5},
+            {"key" : "release", "value": 95},
+            {"key" : "makeup", "value": 1.05},
+            {"key" : "knee", "value": 2.2},
+            {"key" : "ratio", "value": 7000}
+        ],
+        
         "structure": {
             "inputs": 1,
             "outputs": 1

@@ -34,7 +34,7 @@ export interface FilterOptions {
 }
 
 export const inBrackets = (str: string | number) => '['+str+']';
-export const getRandomNumber = () => String(Math.random()).slice(2,7); // from (example) "0.0744077323733392" takes to the 3rd to the 7th character
+export const getRandomNumber = () => String(Math.random()).slice(2,7); // from (example) "0.0744077323733392" takes to the 3rd to the 7th character: 07440
 
 export class Filter{
     //inputs: Input[] = [];
