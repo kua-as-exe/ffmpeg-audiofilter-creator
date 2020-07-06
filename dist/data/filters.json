@@ -60,7 +60,7 @@
             {"key": "i", "value": 0.5},
             {"key": "m", "value": 0.6},
             {"key": "f", "value": 0.87},
-            {"key": "s", "value": "o"}
+            {"key": "s", "value": "i"}
         ],
         "structure": {
             "inputs": 1,
