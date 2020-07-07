@@ -1,7 +1,10 @@
 {
     "alimiter":{},
     "deesser":{},
-    "agate": {},
-    "acompressor":{},
+    "acompressor2":{},
+    "highpass": {},
+"lowpass" : {},
+"agate": {},
+"acompressor1":{},
     "volume":{}
 }

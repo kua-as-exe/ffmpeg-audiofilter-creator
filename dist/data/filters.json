@@ -1,7 +1,7 @@
 [
     {
         "name":"acompressor",
-        "label":"acompressor",
+        "label":"acompressor1",
         "description": "jorge jorge jorge jorge jorge jorge pero jorge",
         "default_params": [
             {"key": "level_in", "value": 1.2},
@@ -60,7 +60,26 @@
             {"key": "i", "value": 0.5},
             {"key": "m", "value": 0.6},
             {"key": "f", "value": 0.87},
-            {"key": "s", "value": "i"}
+            {"key": "s", "value": "o"}
+        ],
+        "structure": {
+            "inputs": 1,
+            "outputs": 1
+        }
+    },{
+        "name":"acompressor",
+        "label":"acompressor2",
+        "description": "jorge jorge jorge jorge jorge jorge pero jorge",
+        "default_params": [
+            {"key": "level_in", "value": 1.05},
+            {"key": "threshold", "value": 0.475},
+            {"key": "ratio", "value": 8},
+            {"key": "attack", "value": 20},
+            {"key": "release", "value": 195},
+            {"key": "makeup", "value": 1.35},
+            {"key": "knee", "value": 3.5},
+            {"key": "detection", "value": "rms"},
+            {"key": "mix", "value": 0.90}
         ],
         "structure": {
             "inputs": 1,
@@ -71,13 +90,14 @@
         "label":"agate",
         "description": "eliminar o reducir el ruido ambiental o blanco del audio original",
         "default_params": [
-            {"key" : "mode", "value": "downward"},
-            {"key" : "range", "value": 0.7},
-            {"key" : "threshold", "value": 0.7},
-            {"key" : "attack", "value": 5},
-            {"key" : "release", "value": 95},
-            {"key" : "makeup", "value": 1.05},
-            {"key" : "knee", "value": 2.2},
+            {"key" : "level_in", "value": 1.1},
+{"key" : "mode", "value": "downward"},
+            {"key" : "range", "value": 0.04},
+            {"key" : "threshold", "value": 0.05},
+            {"key" : "attack", "value": 35},
+            {"key" : "release", "value": 250},
+            {"key" : "makeup", "value": 1},
+            {"key" : "knee", "value": 4},
             {"key" : "ratio", "value": 7000}
         ],
         
@@ -85,21 +105,39 @@
             "inputs": 1,
             "outputs": 1
         }
-    },
-    
-    {
-        "name":"deesser",
-        "label":"deesser",
-        "description": "reducir las sibilancias (eses, tes, y des) de la voz",
+    },{
+        "name":"highpass",
+        "label":"highpass",
+        "description": "eliminar o reducir el ruido ambiental o blanco del audio original",
         "default_params": [
-            {"key": "i", "value": 0.5},
-            {"key": "m", "value": 0.6},
-            {"key": "f", "value": 0.87},
-            {"key": "s", "value": "i"}
+            
+            {"key" : "frequency", "value": 40},
+            {"key" : "mix", "value": 0.8},
+           
+            {"key" : "width_type", "value": "o"}
         ],
+        
+        "structure": {
+            "inputs": 1,
+            "outputs": 1
+        }
+    },{
+        "name":"lowpass",
+        "label":"lowpass",
+        "description": "eliminar o reducir el ruido ambiental o blanco del audio original",
+        "default_params": [
+            
+            {"key" : "frequency", "value": 15000},
+            {"key" : "mix", "value": 0.8},
+           
+            {"key" : "width_type", "value": "o"}
+        ],
+        
         "structure": {
             "inputs": 1,
             "outputs": 1
         }
     }
+    
+   
 ]
