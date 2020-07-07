@@ -1,18 +1,18 @@
 [
     {
-        "name":"acompressor2",
-        "label":"acompressor",
+        "name":"acompressor",
+        "label":"acompressor1",
         "description": "jorge jorge jorge jorge jorge jorge pero jorge",
         "default_params": [
             {"key": "level_in", "value": 1.2},
-            {"key": "threshold", "value": 0.475},
-            {"key": "ratio", "value": 8},
+            {"key": "threshold", "value": 0.22},
+            {"key": "ratio", "value": 12},
             {"key": "attack", "value": 5},
-            {"key": "release", "value": 195},
-            {"key": "makeup", "value": 1.25},
+            {"key": "release", "value": 95},
+            {"key": "makeup", "value": 1.7},
             {"key": "knee", "value": 3.5},
             {"key": "detection", "value": "peak"},
-            {"key": "mix", "value": 0.85}
+            {"key": "mix", "value": 1}
         ],
         "structure": {
             "inputs": 1,
@@ -23,8 +23,8 @@
         "label":"alimiter",
         "description": "",
         "default_params": [
-            {"key": "level_in", "value": 1.5},
-            {"key": "limit", "value": 0.95},
+            {"key": "level_in", "value": 2},
+            {"key": "limit", "value": 0.75},
             {"key": "attack", "value": 1},
             {"key": "release", "value": 80}
         ],
@@ -32,21 +32,13 @@
             "inputs": 1,
             "outputs": 1
         }
-    },{
-        "name":"flanger",
-        "label":"flanger",
-        "description": "",
-        "default_params": [],
-        "structure": {
-            "inputs": 1,
-            "outputs": 1
-        }
+    
     },{
         "name":"volume",
         "label":"volume",
         "description": "",
         "default_params": [
-            { "key": "volume", "value": 1}
+            { "key": "volume", "value": 0.7}
         ],
         "structure": {
             "inputs": 1,
@@ -72,14 +64,14 @@
         "description": "jorge jorge jorge jorge jorge jorge pero jorge",
         "default_params": [
             {"key": "level_in", "value": 1.05},
-            {"key": "threshold", "value": 0.475},
-            {"key": "ratio", "value": 8},
+            {"key": "threshold", "value": 0.25},
+            {"key": "ratio", "value": 10},
             {"key": "attack", "value": 20},
             {"key": "release", "value": 195},
             {"key": "makeup", "value": 1.35},
-            {"key": "knee", "value": 3.5},
+            {"key": "knee", "value": 4.3},
             {"key": "detection", "value": "rms"},
-            {"key": "mix", "value": 0.90}
+            {"key": "mix", "value": 0.9}
         ],
         "structure": {
             "inputs": 1,
@@ -90,15 +82,15 @@
         "label":"agate",
         "description": "eliminar o reducir el ruido ambiental o blanco del audio original",
         "default_params": [
-            {"key" : "level_in", "value": 1.1},
+            {"key" : "level_in", "value": 2.9},
 {"key" : "mode", "value": "downward"},
-            {"key" : "range", "value": 0.04},
-            {"key" : "threshold", "value": 0.05},
-            {"key" : "attack", "value": 35},
-            {"key" : "release", "value": 250},
+            {"key" : "range", "value": 0.05},
+            {"key" : "threshold", "value": 0.14},
+            {"key" : "attack", "value": 40},
+            {"key" : "release", "value": 460},
             {"key" : "makeup", "value": 1},
-            {"key" : "knee", "value": 4},
-            {"key" : "ratio", "value": 7000}
+            {"key" : "knee", "value": 4.78},
+            {"key" : "ratio", "value": 6800}
         ],
         
         "structure": {
@@ -111,8 +103,8 @@
         "description": "eliminar o reducir el ruido ambiental o blanco del audio original",
         "default_params": [
             
-            {"key" : "frequency", "value": 40},
-            {"key" : "mix", "value": 0.8},
+            {"key" : "frequency", "value": 55},
+            {"key" : "mix", "value": 0.87},
            
             {"key" : "width_type", "value": "o"}
         ],
@@ -128,9 +120,57 @@
         "default_params": [
             
             {"key" : "frequency", "value": 15000},
-            {"key" : "mix", "value": 0.8},
+            {"key" : "mix", "value": 0.9},
            
             {"key" : "width_type", "value": "o"}
+        ],
+        
+        "structure": {
+            "inputs": 1,
+            "outputs": 1
+        }
+    },{
+        "name":"earwax",
+        "label":"earwax",
+        "description": "",
+        "default_params": [
+            
+        ],
+        "structure": {
+            "inputs": 1,
+            "outputs": 1
+        }
+    
+    },{
+        "name":"equalizer1",
+        "label":"equalizer",
+        "description": "eliminar o reducir el ruido ambiental o blanco del audio original",
+        "default_params": [
+          
+            {"key" : "frequency", "value": 227},
+            {"key" : "width_type", "value": "q"},
+            {"key" : "width", "value": 1},
+            {"key" : "gain", "value": -4.24},
+            {"key" : "mix", "value": 0.9}
+            
+        ],
+        
+        "structure": {
+            "inputs": 1,
+            "outputs": 1
+        }
+},{
+        "name":"equalizer2",
+        "label":"equalizer",
+        "description": "eliminar o reducir el ruido ambiental o blanco del audio original",
+        "default_params": [
+          
+            {"key" : "frequency", "value": 1030},
+            {"key" : "width_type", "value": "q"},
+            {"key" : "width", "value": 1},
+            {"key" : "gain", "value": -7.06},
+            {"key" : "mix", "value": 0.9}
+            
         ],
         
         "structure": {

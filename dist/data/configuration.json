@@ -1,6 +1,8 @@
 {
     "alimiter":{},
-    "deesser":{},
+"equalizer1": {},
+"equalizer2": {},   
+"deesser":{},
     "acompressor2":{},
     "highpass": {},
 "lowpass" : {},
