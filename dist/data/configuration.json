@@ -1,13 +1,12 @@
 {
     "alimiter":{},
-"equalizer1": {},
-"equalizer2": {},   
-"deesser":{},
-    "acompressor2":{},
+    "deesser":{},
+"equalizer1":{},
+"equalizer2":{},    
+"acompressor2":{},
     "highpass": {},
 "lowpass" : {},
 "agate": {},
-"acompressor3":{},
 "acompressor1":{},    
 "volume":{}
 }
