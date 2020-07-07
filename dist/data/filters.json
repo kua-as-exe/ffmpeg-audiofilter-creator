@@ -1,7 +1,7 @@
 [
     {
-        "name":"acompressor",
-        "label":"acompressor1",
+        "name":"acompressor2",
+        "label":"acompressor",
         "description": "jorge jorge jorge jorge jorge jorge pero jorge",
         "default_params": [
             {"key": "level_in", "value": 1.2},
@@ -67,8 +67,8 @@
             "outputs": 1
         }
     },{
-        "name":"acompressor",
-        "label":"acompressor2",
+        "name":"acompressor2",
+        "label":"acompressor",
         "description": "jorge jorge jorge jorge jorge jorge pero jorge",
         "default_params": [
             {"key": "level_in", "value": 1.05},
