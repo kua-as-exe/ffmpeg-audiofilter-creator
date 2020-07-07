@@ -89,7 +89,7 @@
             {"key" : "attack", "value": 40},
             {"key" : "release", "value": 460},
             {"key" : "makeup", "value": 1},
-            {"key" : "knee", "value": 4.78},
+            {"key" : "knee", "value": 8},
             {"key" : "ratio", "value": 6800}
         ],
         
@@ -173,6 +173,25 @@
             
         ],
         
+        "structure": {
+            "inputs": 1,
+            "outputs": 1
+        }
+    },{
+        "name":"acompressor3",
+        "label":"acompressor",
+        "description": "jorge jorge jorge jorge jorge jorge pero jorge",
+        "default_params": [
+            {"key": "level_in", "value": 1.05},
+            {"key": "threshold", "value": 0.25},
+            {"key": "ratio", "value": 10},
+            {"key": "attack", "value": 20},
+            {"key": "release", "value": 195},
+            {"key": "makeup", "value": 1.1},
+            {"key": "knee", "value": 4.3},
+            {"key": "detection", "value": "rms"},
+            {"key": "mix", "value": 1}
+        ],
         "structure": {
             "inputs": 1,
             "outputs": 1
