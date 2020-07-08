@@ -1,1 +1,3 @@
 /node_modules
+/media/to_process/*
+/media/processed/*

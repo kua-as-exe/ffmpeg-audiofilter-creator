@@ -36,50 +36,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var child_process_1 = require("child_process");
 var utils_1 = require("./src/utils");
 var fs_1 = require("fs");
+var path_1 = require("path");
 var ffmpegPath = './src/lib/ffmpeg.exe';
 var main = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var inputs, complex, processFilters, processParams, getInputs, filtersData, _a, _b, filters, searchFilter, volume, out, getFilterComplex, ffmpegCommand;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+    var input_files, inputs, processFilters, processParams, getInputs, filtersData, _a, _b, filters, searchFilter, effectsChain, _c, _d, getFilterComplex;
+    return __generator(this, function (_e) {
+        switch (_e.label) {
             case 0:
-                inputs = [
-                    /*{
-                        id: 0,
-                        path: './video.mp4',
-                        params: {
-                            before: [
-                                { key: '--to', value: 5}
-                            ],
-                            after: [
-                                { key: '-t', value: 10 }
-                            ]
-                        }
-                    },{
-                        id: 1,
-                        path: './video2.mp4',
-                        params: {
-                            before: [
-                                { key: '--to', value: 6}
-                            ],
-                            after: [
-                                { key: '-t', value: 2 }
-                            ]
-                        }
-                    }*/
-                    {
-                        id: 0,
-                        path: 'C:\\Users\\Jorge Arreola\\Music\\Videoder\\RUMINE.mp3',
+                input_files = fs_1.readdirSync('./media/to_process');
+                inputs = [];
+                input_files.forEach(function (file, index) {
+                    inputs.push({
+                        id: index,
+                        path: path_1.join('./media/to_process', file),
                         params: {
                             before: [],
-                            after: [
-                                { key: '-t', value: '1:00' }
-                            ]
+                            after: []
                         }
-                    }
-                ];
-                complex = {};
+                    });
+                });
                 processFilters = function (filter, index, arrayFilters) { return [filter.key, filter.value].join(" "); };
                 processParams = function (params) { return params.map(processFilters).join(" ") || ""; };
                 getInputs = function (inputs) {
@@ -100,66 +78,65 @@ var main = function () { return __awaiter(void 0, void 0, void 0, function () {
                 return [4 /*yield*/, fs_1.readFileSync('./dist/data/filters.json')
                         .toString()];
             case 1:
-                filtersData = _b.apply(_a, [_c.sent()]);
+                filtersData = _b.apply(_a, [_e.sent()]);
                 filters = filtersData.map(function (filter) { return new utils_1.Filter(filter); });
                 searchFilter = function (filterName) { return filters.filter(function (filter) { return filter.name == filterName; })[0]; };
-                volume = searchFilter("volume");
-                if (volume)
-                    out = volume.call({
-                        "param1": "xd",
-                        "param2": "xd2",
-                    }, ["a", "b"]);
-                console.log(out);
+                _d = (_c = JSON).parse;
+                return [4 /*yield*/, fs_1.readFileSync('./dist/data/configuration.json').toString()];
+            case 2:
+                effectsChain = _d.apply(_c, [_e.sent()]);
+                console.log(effectsChain);
                 getFilterComplex = function () {
-                    /*let af = audioFilter.call(
-                        inputs,
-                        {
-                            'test': 'x',
-                            'number': 4,
-                            'data1': 17
-                        }
-                    )*/
-                    return [
-                    /*acompressor.call(
-                        inputs,
-                        {
-                            threshold: 0.5,
-                            ratio: 20,
-                            attack: 0.01,
-                            release: 0.01,
-                            makeup: 1.25,
-                    }),
-                    flanger.call([], {
-                        delay:10,
-                        regen:50,
-                        width:100,
-                        speed:2
-                    }),
-                    volume.call([], {
-                        volume: 2
-                    }),
-                    acompressor.call(
-                        [],
-                        {
-                            threshold: 0.5,
-                            ratio: 20,
-                            attack: 0.01,
-                            release: 0.01,
-                            makeup: 1.25,
-                    }),*/
-                    //].join(';')
-                    ].join(';');
+                    var keys = Object.keys(effectsChain);
+                    var last_outputs = [];
+                    var effects_lines = [];
+                    keys.forEach(function (effect, index, array) {
+                        var filter = searchFilter(effect);
+                        if (!filter)
+                            return; // break if filter doesnt exists
+                        var options = {};
+                        if (index == array.length - 1)
+                            options['final'] = true; // add final option if last
+                        var params = effectsChain[effect]; // take the params
+                        var out = filter.call(params, last_outputs, options); // call the filter
+                        effects_lines.push(out.line); // save the line
+                        last_outputs = out.outputs; // save the output
+                    });
+                    //console.log(effects_lines)
+                    return effects_lines.join(';');
                 };
-                ffmpegCommand = [
-                    ffmpegPath,
-                    getInputs(inputs),
-                    '-filter_complex',
-                    '"',
-                    getFilterComplex(),
-                    '"',
-                    '-y',
-                    "'C:\\Users\\Jorge Arreola\\Music\\Videoder\\RUMINE_REMASTERED_3.mp3'"
-                ];
+                //console.log(getFilterComplex());
+                return [4 /*yield*/, inputs.forEach(function (input, index) { return __awaiter(void 0, void 0, void 0, function () {
+                        var filename, ffmpegCommand, t;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0:
+                                    filename = input_files[index];
+                                    ffmpegCommand = [
+                                        ffmpegPath,
+                                        getInputs(inputs),
+                                        '-filter_complex',
+                                        '"',
+                                        getFilterComplex(),
+                                        '"',
+                                        '-y',
+                                        path_1.join("'./media/processed", filename + "'")
+                                    ];
+                                    console.log(ffmpegCommand.join(" "));
+                                    console.log(ffmpegCommand);
+                                    return [4 /*yield*/, child_process_1.spawnSync("powershell.exe", ffmpegCommand)];
+                                case 1:
+                                    t = _a.sent();
+                                    console.log(t.stdout.toString());
+                                    console.log(t.output.toString());
+                                    console.log(t.stderr.toString());
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); })];
+            case 3:
+                //console.log(getFilterComplex());
+                _e.sent();
                 return [2 /*return*/];
         }
     });
