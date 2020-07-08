@@ -6,8 +6,8 @@ export interface Param{
         min?: number;
         max?: number;
         options?: string[];
-        editable?: boolean;
     };
+    editable?: boolean;
     metadata?: {
         
     }

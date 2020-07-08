@@ -1,0 +1,43 @@
+<div class="container mt-4 mb-5 animated fadeIn fast">
+
+    <a [routerLink]="[ '/filters' ]" class="badge badge-primary"> <b></b> Atrás</a>
+    <h1 class="mt-2"> Filter Name </h1>
+    <hr>
+    <div class="breadcrumb option">
+        <p class="m-0">Etiqueta: <b>Label</b></p>
+    </div>
+
+    <div class="card option">
+        <div class="card-body">
+            <h3>Descripción</h3>
+            <span >
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error nihil voluptatum a? Expedita, fugit quo voluptatibus dolores illum officia enim, vel distinctio porro itaque totam repellat et maxime aut sapiente.
+            </span>
+        </div>
+    </div>
+
+    <h2 class="mt-4">Parámetros</h2>
+    <hr class="m-0">
+    <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Llave</th>
+            <th scope="col">Valor</th>
+            <th scope="col">Rango / Opciones</th>
+            <th scope="col">Editable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+            *ngFor="let item of [1,2,3,4]" 
+            class="option"
+            (click)="editParam(item)"
+            >
+            <th scope="row"> {{item}} </th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
