@@ -8,9 +8,12 @@ var SERVER_PORT = 1234;
 //app.use(session({secret: 'idk'}))
 //app.use(bodyParser.json())
 app.get('/api/conection', function (req, res) {
-    res.send("OLA");
+    res.send({ status: true });
+});
+app.get('/api', function (req, res) {
+    res.send({ status: true });
 });
 app.get('*', function (req, res) {
-    res.send("BIEN");
+    res.send({ text: "wtf" });
 });
 app.listen(SERVER_PORT, function () { return console.log("Server running"); });

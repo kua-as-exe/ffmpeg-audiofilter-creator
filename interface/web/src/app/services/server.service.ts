@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 //import { join } from 'path';
 
 @Injectable({
@@ -15,8 +15,11 @@ export class ServerService {
   }
 
   checkConnection(){
-    this.http.get('/').subscribe( data => {
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain');
+    this.http.get('api/conection', {headers: headers}).subscribe( data => {
       console.log(data)
+    }, (err: any) => {
+      console.error(err)
     })
   }
 }

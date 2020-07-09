@@ -11,12 +11,14 @@ const SERVER_PORT = 1234;
 //app.use(bodyParser.json())
 
 app.get('/api/conection', (req: any, res: any) => {
-
-    res.send("OLA")
+    res.send({status: true})
+})
+app.get('/api', (req: any, res: any) => {
+    res.send({status: true})
 })
 
 app.get('*', (req:any, res: any) => {
-    res.send("BIEN")
+    res.send({text: "wtf"})
 })
 
 app.listen(SERVER_PORT, ()=>console.log("Server running"))
