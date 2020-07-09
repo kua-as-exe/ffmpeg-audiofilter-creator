@@ -11,13 +11,16 @@ const SERVER_PORT = 1234;
 //app.use(bodyParser.json())
 
 app.get('/api/conection', (req: any, res: any) => {
-    res.send({status: true})
+    console.log(req);
+    res.send({status1: true})
 })
 app.get('/api', (req: any, res: any) => {
-    res.send({status: true})
+    console.log(req);   
+    res.send({status2: true})
 })
 
-app.get('*', (req:any, res: any) => {
+app.get('/', (req:any, res: any) => {
+    console.log(req);
     res.send({text: "wtf"})
 })
 

@@ -15,8 +15,8 @@ export class ServerService {
   }
 
   checkConnection(){
-    const headers = new HttpHeaders().set('Content-Type', 'text/plain');
-    this.http.get('api/conection', {headers: headers}).subscribe( data => {
+    //const headers = new HttpHeaders().set('Content-Type', 'text/plain');
+    this.http.get('/api/conection/').subscribe( data => {
       console.log(data)
     }, (err: any) => {
       console.error(err)
