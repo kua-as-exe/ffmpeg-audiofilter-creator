@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule} from '@angular/common/http'
 import { NgModule } from '@angular/core';
 
 import { APP_ROUTING } from './app.routes';
@@ -24,6 +25,7 @@ import { FilterComponent } from './components/pages/filter/filter.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     APP_ROUTING
   ],
   providers: [],
