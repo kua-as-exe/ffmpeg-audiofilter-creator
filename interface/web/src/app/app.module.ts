@@ -12,6 +12,9 @@ import { VideoComponent } from './components/pages/video/video.component';
 
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { FilterComponent } from './components/pages/filter/filter.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+//import { ModalModule } from 'ngx-bootstrap/modal';
+import { ModalComponent } from './components/shared/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -21,12 +24,15 @@ import { FilterComponent } from './components/pages/filter/filter.component';
     VideosComponent,
     NavbarComponent,
     VideoComponent,
-    FilterComponent
+    FilterComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    APP_ROUTING
+    APP_ROUTING,
+    NgbModule//,
+    //ModalModule
   ],
   providers: [],
   bootstrap: [AppComponent]

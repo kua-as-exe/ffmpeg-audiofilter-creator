@@ -34,12 +34,11 @@
     transition: all 0.2s ease-in-out;
 }
 
-.option:hover {
+.option:hover  {
     transform: scale(1.01);
-    cursor: pointer;
-
-    
+    cursor: pointer;    
 }
+
 
 tr.option:hover {
   background-color: rgba(255, 255, 255, 0.041);

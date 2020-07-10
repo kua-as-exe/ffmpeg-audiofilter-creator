@@ -36,17 +36,47 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDataJSON = void 0;
-var fs_1 = require("fs");
-exports.getDataJSON = function (path) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _b;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
-            case 0:
-                _b = (_a = JSON).parse;
-                return [4 /*yield*/, fs_1.readFileSync(path)
-                        .toString()];
-            case 1: return [2 /*return*/, _b.apply(_a, [_c.sent()])];
+var utils_1 = require("../src/utils");
+var express = require('express');
+var app = express();
+var SERVER_PORT = 1234;
+//const bodyParser = require('body-parser');
+//const session = require('express-session');
+//app.use(session({secret: 'idk'}))
+//app.use(bodyParser.json())
+var getFilters = function () { return utils_1.getDataJSON('./dist/data/filters.json'); };
+app.get('/api/getFilters', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var filtersData;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, getFilters()];
+            case 1:
+                filtersData = _a.sent();
+                if (!filtersData)
+                    res.send({});
+                res.send(filtersData);
+                return [2 /*return*/];
         }
     });
-}); };
+}); });
+app.get('/api/getFilter', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var filterName, filtersData, filter;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log(req);
+                filterName = req.query.filterName;
+                return [4 /*yield*/, getFilters()];
+            case 1:
+                filtersData = _a.sent();
+                filter = filtersData.filter(function (filter) { return filter.name == filterName; })[0];
+                res.send(filter);
+                return [2 /*return*/];
+        }
+    });
+}); });
+app.get('/', function (req, res) {
+    console.log(req);
+    res.send({ text: "wtf" });
+});
+app.listen(SERVER_PORT, function () { return console.log("Server running"); });

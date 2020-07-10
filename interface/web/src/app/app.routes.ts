@@ -11,7 +11,7 @@ import { FilterComponent } from './components/pages/filter/filter.component';
 const ROUTES: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'filters', component: FiltersComponent },
-    { path: 'filter/:filter:ID', component: FilterComponent },
+    { path: 'filter/:filterID', component: FilterComponent },
     { path: 'videos', component: VideosComponent },
     { path: 'video/:videoID', component: VideoComponent },
     { path: '**', pathMatch:"full", redirectTo: 'home' },

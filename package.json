@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "node dist/index.js",
-    "server": "node dist/server/index.js",
-    "web": "cd ./interface/web; npm run start"
+    "server": "nodemon ./dist/server/server.js",
+    "web": "cd ./interface/web && npm run start"
   },
   "author": "Jorge Arreola",
   "license": "ISC",

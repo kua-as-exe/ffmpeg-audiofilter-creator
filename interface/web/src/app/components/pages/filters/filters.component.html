@@ -4,13 +4,16 @@
     <hr>
     <div>
         
-        <div class="card animated fadeIn fast mb-2 option" (click)="gotoFilter('f')">
+        <div 
+        *ngFor="let filter of filters"
+        class="card animated fadeIn fast mb-2 option" 
+        (click)="gotoFilter(filter)">
             <div class="card-header">
-              Nombre del filtro
+              {{filter.name}}
             </div>
             <div class="card-body">
-              <h6 class="card-title animated fadeIn">Descripción </h6>
-              <p class="card-text">Etiqueta </p>
+              <h6 class="card-title animated fadeIn"> {{filter.description}} </h6>
+              <p class="card-text"> {{filter.label}} </p>
               <!--a href="#" class="btn btn-primary">Go somewhere</!--a-->
             </div>
           </div>

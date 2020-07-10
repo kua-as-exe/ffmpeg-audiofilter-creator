@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Param, FilterOptions, Filter } from './../../../../../src/Filter'
+import { Observable } from 'rxjs';
 //import { join } from 'path';
 
 @Injectable({
@@ -7,19 +9,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class ServerService {
  
+  filters: FilterOptions[] = []
+
   constructor(
     private http:HttpClient
   ) { 
     console.log("SERVER SERVICE WORKING");
-    this.checkConnection()
   }
 
-  checkConnection(){
-    //const headers = new HttpHeaders().set('Content-Type', 'text/plain');
-    this.http.get('/api/conection/').subscribe( data => {
-      console.log(data)
-    }, (err: any) => {
-      console.error(err)
-    })
-  }
+   getFilters = () => this.http.get('/api/getFilters/')
+
+   getFilter = (filterName: string) => this.http.get('/api/getFilter?filterName='+filterName)
 }

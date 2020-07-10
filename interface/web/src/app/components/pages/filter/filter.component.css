@@ -1,0 +1,10 @@
+input, textarea {
+    background-color: transparent;
+    margin: 0px;
+    border: none;
+    width: fit-content;
+}
+
+table input, textarea {
+    width: 100%
+}

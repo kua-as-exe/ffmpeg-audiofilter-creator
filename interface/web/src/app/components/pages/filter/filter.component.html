@@ -1,43 +1,56 @@
 <div class="container mt-4 mb-5 animated fadeIn fast">
 
-    <a [routerLink]="[ '/filters' ]" class="badge badge-primary"> <b></b> Atrás</a>
-    <h1 class="mt-2"> Filter Name </h1>
-    <hr>
-    <div class="breadcrumb option">
-        <p class="m-0">Etiqueta: <b>Label</b></p>
-    </div>
+  <a [routerLink]="[ '/filters' ]" class="badge badge-primary"> <b></b> Atrás</a>
 
-    <div class="card option">
-        <div class="card-body">
-            <h3>Descripción</h3>
-            <span >
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error nihil voluptatum a? Expedita, fugit quo voluptatibus dolores illum officia enim, vel distinctio porro itaque totam repellat et maxime aut sapiente.
-            </span>
-        </div>
+  <div class="row">
+    <div class="col">
+      <h1 class="mt-2"> {{filter.name}} </h1>
     </div>
+    <div class="col align-middle">
+      <button class="btn btn-secondary float-right align-middle btn-md">save</button>
+    </div>
+  </div>
+
+  <hr>
+  <div [hidden]="!filter.label" class="breadcrumb option animated fadeIn">
+      <p class="m-0"> Etiqueta: <b>
+        <input type="text" class="table" [(value)]="filter.label">
+      </b></p>
+  </div>
+
+  <div [hidden]="!filter.description" class="card option animated fadeIn" >
+      <div class="card-body">
+          <h3>Descripción</h3>
+          <span >
+              <textarea type="text" class="text-secondary"> {{filter.description}} </textarea>
+          </span>
+      </div>
+  </div>
+
+  <div [hidden]="!(filter.default_params)">
 
     <h2 class="mt-4">Parámetros</h2>
     <hr class="m-0">
     <table class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Llave</th>
-            <th scope="col">Valor</th>
-            <th scope="col">Rango / Opciones</th>
-            <th scope="col">Editable</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr 
-            *ngFor="let item of [1,2,3,4]" 
-            class="option"
-            (click)="editParam(item)"
-            >
-            <th scope="row"> {{item}} </th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-        </tbody>
-      </table>
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Llave</th>
+          <th scope="col">Valor</th>
+          <th scope="col">Rango / Opciones</th>
+          <th scope="col">Editable</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr 
+          *ngFor="let param of filter.default_params" 
+          class="option"
+          >
+          <th scope="row"> <input type="text" class="table" [(value)]="param.key"> </th>
+          <td> <input type="text" class="table" [(value)]="param.value"> </td>
+          <td>{{param.key}}</td>
+          <td>@mdo</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

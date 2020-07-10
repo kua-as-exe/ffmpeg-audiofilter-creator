@@ -37,14 +37,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var child_process_1 = require("child_process");
-var utils_1 = require("./src/utils");
+var Filter_1 = require("./src/Filter");
 var fs_1 = require("fs");
 var path_1 = require("path");
+var utils_1 = require("./src/utils");
 var ffmpegPath = './src/lib/ffmpeg.exe';
 var main = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var input_files, inputs, processFilters, processParams, getInputs, filtersData, _a, _b, filters, searchFilter, effectsChain, _c, _d, getFilterComplex;
-    return __generator(this, function (_e) {
-        switch (_e.label) {
+    var input_files, inputs, processFilters, processParams, getInputs, filtersData, filters, searchFilter, effectsChain, getFilterComplex;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
                 input_files = fs_1.readdirSync('./media/to_process');
                 inputs = [];
@@ -74,17 +75,14 @@ var main = function () { return __awaiter(void 0, void 0, void 0, function () {
                     });
                     return lines.join(" ");
                 };
-                _b = (_a = JSON).parse;
-                return [4 /*yield*/, fs_1.readFileSync('./dist/data/filters.json')
-                        .toString()];
+                return [4 /*yield*/, utils_1.getDataJSON('./dist/data/filters.json')];
             case 1:
-                filtersData = _b.apply(_a, [_e.sent()]);
-                filters = filtersData.map(function (filter) { return new utils_1.Filter(filter); });
+                filtersData = _a.sent();
+                filters = filtersData.map(function (filter) { return new Filter_1.Filter(filter); });
                 searchFilter = function (filterName) { return filters.filter(function (filter) { return filter.name == filterName; })[0]; };
-                _d = (_c = JSON).parse;
-                return [4 /*yield*/, fs_1.readFileSync('./dist/data/configuration.json').toString()];
+                return [4 /*yield*/, utils_1.getDataJSON('./dist/data/configuration.json')];
             case 2:
-                effectsChain = _d.apply(_c, [_e.sent()]);
+                effectsChain = _a.sent();
                 console.log(effectsChain);
                 getFilterComplex = function () {
                     var keys = Object.keys(effectsChain);
@@ -136,7 +134,7 @@ var main = function () { return __awaiter(void 0, void 0, void 0, function () {
                     }); })];
             case 3:
                 //console.log(getFilterComplex());
-                _e.sent();
+                _a.sent();
                 return [2 /*return*/];
         }
     });
