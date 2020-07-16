@@ -84,10 +84,7 @@ const main = async () => {
     
     await inputs.forEach( async (input, index) => {
 
-        let nombre_del_archivo = input_files[index];
-
-        console.log("---------------------------------------------------------------")
-        console.log("\n\nPROCESANDO ARCHIVO: ", nombre_del_archivo)
+        let filename = input_files[index];
 
         let ffmpegCommand = [
             ffmpegPath,
@@ -97,7 +94,7 @@ const main = async () => {
             getFilterComplex(),
             '"',
             '-y',
-            join("'./media/processed", nombre_del_archivo+"'")
+            join("'./media/processed", filename+"'")
         ]
         console.log(ffmpegCommand.join(" "));
         console.log(ffmpegCommand);
