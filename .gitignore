@@ -1,4 +1,5 @@
 *node_modules
+firebase.enviroment.ts
 
 /media/to_process/*
 /media/processed/*

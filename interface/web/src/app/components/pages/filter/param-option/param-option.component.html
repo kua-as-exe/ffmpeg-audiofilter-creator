@@ -1,0 +1,38 @@
+<div class="param-option" (mouseleave)="mouseout()">
+    <div *ngIf="param.type == 'range'" class="range animated fadeIn fast">
+        <div class="">
+        [
+        
+            <input type="number" class="table pl-1 pr-1" placeholder="min" (change)="save()" [(ngModel)]="param.range.min">
+        
+        <span class="pl-2 pr-2">-</span>
+        
+            <input type="number" class="table pl-1 pr-1" placeholder="max" (change)="save()" [(ngModel)]="param.range.max">
+        
+        ]
+        
+        </div>    
+    </div>
+    <div *ngIf="param.type == 'options'" class="options animated fadeIn fast" #options>
+        
+        <div
+        class="option-line"
+        *ngFor="let option of param.options; let i=index" >
+
+            <input 
+            [(ngModel)]="param.options[i].value" 
+            (keyup.enter)="changeOption($event, i)"
+            placeholder="Opción"
+            class="table"
+            >
+            
+            <button class="btn btn-outline-danger btn-sm animated fadeIn fast" type="button" (click)="removeOption(i)">X</button>
+        </div>
+            
+            
+    </div>
+    <div class="controls animated fadeIn fast">
+        <button class="btn btn-outline-info btn-sm p-1 options" (click)="addOption()">Añadir</button>
+        <button class="btn btn-outline-warning btn-sm p-1 options float-right" (click)="toggleRangeOrOption()">Cambiar</button>
+    </div>
+</div>

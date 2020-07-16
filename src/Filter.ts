@@ -3,8 +3,11 @@ export interface Param{
     key: string;
     value: string | number;
     definition?: {
-        min?: number;
-        max?: number;
+        type: "range" | "options";
+        range?: {
+            min: number;
+            max: number;
+        }
         options?: string[];
     };
     editable?: boolean;
@@ -21,15 +24,16 @@ export interface Input{
     };
     line?: string;
 }
-export interface FilterOptions { 
+export interface FilterOptions {
+    id: string
     name: string,
     label: string,
     description?: string;
     default_params: Param[];
-    func: Function[];
-    structure: {
-        inputs: number;
-        outputs: number;
+    func?: Function[];
+    structure?: {
+        inputs?: number;
+        outputs?: number;
     }
 }
 
@@ -55,7 +59,10 @@ export class Filter{
         let {default_params, func, structure, name, label, description} = FilterOptions;
         this.def_params = default_params;
         //this.func = func || [];
-        this.structure = structure || { inputs: 1, outputs:1 };
+        this.structure = {
+            inputs: structure?.inputs || 1,
+            outputs: structure?.outputs || 1
+        }
         this.name = name || "";
         this.label = label || "";
         this.description = description || "";

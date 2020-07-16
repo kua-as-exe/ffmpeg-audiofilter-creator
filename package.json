@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node dist/index.js",
+    "tsc": "tsc -w",
     "server": "nodemon ./dist/server/server.js",
     "web": "cd ./interface/web && npm run start"
   },
