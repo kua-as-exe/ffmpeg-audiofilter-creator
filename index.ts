@@ -1,7 +1,8 @@
 import { spawnSync } from 'child_process';
-import { Filter, Input, Param, FilterOptions } from './src/utils'
+import { Filter, Input, Param, FilterOptions } from './src/Filter'
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
+import { getDataJSON } from './src/utils';
 
 const ffmpegPath = './src/lib/ffmpeg.exe';
 
@@ -42,17 +43,14 @@ const main = async () => {
     }
     
     
-    const filtersData: FilterOptions[] = 
-        JSON.parse(
-            await readFileSync('./dist/data/filters.json')
-                .toString())
+    const filtersData: FilterOptions[] = await getDataJSON('./dist/data/filters.json')
     
     const filters = filtersData.map( (filter) => new Filter(filter))
     const searchFilter = ( filterName:string ): Filter => filters.filter( filter => filter.name == filterName)[0];
     //filtersData.forEach()
 
 
-    const effectsChain: any = JSON.parse(await readFileSync('./dist/data/configuration.json').toString())
+    const effectsChain: any = await getDataJSON('./dist/data/configuration.json')
     console.log(effectsChain)
 
     const getFilterComplex = () => {
@@ -104,8 +102,6 @@ const main = async () => {
         console.log(t.output.toString());
         console.log(t.stderr.toString());
     })
-
-        
     
 }
 

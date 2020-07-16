@@ -8,10 +8,7 @@ var Filter = /** @class */ (function () {
         var default_params = FilterOptions.default_params, func = FilterOptions.func, structure = FilterOptions.structure, name = FilterOptions.name, label = FilterOptions.label, description = FilterOptions.description;
         this.def_params = default_params;
         //this.func = func || [];
-        this.structure = {
-            inputs: (structure === null || structure === void 0 ? void 0 : structure.inputs) || 1,
-            outputs: (structure === null || structure === void 0 ? void 0 : structure.outputs) || 1
-        };
+        this.structure = structure || { inputs: 1, outputs: 1 };
         this.name = name || "";
         this.label = label || "";
         this.description = description || "";

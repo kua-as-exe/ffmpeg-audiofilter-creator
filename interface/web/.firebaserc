@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "autoeditorprogram-v1": {
+      "hosting": {
+        "web": [
+          "autoeditorprogram-v1"
+        ]
+      }
+    }
+  }
+}

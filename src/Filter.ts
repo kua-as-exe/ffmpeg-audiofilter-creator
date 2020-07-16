@@ -1,18 +1,16 @@
-import { readFileSync } from "fs";
 
-
-export const getDataJSON = async (path: string) => JSON.parse(
-     await readFileSync(path)
-        .toString())
 export interface Param{
     key: string;
     value: string | number;
     definition?: {
-        min?: number;
-        max?: number;
+        type: "range" | "options";
+        range?: {
+            min: number;
+            max: number;
+        }
         options?: string[];
-        editable?: boolean;
     };
+    editable?: boolean;
     metadata?: {
         
     }
@@ -26,20 +24,21 @@ export interface Input{
     };
     line?: string;
 }
-export interface FilterOptions { 
+export interface FilterOptions {
+    id: string
     name: string,
     label: string,
     description?: string;
     default_params: Param[];
-    func: Function[];
-    structure: {
-        inputs: number;
-        outputs: number;
+    func?: Function[];
+    structure?: {
+        inputs?: number;
+        outputs?: number;
     }
 }
 
 export const inBrackets = (str: string | number) => '['+str+']';
-export const getRandomNumber = () => String(Math.random()).slice(2,7); // from (example) "0.0744077323733392" takes to the 3rd to the 7th character: 07440
+export const getRandomNumber = () => String(Math.random()).slice(2,7); // from (example) "0.0744077323733392" takes to the 3rd to the 7th character
 
 export class Filter{
     //inputs: Input[] = [];
@@ -60,7 +59,10 @@ export class Filter{
         let {default_params, func, structure, name, label, description} = FilterOptions;
         this.def_params = default_params;
         //this.func = func || [];
-        this.structure = structure || { inputs: 1, outputs:1 };
+        this.structure = {
+            inputs: structure?.inputs || 1,
+            outputs: structure?.outputs || 1
+        }
         this.name = name || "";
         this.label = label || "";
         this.description = description || "";

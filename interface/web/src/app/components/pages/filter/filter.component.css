@@ -1,0 +1,17 @@
+input, textarea {
+    background-color: transparent;
+    margin: 0px;
+    border: none;
+    width: fit-content;
+}
+
+table input, textarea {
+    width: 100%
+}
+td.range-options{
+    width: 25%;
+    padding: 0;
+}
+td.range-options:hover {
+    background-color: rgba(255, 255, 255, 0.041)
+}

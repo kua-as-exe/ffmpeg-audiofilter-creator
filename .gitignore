@@ -1,3 +1,23 @@
-/node_modules
-/media/processed/*
+*node_modules
+firebase.enviroment.ts
+
 /media/to_process/*
+/media/processed/*
+
+.DS_Store
+Thumbs.db
+
+
+# WEB ANGULAR FILES
+
+# compiled output
+/interface/web/dist
+/interface/web/tmp
+/interface/web/out-tsc
+# dependencies
+/interface/web/node_modules
+
+# profiling files
+/interface/webchrome-profiler-events*.json
+/interface/webspeed-measure-plugin*.json
+

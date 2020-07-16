@@ -63,7 +63,7 @@
         "description": "eliminar o reducir el ruido ambiental o blanco del audio original",
         "default_params": [
             {"key" : "level_in", "value": 1.1},
-{"key" : "mode", "value": "downward"},
+            {"key" : "mode", "value": "downward"},
             {"key" : "range", "value": 0.04},
             {"key" : "threshold", "value": 0.05},
             {"key" : "attack", "value": 15},
