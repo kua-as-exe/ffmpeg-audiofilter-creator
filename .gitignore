@@ -20,3 +20,4 @@ Thumbs.db
 # profiling files
 /interface/webchrome-profiler-events*.json
 /interface/webspeed-measure-plugin*.json
+
