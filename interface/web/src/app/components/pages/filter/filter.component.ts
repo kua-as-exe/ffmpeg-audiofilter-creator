@@ -6,6 +6,7 @@ import { ServerService } from 'src/app/services/server.service';
 import { ActivatedRoute } from '@angular/router';
 import { FilterOptions, Param } from '../../../../../../../src/Filter';
 import { toJSDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar';
+import { FiltersService } from 'src/app/services/filters.service';
 //import { BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -14,6 +15,8 @@ import { toJSDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar';
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent implements OnInit {
+
+  saveButton: boolean = false
 
   filter: FilterOptions = {
     id: '',
@@ -45,34 +48,17 @@ export class FilterComponent implements OnInit {
   }
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private router: Router,
-    private firestore: AngularFirestore
+    private activatedRoute: ActivatedRoute,
+    private filterService: FiltersService
   ) { }
 
-  ngOnInit(): void {
-    
-    this.activatedRoute.params.subscribe(params => { 
-      console.log(params);
-      let filterID = params['filterID']
-      //this.filter = 
-      this.firestore.collection('filters').doc(filterID).get().subscribe( (filter) => {
-        let filterData = filter.data()
-        console.log(filterData);
-        this.filterID = filter.id;
-        this.filter = {
-          id: filter.id,
-          name: filterData.name || "",
-          label: filterData.label || "",
-          description: filterData.description || "", 
-          default_params: filterData.default_params || [],
-          structure: filterData.structure || {},
-        }
-        console.log(this.filter);
-      })
-      
+  ngOnInit() {
+    console.log("NgOnInit");
+    this.activatedRoute.params.subscribe( async (params) => {
+      let filterID: string = params['filterID']
+      this.filter = await this.filterService.getFilter(filterID)
     })
-    
   }
 
   addParam = () => this.filter.default_params.push( Object.assign({}, this.defaultNewParam) );
@@ -83,18 +69,16 @@ export class FilterComponent implements OnInit {
 
   paramsDataChanged(data, id){
     this.filter.default_params[id].definition = data
-    console.log("Data changed: ", id, "=", data);
-    console.log("Data changed: ", this.filter.default_params[id]);
   }
 
   async delFilter(){
-    let out = await this.firestore.collection('filters').doc(this.filterID).delete()
+    await this.filterService.deleteFilter(this.filter.id)
     this.router.navigate(['/filters'])
   }
 
   async save(){
+    await this.filterService.writeFilter(this.filter)
     console.log(this.filter); 
-    await this.firestore.collection('filters').doc(this.filter.id).set( this.filter) 
   }
 
   async saveAndExit(){

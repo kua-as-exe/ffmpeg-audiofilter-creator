@@ -9,7 +9,7 @@
       </h1>
       <span>{{filter.id}}</span>
     </div>
-    <div class="col align-middle">
+    <div class="col align-middle" *ngIf="saveButton">
       <button class="btn btn-secondary float-right align-middle btn-md" (click)="save()">save</button>
     </div>
   </div>
