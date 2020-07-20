@@ -16,7 +16,7 @@ interface filter {
 export class FiltersComponent implements OnInit {
 
 
-  filters:Promise<Filter[]>;
+  filters:Filter[];
     
   constructor(
     private router: Router,
@@ -24,7 +24,7 @@ export class FiltersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.filters = this.filtersService.getFilters()
+    this.filters = this.filtersService.filters
   }
 
   gotoFilter(filter: Filter | string){

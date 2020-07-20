@@ -18,6 +18,12 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { FilterComponent } from './components/pages/filter/filter.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ParamOptionComponent } from './components/pages/filter/param-option/param-option.component';
+import { FiltersChainManagerComponent } from './components/pages/filters-chain-manager/filters-chain-manager.component';
+import { FilterChainCardComponent } from './components/pages/filters-chain-manager/filter-chain-card/filter-chain-card.component';
+import { Object2arrayPipe } from './pipes/object2array.pipe';
+import { FilterChainComponent } from './components/pages/filter-chain/filter-chain.component';
+import { JsonPreviewComponent } from './components/shared/json-preview/json-preview.component';
+import { InputFieldComponent } from './components/shared/input-field/input-field.component';
 //import { ModalModule } from 'ngx-bootstrap/modal';
 //import { ModalComponent } from './components/shared/modal/modal.component';
 
@@ -30,7 +36,13 @@ import { ParamOptionComponent } from './components/pages/filter/param-option/par
     NavbarComponent,
     VideoComponent,
     FilterComponent,
-    ParamOptionComponent
+    ParamOptionComponent,
+    FiltersChainManagerComponent,
+    FilterChainCardComponent,
+    Object2arrayPipe,
+    FilterChainComponent,
+    JsonPreviewComponent,
+    InputFieldComponent
   ],
   imports: [
     BrowserModule,

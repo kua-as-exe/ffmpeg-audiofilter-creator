@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference, DocumentData } from '@angular/fire/firestore';
 import { FilterOptions } from '../../../../../src/Filter';
-import { Observable } from 'rxjs';
+import { Observable, interval } from 'rxjs';
 
 export type Filter = FilterOptions
 
@@ -12,9 +12,28 @@ export class FiltersService {
 
   filterColection = 'filters';
 
+  filters: Filter[] = [];
+
   constructor(
     private firestore:AngularFirestore
-  ) { }
+  ) {
+    this.firestore.collection(this.filterColection).stateChanges().subscribe( filtersFireSnapshot => {
+      filtersFireSnapshot.forEach( fireFilter => {
+        let filterData = this.firestore2Filter(fireFilter.payload.doc)
+
+        let existLocalFilter = this.filters.filter( (localFilter) => localFilter.id === filterData.id).length
+        if(existLocalFilter == 0) this.filters.push(filterData)
+        else
+          this.filters.forEach( 
+            (localFilter, index) => { 
+              if(localFilter.id === filterData.id)
+                this.filters[index] = filterData;
+            }
+          )
+
+      })
+    })
+  }
 
   firestore2Filter = ( fireData: DocumentData): Filter => {
     let filterID = fireData.id;
@@ -30,27 +49,21 @@ export class FiltersService {
     })
   }
 
-  getFilters():Promise<Filter[]>{
-    return new Promise( (resolve, reject) => 
-    this.firestore.collection(this.filterColection).get().subscribe( (filters) => { 
-      
-      let filtersData: FilterOptions[] = []
-      filters.forEach( (filterData) => {
-        let filter = this.firestore2Filter(filterData);
-        filtersData.push( filter );
-      })
-      
-      resolve(filtersData);
-    }))
-  }
-
   addFilter = ():Promise<DocumentReference> =>
     this.firestore.collection(this.filterColection).add({})
   
-  async getFilter(filterID: string): Promise<Filter>{
-    let filterData = await this.firestore.collection(this.filterColection).doc(filterID).get().toPromise()
-    return this.firestore2Filter(filterData)    
-  };
+  getFilter = (filterID: string): Promise<Filter> =>
+    new Promise( (resolve) => {
+      let filters = this.filters;
+      interval(100).subscribe( function(time){
+        if(filters.length > 0) {
+          this.unsubscribe();
+
+          let filter = filters.filter( filter => filter.id == filterID)[0];
+          resolve(filter);
+        }
+      })
+    })
 
   deleteFilter = (filterID:string) => this.firestore.collection(this.filterColection).doc(filterID).delete()
 

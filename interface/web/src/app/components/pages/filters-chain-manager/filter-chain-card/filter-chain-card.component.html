@@ -1,0 +1,39 @@
+<div class="card option" (click)="gotoChain()">
+    <div class="card-header">
+      {{chain.name}}
+    </div>
+    <div class="card-body">
+        <!--div class="scroll-x">
+            <div
+            *ngFor="let item of ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']" 
+            class="card border filter-block">{{item}} jodete</div>
+        </!--div>
+        <div--
+            *ngFor="let item of ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']" 
+            class="card border m-3 p-2">{{item}} jodete2</div-->
+
+        <h4 class="card-title"> {{chain.name}} </h4>
+        <p class="card-text"> {{chain.description}} </p>
+
+        <!--div>
+            <h5>Filtros:</h5>
+            
+            <ul class="">
+                <div
+                *ngFor="let filter of chain.filters"
+                class="filter">
+                    <h5> <b>{{filter.name}}</b>: ({{filter.id}}) </h5>
+                    <p> {{filter.coment}} </p>
+                </div>
+            </ul>
+        </div-->
+
+    </div>
+    <div class="card-footer p-2">
+      
+        <span
+        *ngFor="let category of chain.categories"
+        class="badge badge-primary p-1 ml-2"> {{category}}</span>
+
+    </div>
+  </div>

@@ -2,17 +2,12 @@
 
   <a [routerLink]="[ '/filters' ]" class="badge badge-primary" (click)="saveAndExit()"> <b></b> Atrás</a>
 
-  <div class="row">
-    <div class="col">
+
       <h1 class="mt-2" >
         <input type="text" class="table" [(ngModel)]="filter.name">
       </h1>
       <span>{{filter.id}}</span>
-    </div>
-    <div class="col align-middle" *ngIf="saveButton">
-      <button class="btn btn-secondary float-right align-middle btn-md" (click)="save()">save</button>
-    </div>
-  </div>
+ 
 
   <hr>
   <div class="breadcrumb option animated fadeIn">
@@ -71,7 +66,5 @@
     <button class="btn btn-danger col-3 float-right mr-2" (click)="delFilter()" (mouseover)="delSure()" [hidden]="!delConfirm"> {{delConfirmText}}</button>
 
     <hr>
-
-    <h2>JSON</h2>
-    <pre> {{filter | json}} </pre>
+    <app-json-preview [data]="filter"></app-json-preview>
 </div>
