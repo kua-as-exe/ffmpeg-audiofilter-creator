@@ -1,16 +1,41 @@
 
 <div 
 class="card option animated fadeIn"
-(mouseenter)="hover = true"
-(mouseleave)="hover = false"
+(mouseenter)="changeHover(true)"
+(mouseleave)="changeHover(false)"
 >
 
     <div class="card-header">
 
-        <input type="text" [(ngModel)]="filterParams.name" class="m-0 ">
-        <small [hidden]="!hover">
-            <input type="text" [(ngModel)]="filter.name" class="m-0">
-        </small>
+        <div class="row">
+            <div class="col col-6">
+                <input type="text" [(ngModel)]="filterParams.name" class="m-0 ">
+                <small [hidden]="!hover">
+                    <select
+                        (change)="filterIdChanged()"
+                        [(ngModel)]="filterParams.id">
+
+                        <option 
+                            *ngFor="let filters of filters"
+                            [value]="filters.id" >
+                            {{filters.name}}
+                        </option>
+
+                    </select>
+                </small>
+            </div>
+            <div class="col col-6">
+                <button 
+                    class="btn btn-sm float-right"
+                    [ngClass]="{
+                        'btn-outline-warning': hoverAuto,
+                        'btn-warning': !hoverAuto
+                    }"
+                    (click)="hoverAuto = !hoverAuto">O</button>
+            </div>
+
+        </div>
+        
     </div>
 
     <div class=" animated fadeIn card-body fast pt-2 pb-2" [hidden]="!hover">

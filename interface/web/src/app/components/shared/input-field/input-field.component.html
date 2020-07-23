@@ -11,13 +11,16 @@
             [max]="model.definition.range.max"
             [(ngModel)]="model.value"
             (change)="dataChanged()"
+            [disabled]="!model.editable"
+            [ngClass]="{'text-muted': !model.editable}"
             step="0.1">
 
 
         <select
             *ngIf="model.definition.type == 'options'"
             (change)="dataChanged()"
-            class=""
+            [disabled]="!model.editable"
+            [ngClass]="{'text-muted': !model.editable}"
             [(ngModel)]="model.value">
 
             <option 
@@ -31,7 +34,7 @@
     
     
     <input 
-        *ngIf="model.definition.type == 'range'"
+        *ngIf="model.definition.type == 'range' && model.editable"
         type="range" 
         class="custom-range range slider" 
         [min]="model.definition.range.min" 

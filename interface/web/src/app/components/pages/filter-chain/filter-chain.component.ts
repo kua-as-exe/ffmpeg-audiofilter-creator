@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FiltersChainsService, FiltersChain } from 'src/app/services/filters-chains.service';
 import { ActivatedRoute } from '@angular/router';
+import { FiltersService } from 'src/app/services/filters.service';
 
 @Component({
   selector: 'app-filter-chain',
@@ -13,6 +14,7 @@ export class FilterChainComponent implements OnInit {
 
   constructor(
     private filtersChainService: FiltersChainsService,
+    private filtersService: FiltersService,
     private activatedRoute: ActivatedRoute
   ) { }
 
@@ -21,6 +23,21 @@ export class FilterChainComponent implements OnInit {
       let chainID: string = params['chainID']
       this.chain = await this.filtersChainService.getChain(chainID)
     })
+  }
+
+  filterChanged(filter, index){
+    console.log({filter, index});
+  }
+
+  newFIlter(){
+    let firstFilter = this.filtersService.filters[0];
+    this.chain.filters.push(Object.assign({}, {
+      id: firstFilter.id,
+      name: 'filter',
+      comment: 'filter comment',
+      params: []
+    }))
+    console.log(this.chain.filters);
   }
 
 }

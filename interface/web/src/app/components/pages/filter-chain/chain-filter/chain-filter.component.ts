@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
 import { FiltersChain, FilterParams } from 'src/app/services/filters-chains.service';
 import { Filter, FiltersService, FilterParam } from 'src/app/services/filters.service';
 
@@ -10,6 +10,7 @@ import { Filter, FiltersService, FilterParam } from 'src/app/services/filters.se
 export class ChainFilterComponent implements OnInit {
   @ViewChild('collapse') col;
 
+  @Output() filterParamsChange: EventEmitter<FilterParams>;
   @Input() filterParams: FilterParams = {
     id: 'loading',
     comment: 'loading',
@@ -22,20 +23,34 @@ export class ChainFilterComponent implements OnInit {
     name: 'loading',
     default_params: []
   }
+  filters: Filter[] = [];
   hover: boolean = false;
+  hoverAuto: boolean = true;
 
   constructor(
     private filtersService: FiltersService
-  ) { }
+  ) {
+    this.filterParamsChange = new EventEmitter();
+  }
 
   async ngOnInit() {
     console.log(this.filterParams);
     this.filter = await this.filtersService.getFilter(this.filterParams.id)
-    console.log(this.filter);
+    this.filters = this.filtersService.filters;
   }
 
   changeInputField(data: FilterParam){
     this.filterParams.params[data.key] = data.value;
+  }
+  
+  changeHover(state: boolean){
+    this.filterParamsChange.emit(this.filterParams)
+    if(this.hoverAuto)
+      this.hover = state
+  }
+
+  async filterIdChanged(){
+    this.filter = await this.filtersService.getFilter(this.filterParams.id)
   }
 
 }

@@ -2,3 +2,7 @@ h1 input{
     margin: 0px;
     padding: 0px;
 }
+
+app-chain-filter{
+    margin-bottom: 1rem;
+}
