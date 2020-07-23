@@ -1,9 +1,29 @@
 <div class="m-5 animated fadeIn fast">
-    <div class="jumbotron">
-        <h1>{{chain.name}}</h1>
+    <div class="jumbotron p-5">
+        <h1> <input type="text" [(ngModel)]="chain.name"> </h1>
+        <p> {{chain.id}} </p>
+
+        <textarea [(ngModel)]="chain.description"></textarea>
+
+        <div class="categories">
+            <span
+                *ngFor="let category of chain.categories"
+                class="badge badge-primary p-1 mr-2"> {{category}}</span>
+        </div>
+
     </div>
 
+    <h1>Filtros:</h1>
+    <hr>
+    <div class="container">
+        
+        <app-chain-filter
+            *ngFor="let filter of chain.filters"
+            [filterParams]="filter"
+        ></app-chain-filter>
 
+        
+    </div>
 
     <hr>
     <app-json-preview [data]="chain"></app-json-preview>

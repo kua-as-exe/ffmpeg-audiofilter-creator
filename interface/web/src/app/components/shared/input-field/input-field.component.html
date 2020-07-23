@@ -1,1 +1,45 @@
-<p>input-field works!</p>
+<div class="optionFilter">
+    
+    <div class="data">
+        <span>{{model.key}} : </span>
+        
+        <input 
+            *ngIf="model.definition.type == 'range'"
+            type="number" 
+            class="number"
+            [min]="model.definition.range.min" 
+            [max]="model.definition.range.max"
+            [(ngModel)]="model.value"
+            (change)="dataChanged()"
+            step="0.1">
+
+
+        <select
+            *ngIf="model.definition.type == 'options'"
+            (change)="dataChanged()"
+            class=""
+            [(ngModel)]="model.value">
+
+            <option 
+                [value]="item" 
+                *ngFor="let item of model.definition.options">
+                {{item}}
+            </option>
+
+        </select>
+    </div>
+    
+    
+    <input 
+        *ngIf="model.definition.type == 'range'"
+        type="range" 
+        class="custom-range range slider" 
+        [min]="model.definition.range.min" 
+        [max]="model.definition.range.max" 
+        [(ngModel)]="model.value"
+        step="0.01"
+        (change)="dataChanged()"
+        id="range">
+        
+    <hr>
+</div>

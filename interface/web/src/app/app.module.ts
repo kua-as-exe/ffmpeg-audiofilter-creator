@@ -24,6 +24,7 @@ import { Object2arrayPipe } from './pipes/object2array.pipe';
 import { FilterChainComponent } from './components/pages/filter-chain/filter-chain.component';
 import { JsonPreviewComponent } from './components/shared/json-preview/json-preview.component';
 import { InputFieldComponent } from './components/shared/input-field/input-field.component';
+import { ChainFilterComponent } from './components/pages/filter-chain/chain-filter/chain-filter.component';
 //import { ModalModule } from 'ngx-bootstrap/modal';
 //import { ModalComponent } from './components/shared/modal/modal.component';
 
@@ -42,7 +43,8 @@ import { InputFieldComponent } from './components/shared/input-field/input-field
     Object2arrayPipe,
     FilterChainComponent,
     JsonPreviewComponent,
-    InputFieldComponent
+    InputFieldComponent,
+    ChainFilterComponent
   ],
   imports: [
     BrowserModule,

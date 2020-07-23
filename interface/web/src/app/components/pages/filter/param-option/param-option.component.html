@@ -3,11 +3,11 @@
         <div class="">
         [
         
-            <input type="number" class="table pl-1 pr-1" placeholder="min" (change)="save()" [(ngModel)]="param.range.min">
+            <input type="number" class="pl-1 pr-1" placeholder="min" (change)="save()" [(ngModel)]="param.range.min">
         
         <span class="pl-2 pr-2">-</span>
         
-            <input type="number" class="table pl-1 pr-1" placeholder="max" (change)="save()" [(ngModel)]="param.range.max">
+            <input type="number" class="pl-1 pr-1" placeholder="max" (change)="save()" [(ngModel)]="param.range.max">
         
         ]
         
@@ -23,7 +23,6 @@
             [(ngModel)]="param.options[i].value" 
             (keyup.enter)="changeOption($event, i)"
             placeholder="Opción"
-            class="table"
             >
             
             <button class="btn btn-outline-danger btn-sm animated fadeIn fast" type="button" (click)="removeOption(i)">X</button>

@@ -1,0 +1,37 @@
+
+<div 
+class="card option animated fadeIn"
+(mouseenter)="hover = true"
+(mouseleave)="hover = false"
+>
+
+    <div class="card-header">
+
+        <input type="text" [(ngModel)]="filterParams.name" class="m-0 ">
+        <small [hidden]="!hover">
+            <input type="text" [(ngModel)]="filter.name" class="m-0">
+        </small>
+    </div>
+
+    <div class=" animated fadeIn card-body fast pt-2 pb-2" [hidden]="!hover">
+        <!--h5 class="card-title">Special title treatment</!--h5-->
+
+        <span class="card-text">
+            <input type="text" [(ngModel)]="filterParams.comment" class="m-0 w-100">
+        </span>
+        <hr>
+
+        <div *ngFor="let param of filter.default_params" class="ml-3">
+            <app-input-field 
+                [model]="param"
+                (modelChange)="changeInputField($event)"
+                ></app-input-field>
+
+        </div>
+
+    </div>
+    <div class=" animated fadeIn card-footer text-muted" [hidden]="!hover">
+        <span>{{filterParams.id}}</span>
+        <button class="btn btn-danger btn-sm float-right" [hidden]="!hover">Delete</button>
+    </div>
+</div>

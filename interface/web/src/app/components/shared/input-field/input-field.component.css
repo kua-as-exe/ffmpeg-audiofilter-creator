@@ -1,0 +1,14 @@
+
+
+hr { margin: 0; }
+
+.optionFilter .data{
+    display: flex;
+    width: 100%;
+}
+
+span { width:fit-content }
+input.number, select{
+    width: auto;
+    flex-grow: 1;
+}

@@ -2,11 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference, DocumentData } from '@angular/fire/firestore';
 import { interval } from 'rxjs';
 
-export interface docData {
-  id: string,
-  data: any
-}
-
 export interface FilterParams {
   name: string
   id: string,

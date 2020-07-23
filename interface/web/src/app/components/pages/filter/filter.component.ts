@@ -16,6 +16,8 @@ import { FiltersService } from 'src/app/services/filters.service';
 })
 export class FilterComponent implements OnInit {
 
+  test = "test"
+
   saveButton: boolean = false
 
   filter: FilterOptions = {
@@ -58,6 +60,7 @@ export class FilterComponent implements OnInit {
     this.activatedRoute.params.subscribe( async (params) => {
       let filterID: string = params['filterID']
       this.filter = await this.filterService.getFilter(filterID)
+      console.log(this.filter.default_params);
     })
   }
 

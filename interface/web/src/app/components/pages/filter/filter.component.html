@@ -4,7 +4,7 @@
 
 
       <h1 class="mt-2" >
-        <input type="text" class="table" [(ngModel)]="filter.name">
+        <input type="text" [(ngModel)]="filter.name">
       </h1>
       <span>{{filter.id}}</span>
  
@@ -12,7 +12,7 @@
   <hr>
   <div class="breadcrumb option animated fadeIn">
       <p class="m-0"> Etiqueta: <b>
-        <input type="text" class="table" [(ngModel)]="filter.label">
+        <input type="text" [(ngModel)]="filter.label">
       </b></p>
   </div>
 
@@ -20,14 +20,14 @@
       <div class="card-body">
           <h3>Descripción</h3>
           <span >
-              <textarea type="text" class="text-secondary" [(ngModel)]="filter.description">  </textarea>
+              <textarea type="text" [(ngModel)]="filter.description">  </textarea>
           </span>
       </div>
   </div>
 
     <h2 class="mt-4">Parámetros</h2>
     <hr class="m-0">
-    <table class="table">
+    <table >
       <thead class="thead-dark">
         <tr>
           <th scope="col">Llave</th>
@@ -42,9 +42,30 @@
           *ngFor="let param of filter.default_params; let i=index" 
           class="option"
           >
-          <th scope="row"> <input type="text" class="table" [(ngModel)]="param.key"> </th>
+          <th scope="row"> <input type="text" [(ngModel)]="param.key"> </th>
 
-          <td> <input type="text" class="table" [(ngModel)]="param.value"> </td>
+          <td> 
+            <input
+              *ngIf="param.definition.type == 'range'"
+              type="number"
+              [min]="param.definition.range.min" 
+              [max]="param.definition.range.max"
+              step="0.1"
+              [(ngModel)]="param.value"> 
+
+              <select
+                  *ngIf="param.definition.type == 'options'"
+                  [(ngModel)]="param.value">
+                  class=""
+
+                  <option 
+                      [value]="item" 
+                      *ngFor="let item of param.definition.options">
+                      {{item}}
+                  </option>
+
+              </select>
+          </td>
 
           <td class="range-options">
             <app-param-option [inputData]="param.definition" (dataChanged)="paramsDataChanged($event, i)"></app-param-option>

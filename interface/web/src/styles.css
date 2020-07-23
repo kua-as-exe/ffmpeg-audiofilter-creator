@@ -44,3 +44,24 @@ tr.option:hover {
   background-color: rgba(255, 255, 255, 0.041);
   
 }
+
+input, textarea, select {
+  background-color: transparent;
+  margin: 0px;
+  border: none;
+  width: 100%;
+  color: var(--light);
+}
+
+option{
+  background-color: var(--dark);
+}
+
+.breadcrumb input{
+  width: fit-content;
+  margin-bottom: unset;
+}
+
+table input, textarea {
+  width: 100%
+}
