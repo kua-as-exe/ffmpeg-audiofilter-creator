@@ -26,7 +26,8 @@ export class FilterChainComponent implements OnInit {
   }
 
   filterChanged(filter, index){
-    console.log({filter, index});
+    this.chain.filters[index] = filter;
+    this.save()
   }
 
   newFIlter(){
@@ -35,9 +36,18 @@ export class FilterChainComponent implements OnInit {
       id: firstFilter.id,
       name: 'filter',
       comment: 'filter comment',
-      params: []
+      params: {}
     }))
     console.log(this.chain.filters);
+  }
+
+  print(){
+    console.log(this.chain)
+    this.save()
+  }
+
+  save(){
+    this.filtersChainService.writeFilter(this.chain);
   }
 
 }

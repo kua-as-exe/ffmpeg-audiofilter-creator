@@ -1,34 +1,39 @@
-<div class="m-5 animated fadeIn fast">
+<div class="filterChainPage m-5 animated fadeIn fast">
+    <a [routerLink]="[ '/filterChainsManager' ]" class="badge badge-primary mb-3"> <b></b> Atrás</a>
+
     <div class="jumbotron p-5">
         <h1> <input type="text" [(ngModel)]="chain.name"> </h1>
         <p> {{chain.id}} </p>
-
-        <textarea [(ngModel)]="chain.description"></textarea>
-
         <div class="categories">
             <span
-                *ngFor="let category of chain.categories"
-                class="badge badge-primary p-1 mr-2"> {{category}}</span>
+            *ngFor="let category of chain.categories"
+            class="badge badge-primary p-1 mr-2"> {{category}}</span>
         </div>
-
+        <textarea [(ngModel)]="chain.description"></textarea>
     </div>
 
     <h1>Filtros:</h1>
     <hr>
-    <div class="container">
-        
-        <app-chain-filter
-            *ngFor="let filter of chain.filters; let i=index"
-            [filterParams]="filter"
-            (filterParamsChange)="filterChanged(filter, i)"
-        ></app-chain-filter>
-        <button 
-            class="btn btn-outline-warning btn-block mt-1"
-            (click)="newFIlter()">Add</button>
+    <div class="row">
+        <div class="container col col-4">
+            <app-chain-filter
+                *ngFor="let filter of chain.filters; let i=index"
+                [filterParams]="filter"
+                (filterParamsChange)="filterChanged(filter, i)"
+            ></app-chain-filter>
+            <button 
+                class="btn btn-outline-warning btn-block mt-1"
+                (click)="newFIlter()">Add</button>
+    
+        </div>
+        <div class="col col-8">
 
-        
+            <app-media-visualizer></app-media-visualizer>
+
+        </div>
     </div>
-
+    
     <hr>
     <app-json-preview [data]="chain"></app-json-preview>
+    
 </div>

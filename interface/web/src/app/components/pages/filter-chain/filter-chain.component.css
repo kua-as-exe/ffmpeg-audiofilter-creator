@@ -6,3 +6,7 @@ h1 input{
 app-chain-filter{
     margin-bottom: 1rem;
 }
+
+.filterChainPage{
+    margin-top: 1rem !important;
+}

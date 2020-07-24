@@ -74,4 +74,6 @@ export class FiltersChainsService {
       })
     })
   }
+
+  writeFilter = (filterChain: FiltersChain) => this.firestore.collection(this.firestoreCollection).doc(filterChain.id).set(filterChain) 
 }

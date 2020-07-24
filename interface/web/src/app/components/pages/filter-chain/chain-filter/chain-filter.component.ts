@@ -8,14 +8,13 @@ import { Filter, FiltersService, FilterParam } from 'src/app/services/filters.se
   styleUrls: ['./chain-filter.component.css']
 })
 export class ChainFilterComponent implements OnInit {
-  @ViewChild('collapse') col;
 
   @Output() filterParamsChange: EventEmitter<FilterParams>;
   @Input() filterParams: FilterParams = {
     id: 'loading',
     comment: 'loading',
     name: 'loading',
-    params: ['loading']
+    params: {}
   };
   filter: Filter = {
     id: 'loading',
@@ -34,23 +33,27 @@ export class ChainFilterComponent implements OnInit {
   }
 
   async ngOnInit() {
-    console.log(this.filterParams);
     this.filter = await this.filtersService.getFilter(this.filterParams.id)
     this.filters = this.filtersService.filters;
   }
 
   changeInputField(data: FilterParam){
     this.filterParams.params[data.key] = data.value;
+    this.emit()
   }
   
   changeHover(state: boolean){
-    this.filterParamsChange.emit(this.filterParams)
+    this.emit()
     if(this.hoverAuto)
       this.hover = state
   }
 
   async filterIdChanged(){
     this.filter = await this.filtersService.getFilter(this.filterParams.id)
+  }
+
+  emit(){
+    this.filterParamsChange.emit(this.filterParams)
   }
 
 }

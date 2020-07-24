@@ -25,6 +25,7 @@ import { FilterChainComponent } from './components/pages/filter-chain/filter-cha
 import { JsonPreviewComponent } from './components/shared/json-preview/json-preview.component';
 import { InputFieldComponent } from './components/shared/input-field/input-field.component';
 import { ChainFilterComponent } from './components/pages/filter-chain/chain-filter/chain-filter.component';
+import { MediaVisualizerComponent } from './components/shared/media-visualizer/media-visualizer.component';
 //import { ModalModule } from 'ngx-bootstrap/modal';
 //import { ModalComponent } from './components/shared/modal/modal.component';
 
@@ -44,7 +45,8 @@ import { ChainFilterComponent } from './components/pages/filter-chain/chain-filt
     FilterChainComponent,
     JsonPreviewComponent,
     InputFieldComponent,
-    ChainFilterComponent
+    ChainFilterComponent,
+    MediaVisualizerComponent
   ],
   imports: [
     BrowserModule,
