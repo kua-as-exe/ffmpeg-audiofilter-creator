@@ -8,5 +8,15 @@
             "^/api": ""
           }
         
+    },
+    "/media/*": {
+        "target": "http://localhost:1234/media",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug",
+        "pathRewrite": {
+            "^/media": ""
+          }
+        
     }
 }

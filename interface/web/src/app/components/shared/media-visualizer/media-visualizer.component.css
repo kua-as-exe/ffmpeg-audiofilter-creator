@@ -1,3 +1,91 @@
 .card-body{
     background-color: var(--gray-dark);
+    overflow: auto;
 }
+
+.audioVisualizer{
+    background-color: rgb(0,0,0,0.1);
+}
+.outerContainer{
+    height: 10rem;
+    overflow: overlay;
+}
+
+.audioVisualizer img,.innerContainer{
+    height: inherit;
+    width: 100%;
+    position: relative;
+}
+audio{
+    width: 100%;
+}
+
+input.timelineBar{
+    position: absolute;
+    width: 100%;
+}
+
+
+.timelineBar.shape{
+  z-index: 3;
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 10px; /* Specified height */
+  background: rgb(0,0,0,0.3); /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+
+}
+
+.timelineBar.shape::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 10px; /* Set a specific slider handle width */
+  height: 10px; /* Slider handle height */
+  background: var(--white); /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+
+
+.timelineBar.line{
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 100%;
+  outline: none; /* Remove outline */
+  z-index: 2;
+}
+.timelineBar.line::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 5px; /* Set a specific slider handle width */
+  height: 10rem; /* Slider handle height */
+  background: rgb(0,0,0,0.2); /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+
+
+/* SCROLL BARS */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: rgb(0,0,0,0.1); 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(0,0,0,0.2); 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(0,0,0,0.3); 
+  }

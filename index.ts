@@ -4,7 +4,7 @@ import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { getDataJSON } from './src/utils';
 
-const ffmpegPath = './src/lib/ffmpeg.exe';
+export const ffmpegPath = './src/lib/ffmpeg.exe';
 
 const main = async () => {
 

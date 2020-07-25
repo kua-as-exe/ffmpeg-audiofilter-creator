@@ -10,14 +10,43 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../src/utils");
+const index_1 = require("./../index");
+const path_1 = require("path");
+const child_process_1 = require("child_process");
 const express = require('express');
 const app = express();
 const SERVER_PORT = 1234;
-//const bodyParser = require('body-parser');
+app.use('/media', express.static(__dirname + '/media'));
+const bodyParser = require('body-parser');
 //const session = require('express-session');
 //app.use(session({secret: 'idk'}))
-//app.use(bodyParser.json())
+app.use(bodyParser.json());
 const getFilters = () => utils_1.getDataJSON('./dist/data/filters.json');
+app.post('/api/getWaveForm', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let data = req.body;
+    let serverDir = path_1.join('.\\', 'dist', 'server');
+    let fileDir = path_1.join(serverDir, data.fileUrl);
+    let waveFormPath = path_1.join(fileDir + ".png");
+    let ffmpegCommand = [
+        index_1.ffmpegPath,
+        '-i',
+        fileDir,
+        '-filter_complex',
+        '"',
+        "showwavespic=s=1280x480:split_channels=1",
+        '"',
+        '-frames:v 1',
+        '-y',
+        waveFormPath
+    ];
+    console.log(ffmpegCommand.join(" "));
+    console.log(ffmpegCommand);
+    let t = yield child_process_1.spawnSync("powershell.exe", ffmpegCommand);
+    console.log(t.stdout.toString());
+    console.log(t.output.toString());
+    console.log(t.stderr.toString());
+    res.send({ waveFormUrl: data.fileUrl + '.png' });
+}));
 app.get('/api/getFilters', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let filtersData = yield getFilters();
     if (!filtersData)

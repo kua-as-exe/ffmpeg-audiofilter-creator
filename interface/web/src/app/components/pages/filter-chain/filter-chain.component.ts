@@ -10,7 +10,13 @@ import { FiltersService } from 'src/app/services/filters.service';
 })
 export class FilterChainComponent implements OnInit {
 
-  chain: FiltersChain
+  chain: FiltersChain = {
+    name: 'loading',
+    id: 'loading',
+    description: 'loading',
+    categories: [],
+    filters: []
+  }
 
   constructor(
     private filtersChainService: FiltersChainsService,

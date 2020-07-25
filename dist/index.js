@@ -9,12 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ffmpegPath = void 0;
 const child_process_1 = require("child_process");
 const Filter_1 = require("./src/Filter");
 const fs_1 = require("fs");
 const path_1 = require("path");
 const utils_1 = require("./src/utils");
-const ffmpegPath = './src/lib/ffmpeg.exe';
+exports.ffmpegPath = './src/lib/ffmpeg.exe';
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     let input_files = fs_1.readdirSync('./media/to_process');
     let inputs = [];
@@ -73,7 +74,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     yield inputs.forEach((input, index) => __awaiter(void 0, void 0, void 0, function* () {
         let filename = input_files[index];
         let ffmpegCommand = [
-            ffmpegPath,
+            exports.ffmpegPath,
             getInputs(inputs),
             '-filter_complex',
             '"',

@@ -3,7 +3,59 @@
         <span>A</span>
     </div>
     <div class="card-body">
-        <h3>Lol</h3>
+        <span>{{media.time}}</span>
+        <div 
+            class="audioVisualizer"
+            *ngIf="media.visual">
+
+            <div>
+                <input 
+                    type="range"
+                    min="100"
+                    max="500"
+                    [(ngModel)]="visualizerZoom">
+
+            </div>
+            <div class="outerContainer">
+
+                <div
+                class="innerContainer"
+                [style]="'width:'+visualizerZoom+'%'">
+
+                    <input 
+                        class="timelineBar line"
+                        type="range"
+                        [min]="media.start"
+                        [max]="media.end"
+                        [(ngModel)]="media.time"
+                        (change)="timeUpdateFromBar()">
+
+                        <input 
+                        class="timelineBar shape"
+                        type="range"
+                        [min]="media.start"
+                        [max]="media.end"
+                        [(ngModel)]="media.time"
+                        (change)="timeUpdateFromBar()">
+
+                    <img 
+                    [src]="media.visual">
+                </div>
+
+            </div>           
+
+        </div>
+
+        <audio 
+            controls 
+            #audioController
+            (timeupdate)="timeUpdate()">
+
+            <source 
+                [src]="media.src" 
+                [type]="media.type">
+          </audio>
+        <button class="btn btn-outline-info btn-block" (click)="testServer()">whot</button>
     </div>
     <div class="card-footer">
         <span>B</span>
