@@ -18,6 +18,20 @@ export class FilterChainComponent implements OnInit {
     filters: []
   }
 
+  testMedia:{
+    type: string,
+    src: string
+  }[] = 
+  [
+    { src: 'media/11.ogg', type: 'audio/ogg'},
+    { src: 'media/far.ogg', type: 'audio/ogg'},
+    { src: 'media/noticiero.mp3', type: 'audio/mp3'},
+  ]
+
+  show = {
+    filtersPanel: true
+  }
+
   constructor(
     private filtersChainService: FiltersChainsService,
     private filtersService: FiltersService,

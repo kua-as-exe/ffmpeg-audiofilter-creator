@@ -65,3 +65,19 @@ option{
 table input, textarea {
   width: 100%
 }
+
+.hoverOpacity{
+  opacity: 0.1;
+  transition: opacity .5s ease-in-out;
+}
+
+.hoverOpacity:hover{
+  opacity: 0.5;
+}
+
+.btn-xs{
+  padding: .25rem .4rem;
+  line-height: 2;
+  font-size: 0.4rem;
+  height: min-content;
+}

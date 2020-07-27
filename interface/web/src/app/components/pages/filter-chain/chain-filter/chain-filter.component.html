@@ -1,14 +1,17 @@
 
 <div 
 class="card option animated fadeIn"
-(mouseenter)="changeHover(true)"
 (mouseleave)="changeHover(false)"
 >
 
     <div class="card-header">
 
         <div class="row">
-            <div class="col col-6">
+            <div 
+                class="col col-8"
+                (mouseenter)="changeHover(true)"
+                >
+
                 <input type="text" [(ngModel)]="filterParams.name" class="m-0 ">
                 <small [hidden]="!hover">
                     <select
@@ -24,14 +27,22 @@ class="card option animated fadeIn"
                     </select>
                 </small>
             </div>
-            <div class="col col-6">
-                <button 
-                    class="btn btn-sm float-right"
-                    [ngClass]="{
-                        'btn-outline-warning': hoverAuto,
-                        'btn-warning': !hoverAuto
-                    }"
-                    (click)="hoverAuto = !hoverAuto">O</button>
+            <div class="col col-4">
+                <div class="row">
+                    <button 
+                        class="btn btn-sm btn-main float-right"
+                        [ngClass]="{ 'btn-outline-warning': hoverAuto, 'btn-warning': !hoverAuto }"
+                        >M</button>
+                </div>
+                <div class="row" [hidden]="!hover">
+                    <button 
+                        class="btn btn-danger btn-sm btn-xs">x</button>
+                    <button 
+                        class="btn btn-sm btn-xs"
+                        [ngClass]="{ 'btn-outline-info': hoverAuto, 'btn-info': !hoverAuto }"
+                        (click)="hoverAuto = !hoverAuto">m</button>
+                </div>
+
             </div>
 
         </div>
@@ -57,8 +68,7 @@ class="card option animated fadeIn"
     </div>
     <!--
     <div class=" animated fadeIn card-footer text-muted" [hidden]="!hover">
-        <span>{{filterParams.id}}</span>
-        <button class="btn btn-danger btn-sm float-right" [hidden]="!hover">Delete</button>
+        <button class="btn btn-danger btn-sm float-right ">X</button>
     </div>
     -->
 </div>

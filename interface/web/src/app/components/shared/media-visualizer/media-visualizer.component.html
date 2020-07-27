@@ -1,63 +1,97 @@
 <div class="card">
-    <div class="card-header">
-        <span>A</span>
-    </div>
+    
     <div class="card-body">
-        <span>{{media.time}}</span>
+
         <div 
             class="audioVisualizer"
-            *ngIf="media.visual">
+            *ngIf="media.visualOriginal">
 
-            <div>
+            <div class="d-flex">
+                <div class="w-75">
+                    <span><b>{{media.src}}</b></span>
+                </div>
+
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary">
+                      <input type="radio" > Filtro
+                    </label>
+                    <label class="btn btn-sm btn-secondary">
+                      <input type="radio" > ByPass
+                    </label>
+                  </div>
+
                 <input 
+                    class="hoverOpacity w-25"
                     type="range"
                     min="100"
                     max="500"
-                    [(ngModel)]="visualizerZoom">
+                    [(ngModel)]="visualizerZoomX">
 
             </div>
-            <div class="outerContainer">
 
-                <div
-                class="innerContainer"
-                [style]="'width:'+visualizerZoom+'%'">
+            <div class="row">       
+                <div class="col timelineContainer">
+                    
+                    <div class="outerContainer">
+
+                        <div
+                        class="innerContainer"
+                        [style]="'width:'+visualizerZoomX+'%'">
+
+                            <input 
+                                class="timelineBar line"
+                                type="range"
+                                [min]="0"
+                                [max]="audioController.duration"
+                                [(ngModel)]="media.time"
+                                step="0.01"
+                                (change)="timeUpdateFromBar()">
+
+                                <input 
+                                class="timelineBar shape"
+                                type="range"
+                                [min]="0"
+                                [max]="audioController.duration"
+                                [(ngModel)]="media.time"
+                                step="0.01"
+                                (change)="timeUpdateFromBar()">
+
+                            <img 
+                            [src]="media.visualOriginal"
+                            [style]="'transform: scaleY('+visualizerZoomY+')'">>
+
+                            <img 
+                            [src]="media.visualProcessed"
+                            [style]="'transform: scaleY('+visualizerZoomY+')'">>
+                        </div>
+
+                    </div>
 
                     <input 
-                        class="timelineBar line"
+                        class="ZoomRangeY hoverOpacity"
                         type="range"
-                        [min]="media.start"
-                        [max]="media.end"
-                        [(ngModel)]="media.time"
-                        (change)="timeUpdateFromBar()">
-
-                        <input 
-                        class="timelineBar shape"
-                        type="range"
-                        [min]="media.start"
-                        [max]="media.end"
-                        [(ngModel)]="media.time"
-                        (change)="timeUpdateFromBar()">
-
-                    <img 
-                    [src]="media.visual">
-                </div>
-
-            </div>           
+                        min="1"
+                        max="3"
+                        step="0.01"
+                        [(ngModel)]="visualizerZoomY">
+                </div>   
+            </div>
+        
 
         </div>
 
         <audio 
             controls 
             #audioController
+            (load)="loaded()"
             (timeupdate)="timeUpdate()">
 
             <source 
                 [src]="media.src" 
                 [type]="media.type">
           </audio>
-        <button class="btn btn-outline-info btn-block" (click)="testServer()">whot</button>
+        
+
     </div>
-    <div class="card-footer">
-        <span>B</span>
-    </div>
+    
 </div>

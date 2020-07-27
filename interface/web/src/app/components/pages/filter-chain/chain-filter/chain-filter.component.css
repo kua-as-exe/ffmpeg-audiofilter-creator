@@ -2,6 +2,7 @@ hr{
   margin: 2px 0px;
 }
 
-button .btn-danger{
-  padding: -2px;
+button.btn-main{
+  line-height: 1rem;
+  padding: 4px 6px;
 }

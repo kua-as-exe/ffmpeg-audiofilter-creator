@@ -23,13 +23,23 @@ export class ServerService {
 
   waveForm = async (fileUrl: string): Promise<{'waveFormUrl': string}> => 
     new Promise( (resolve, reject) => {
-     
       console.log("sending post waveform: ", fileUrl);
       this.requestPOST('/api/getWaveForm', {fileUrl}).subscribe( (res:any) => {
-        console.log("Response: ", res);
-        resolve({
-          waveFormUrl: res.waveFormUrl
-        });
+          resolve({
+            waveFormUrl: res.waveFormUrl
+          });
+        })
+    })
+
+  processAudioFilter = async (fileUrl: string, filtersLine: string): Promise<{'processedAudioSrc': string}> => 
+    new Promise( (resolve, reject) => {
+
+      console.log("mandando petición de procesamiento: ", fileUrl);
+      this.requestPOST('/api/processAudio', {fileUrl, filtersLine}).subscribe( (res:any) => {
+        console.log(res.ffmpegOutput);
+          resolve({
+            processedAudioSrc: res.processedAudio
+          });
         })
     })
 }

@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../src/utils");
+const fs_1 = require("fs");
 const index_1 = require("./../index");
 const path_1 = require("path");
 const child_process_1 = require("child_process");
@@ -27,17 +28,53 @@ app.post('/api/getWaveForm', (req, res) => __awaiter(void 0, void 0, void 0, fun
     let serverDir = path_1.join('.\\', 'dist', 'server');
     let fileDir = path_1.join(serverDir, data.fileUrl);
     let waveFormPath = path_1.join(fileDir + ".png");
+    if (fs_1.existsSync(waveFormPath)) {
+        res.send({
+            waveFormUrl: data.fileUrl + '.png',
+            alreadyProcessed: true
+        });
+    }
+    else {
+        let ffmpegCommand = [
+            index_1.ffmpegPath,
+            '-i',
+            fileDir,
+            '-filter_complex',
+            '"',
+            "showwavespic=s=1280x480:split_channels=1:draw=full",
+            '"',
+            '-frames:v 1',
+            '-y',
+            waveFormPath
+        ];
+        console.log(ffmpegCommand.join(" "));
+        console.log(ffmpegCommand);
+        let t = yield child_process_1.spawnSync("powershell.exe", ffmpegCommand);
+        console.log(t.stdout.toString());
+        console.log(t.output.toString());
+        console.log(t.stderr.toString());
+        res.send({
+            waveFormUrl: data.fileUrl + '.png',
+            processed: true
+        });
+    }
+}));
+app.post('/api/processAudio', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let data = req.body;
+    let serverDir = path_1.join('.\\', 'dist', 'server');
+    let filtersLine = data.filtersLine;
+    let fileDir = path_1.join(serverDir, data.fileUrl);
+    let processedPath = path_1.join(fileDir + '.processed.mp3');
     let ffmpegCommand = [
         index_1.ffmpegPath,
         '-i',
         fileDir,
         '-filter_complex',
         '"',
-        "showwavespic=s=1280x480:split_channels=1",
+        filtersLine,
         '"',
-        '-frames:v 1',
         '-y',
-        waveFormPath
+        processedPath
     ];
     console.log(ffmpegCommand.join(" "));
     console.log(ffmpegCommand);
@@ -45,7 +82,10 @@ app.post('/api/getWaveForm', (req, res) => __awaiter(void 0, void 0, void 0, fun
     console.log(t.stdout.toString());
     console.log(t.output.toString());
     console.log(t.stderr.toString());
-    res.send({ waveFormUrl: data.fileUrl + '.png' });
+    res.send({
+        processedAudio: data.fileUrl + '.processed.mp3',
+        ffmpegOutput: t.stdout.toString()
+    });
 }));
 app.get('/api/getFilters', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let filtersData = yield getFilters();

@@ -4,6 +4,8 @@ firebase.enviroment.ts
 /media/to_process/*
 /media/processed/*
 
+/dist/server/media/*
+
 .DS_Store
 Thumbs.db
 

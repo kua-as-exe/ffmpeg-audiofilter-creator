@@ -14,21 +14,42 @@
 
     <h1>Filtros:</h1>
     <hr>
+    <div class="row mb-2">
+        <div class="col col-12 tool-bar">
+            <div class="card p-0">
+                <div class="card-body p-2">
+
+                    <button 
+                        class="btn btn-outline-info btn-sm"
+                        (click)="show.filtersPanel = !show.filtersPanel"
+                        >Filtros</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
     <div class="row">
-        <div class="container col col-4">
+        <div 
+            class="container col col-4"
+            [hidden]="!show.filtersPanel">
+
             <app-chain-filter
                 *ngFor="let filter of chain.filters; let i=index"
                 [filterParams]="filter"
                 (filterParamsChange)="filterChanged(filter, i)"
             ></app-chain-filter>
+
             <button 
                 class="btn btn-outline-warning btn-block mt-1"
                 (click)="newFIlter()">Add</button>
     
         </div>
-        <div class="col col-8">
+        <div class="col">
 
-            <app-media-visualizer></app-media-visualizer>
+            <app-media-visualizer
+                *ngFor="let mediaTest of testMedia"
+                [media]="mediaTest"
+            ></app-media-visualizer>
 
         </div>
     </div>

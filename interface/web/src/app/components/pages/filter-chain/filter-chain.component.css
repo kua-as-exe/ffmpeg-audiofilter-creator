@@ -10,3 +10,7 @@ app-chain-filter{
 .filterChainPage{
     margin-top: 1rem !important;
 }
+
+.tool-bar .card{
+    background-color: var(--gray-dark)
+}
