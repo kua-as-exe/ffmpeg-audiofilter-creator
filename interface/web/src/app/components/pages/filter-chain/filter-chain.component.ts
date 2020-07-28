@@ -45,29 +45,22 @@ export class FilterChainComponent implements OnInit {
     })
   }
 
-  filterChanged(filter, index){
-    this.chain.filters[index] = filter;
-    this.save()
-  }
+  firstFilter = () => this.filtersService.filters[0];
+  filterChanged = (filter, index) => this.chain.filters[index] = filter;
+  categoryChanged = (newCategory, index) =>  this.chain.categories[index] = newCategory;
+  addCategory = () => this.chain.categories.push('');
 
-  newFIlter(){
-    let firstFilter = this.filtersService.filters[0];
+  newFIlter = ()=>
     this.chain.filters.push(Object.assign({}, {
-      id: firstFilter.id,
+      id: this.firstFilter().id,
       name: 'filter',
       comment: 'filter comment',
       params: {}
     }))
-    console.log(this.chain.filters);
-  }
 
-  print(){
-    console.log(this.chain)
-    this.save()
-  }
+  deleteFilter = (index: number) => this.chain.filters = this.chain.filters.filter( (filter, filterIndex) => filterIndex != index );
+  categoryDeleted = (index: number) => this.chain.categories = this.chain.categories.filter( (category, categoryIndex) => categoryIndex != index );
 
-  save(){
-    this.filtersChainService.writeFilter(this.chain);
-  }
+  save = () => this.filtersChainService.writeFilter(this.chain);
 
 }

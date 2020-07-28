@@ -1,0 +1,24 @@
+<span
+    class="badge mr-2"
+    [class]="'badge-'+color"
+    (mouseenter)="changeEdit(true)"
+    (mouseleave)="changeEdit(false)"
+    (mouseleave)="change()">
+        <span 
+            *ngIf="!editing"
+            class="p-1">{{text}}</span>
+
+        <div *ngIf="editing">
+
+            <input 
+                type="text"
+                class="w-auto"
+                [(ngModel)]="text"
+                (change)="change()">
+
+            <button 
+                class="btn btn-danger btn-sm btn-xs"
+                (click)="deleteBadge()">x</button>
+
+        </div>
+</span>

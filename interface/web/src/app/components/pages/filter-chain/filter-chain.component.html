@@ -1,13 +1,24 @@
 <div class="filterChainPage m-5 animated fadeIn fast">
-    <a [routerLink]="[ '/filterChainsManager' ]" class="badge badge-primary mb-3"> <b></b> Atrás</a>
+    <a 
+        [routerLink]="[ '/filterChainsManager' ]" 
+        class="badge badge-primary mb-3"
+        (click)="save()"> <b></b> Atrás</a>
 
     <div class="jumbotron p-5">
         <h1> <input type="text" [(ngModel)]="chain.name"> </h1>
         <p> {{chain.id}} </p>
         <div class="categories">
-            <span
-            *ngFor="let category of chain.categories"
-            class="badge badge-primary p-1 mr-2"> {{category}}</span>
+            <app-badge
+                *ngFor="let category of chain.categories; let i=index"
+                [text]="category"
+                (delete)="categoryDeleted(i)"
+                (textChange)="categoryChanged($event, i)"></app-badge>
+            <app-badge
+                class="option hoverOpacity-50-100"
+                color="info"
+                [editable]="false"
+                (click)="addCategory()"
+                text="nuevo"></app-badge>
         </div>
         <textarea [(ngModel)]="chain.description"></textarea>
     </div>
@@ -37,7 +48,12 @@
                 *ngFor="let filter of chain.filters; let i=index"
                 [filterParams]="filter"
                 (filterParamsChange)="filterChanged(filter, i)"
+                (deleteFilter)="deleteFilter(i)"
             ></app-chain-filter>
+
+            <div class="w-100 text-center p-3" *ngIf="chain.filters.length == 0">
+                <p> ora que pedo tu cabrón, que haces una cadena de filtros sin filtros, órale, a poner filtros hijuesuprogenitora</p>
+            </div>
 
             <button 
                 class="btn btn-outline-warning btn-block mt-1"

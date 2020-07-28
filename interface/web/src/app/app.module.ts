@@ -26,6 +26,7 @@ import { JsonPreviewComponent } from './components/shared/json-preview/json-prev
 import { InputFieldComponent } from './components/shared/input-field/input-field.component';
 import { ChainFilterComponent } from './components/pages/filter-chain/chain-filter/chain-filter.component';
 import { MediaVisualizerComponent } from './components/shared/media-visualizer/media-visualizer.component';
+import { BadgeComponent } from './components/shared/badge/badge.component';
 //import { ModalModule } from 'ngx-bootstrap/modal';
 //import { ModalComponent } from './components/shared/modal/modal.component';
 
@@ -46,7 +47,8 @@ import { MediaVisualizerComponent } from './components/shared/media-visualizer/m
     JsonPreviewComponent,
     InputFieldComponent,
     ChainFilterComponent,
-    MediaVisualizerComponent
+    MediaVisualizerComponent,
+    BadgeComponent
   ],
   imports: [
     BrowserModule,

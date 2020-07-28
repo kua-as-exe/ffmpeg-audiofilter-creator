@@ -7,6 +7,9 @@ export interface FilterParams {
   id: string,
   params: object,
   comment: string,
+  options?: {
+    muted: boolean
+  }
 }
 
 export interface FiltersChain {

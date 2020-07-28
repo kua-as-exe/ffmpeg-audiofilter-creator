@@ -10,11 +10,15 @@ import { Filter, FiltersService, FilterParam } from 'src/app/services/filters.se
 export class ChainFilterComponent implements OnInit {
 
   @Output() filterParamsChange: EventEmitter<FilterParams>;
+  @Output() deleteFilter: EventEmitter<any>;
   @Input() filterParams: FilterParams = {
     id: 'loading',
     comment: 'loading',
     name: 'loading',
-    params: {}
+    params: {},
+    options: {
+      muted: false
+    }
   };
   filter: Filter = {
     id: 'loading',
@@ -30,11 +34,15 @@ export class ChainFilterComponent implements OnInit {
     private filtersService: FiltersService
   ) {
     this.filterParamsChange = new EventEmitter();
+    this.deleteFilter = new EventEmitter();
   }
 
   async ngOnInit() {
     this.filter = await this.filtersService.getFilter(this.filterParams.id)
     this.filters = this.filtersService.filters;
+    if(this.filterParams.options === undefined) this.filterParams.options = {
+      muted: false
+    }
   }
 
   changeInputField(data: FilterParam){
@@ -46,6 +54,10 @@ export class ChainFilterComponent implements OnInit {
     this.emit()
     if(this.hoverAuto)
       this.hover = state
+  }
+
+  delete(){
+    this.deleteFilter.emit()
   }
 
   async filterIdChanged(){

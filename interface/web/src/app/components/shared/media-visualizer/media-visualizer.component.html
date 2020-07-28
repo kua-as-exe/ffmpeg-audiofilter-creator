@@ -11,12 +11,13 @@
                     <span><b>{{media.src}}</b></span>
                 </div>
 
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-sm btn-secondary">
-                      <input type="radio" > Filtro
+                <span>{{test}}</span>
+                <div class="btn-group btn-group-toggle hoverOpacity-50-100" data-toggle="buttons">
+                    <label class="btn btn-sm p-1 btn-outline-info">
+                      <input type="radio" (click)="test='a'" > Filtro
                     </label>
-                    <label class="btn btn-sm btn-secondary">
-                      <input type="radio" > ByPass
+                    <label class="btn btn-sm p-1 btn-outline-info">
+                      <input type="radio" (click)="test='b'" > ByPass
                     </label>
                   </div>
 

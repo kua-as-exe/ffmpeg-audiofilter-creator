@@ -32,6 +32,10 @@ audio{
     width: 100%;
 }
 
+label.btn{
+  line-height: 0.8rem;
+}
+
 input.timelineBar{
     position: absolute;
     width: 100%;

@@ -75,6 +75,15 @@ table input, textarea {
   opacity: 0.5;
 }
 
+.hoverOpacity-50-100{
+  opacity: 0.5;
+  transition: opacity .5s ease-in-out;
+}
+
+.hoverOpacity-50-100:hover{
+  opacity: 1;
+}
+
 .btn-xs{
   padding: .25rem .4rem;
   line-height: 2;

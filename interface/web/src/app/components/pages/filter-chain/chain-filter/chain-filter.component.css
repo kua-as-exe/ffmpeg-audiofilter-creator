@@ -5,4 +5,5 @@ hr{
 button.btn-main{
   line-height: 1rem;
   padding: 4px 6px;
+  margin-left: 0.25rem;
 }

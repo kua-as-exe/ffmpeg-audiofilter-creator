@@ -23,6 +23,8 @@ export class MediaVisualizerComponent implements OnInit, AfterViewInit  {
     time: 0,
   }
 
+  test
+
   constructor(
     private serverService: ServerService
   ) { }

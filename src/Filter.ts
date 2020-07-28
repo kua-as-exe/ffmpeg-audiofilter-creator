@@ -111,32 +111,3 @@ export class Filter{
         }
     }
 }
-
-/*export const audioFilter = new Filter(
-    {
-        metadata: {
-            name:'audio-filter',
-            label:'aFilter'
-        },
-        default_values: [
-            { key: 'data1', value: 5, definition: {min:1, max: 10} }
-        ],
-        func: [ 
-            (params: any, filter: Filter, resolve: Function) => {
-                console.log(1, params);
-
-            },(params: any, filter: Filter, resolve: Function) => {
-                console.log(2, params);
-                filter.output = params.numero;
-                resolve()
-            }
-        ],
-        structure: {
-            inputs: 1,
-            outputs: 1
-        }
-    }
-
-);
-
-*/

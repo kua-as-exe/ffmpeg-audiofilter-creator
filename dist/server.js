@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("../src/utils");
+const utils_1 = require("./src/utils");
 const fs_1 = require("fs");
-const index_1 = require("./../index");
+const index_1 = require("./index");
 const path_1 = require("path");
 const child_process_1 = require("child_process");
 const express = require('express');
@@ -87,21 +87,8 @@ app.post('/api/processAudio', (req, res) => __awaiter(void 0, void 0, void 0, fu
         ffmpegOutput: t.stdout.toString()
     });
 }));
-app.get('/api/getFilters', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let filtersData = yield getFilters();
-    if (!filtersData)
-        res.send({});
-    res.send(filtersData);
-}));
-app.get('/api/getFilter', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req);
-    let filterName = req.query.filterName;
-    let filtersData = yield getFilters();
-    let filter = filtersData.filter(filter => filter.name == filterName)[0];
-    res.send(filter);
-}));
 app.get('/', (req, res) => {
     console.log(req);
-    res.send({ text: "wtf" });
+    res.send("En proceso todavía c:");
 });
 app.listen(SERVER_PORT, () => console.log("Server running"));

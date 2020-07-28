@@ -28,19 +28,33 @@ class="card option animated fadeIn"
                 </small>
             </div>
             <div class="col col-4">
+
                 <div class="row">
-                    <button 
-                        class="btn btn-sm btn-main float-right"
-                        [ngClass]="{ 'btn-outline-warning': hoverAuto, 'btn-warning': !hoverAuto }"
-                        >M</button>
+                    <div class="col text-right">
+
+                        <button 
+                            class="btn btn-sm btn-main"
+                            [ngClass]="{ 'btn-outline-info': hoverAuto, 'btn-info': !hoverAuto }"
+                            (click)="hoverAuto = !hoverAuto">P</button>
+
+                        <button 
+                            class="btn btn-sm btn-main"
+                            [ngClass]="{ 
+                                'btn-outline-warning': !filterParams.options.muted, 
+                                'btn-warning': filterParams.options.muted 
+                            }"
+                            (click)="filterParams.options.muted = !filterParams.options.muted"
+                            >M</button>
+                    </div>
                 </div>
+
                 <div class="row" [hidden]="!hover">
-                    <button 
-                        class="btn btn-danger btn-sm btn-xs">x</button>
-                    <button 
-                        class="btn btn-sm btn-xs"
-                        [ngClass]="{ 'btn-outline-info': hoverAuto, 'btn-info': !hoverAuto }"
-                        (click)="hoverAuto = !hoverAuto">m</button>
+                    <div class="col text-right">
+                        <button 
+                            class="btn btn-outline-danger btn-sm btn-xs"
+                            (click)="delete()">x</button>
+                        
+                    </div>
                 </div>
 
             </div>

@@ -1,8 +1,8 @@
-import { getDataJSON } from "../src/utils";
-import { FilterOptions } from "../src/Filter";
+import { getDataJSON } from "./src/utils";
+import { FilterOptions } from "./src/Filter";
 import { ClientRequest, ServerResponse } from "http";
 import { read, readFileSync, readdirSync, existsSync } from "fs";
-import { ffmpegPath } from './../index';
+import { ffmpegPath } from './index';
 import { join } from "path";
 import { spawnSync } from "child_process";
 
@@ -101,22 +101,9 @@ app.post('/api/processAudio',  async (req: any, res: any) => {
     
 })
 
-app.get('/api/getFilters',  async (req: any, res: any) => {
-    let filtersData = await getFilters();
-    if(!filtersData) res.send({})
-    res.send(filtersData)
-})
-app.get('/api/getFilter', async (req: any, res: any) => {
-    console.log(req);
-    let filterName:string = req.query.filterName
-    let filtersData = await getFilters();
-    let filter:FilterOptions = filtersData.filter( filter => filter.name == filterName )[0]
-    res.send(filter)
-})
-
 app.get('/', (req:any, res: any) => {
     console.log(req);
-    res.send({text: "wtf"})
+    res.send("En proceso todavía c:")
 })
 
 app.listen(SERVER_PORT, ()=>console.log("Server running"))
