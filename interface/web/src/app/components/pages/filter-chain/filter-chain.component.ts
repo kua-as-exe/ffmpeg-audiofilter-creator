@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FiltersChainsService, FiltersChain } from 'src/app/services/filters-chains.service';
+//import {  } from 'src/app/services/filters-chains.service';
+import { FiltersChainsService, FiltersChain, getFilterComplex } from 'src/app/services/filters-chains.service';
+//export { FiltersChain, FilterParams, getFilterComplex } from "src/../../src/FilterChain'
 import { ActivatedRoute } from '@angular/router';
 import { FiltersService } from 'src/app/services/filters.service';
 
@@ -23,14 +25,16 @@ export class FilterChainComponent implements OnInit {
     src: string
   }[] = 
   [
-    { src: 'media/11.ogg', type: 'audio/ogg'},
-    { src: 'media/far.ogg', type: 'audio/ogg'},
-    { src: 'media/noticiero.mp3', type: 'audio/mp3'},
+    //{ src: 'media/11.ogg', type: 'audio/ogg'},
+    //{ src: 'media/far.ogg', type: 'audio/ogg'},
+    //{ src: 'media/noticiero.mp3', type: 'audio/mp3'},
   ]
 
   show = {
     filtersPanel: true
   }
+
+  complexOut;
 
   constructor(
     private filtersChainService: FiltersChainsService,
@@ -62,5 +66,6 @@ export class FilterChainComponent implements OnInit {
   categoryDeleted = (index: number) => this.chain.categories = this.chain.categories.filter( (category, categoryIndex) => categoryIndex != index );
 
   save = () => this.filtersChainService.writeFilter(this.chain);
+  complex = () => this.complexOut = getFilterComplex(this.chain.filters, this.filtersService.filters)
 
 }

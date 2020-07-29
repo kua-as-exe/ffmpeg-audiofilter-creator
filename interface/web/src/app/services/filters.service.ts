@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference, DocumentData } from '@angular/fire/firestore';
 import { FilterOptions, Param } from '../../../../../src/Filter';
-import { Observable, interval } from 'rxjs';
+import { interval } from 'rxjs';
 
 export type Filter = FilterOptions
 export type FilterParam = Param;

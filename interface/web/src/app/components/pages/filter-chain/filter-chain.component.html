@@ -67,10 +67,20 @@
                 [media]="mediaTest"
             ></app-media-visualizer>
 
+            <button class="btn btn-sm btn-block btn-outline-info" (click)="complex()">complex</button>
+            <span class="w-100">{{complexOut}}</span>
+
         </div>
     </div>
     
     <hr>
-    <app-json-preview [data]="chain"></app-json-preview>
+    <div class="row">
+        <div class="col">
+            <app-json-preview [data]="chain"></app-json-preview>
+        </div>
+        <div class="col">
+            
+        </div>
+    </div>
     
 </div>

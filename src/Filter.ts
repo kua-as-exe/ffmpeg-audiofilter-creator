@@ -1,3 +1,4 @@
+import { FiltersChain, FilterParams } from "./FilterChain";
 
 export interface Param{
     key: string;
@@ -16,7 +17,6 @@ export interface Param{
     }
 }
 export interface Input{
-    id: number;
     path: string;
     params?: {
         after?: Param[];
@@ -24,6 +24,16 @@ export interface Input{
     };
     line?: string;
 }
+
+export interface Output{
+    path: string;
+    arams?: {
+        after?: Param[];
+        before?: Param[];
+    };
+    line?: string;
+}
+
 export interface FilterOptions {
     id: string
     name: string,
@@ -111,3 +121,49 @@ export class Filter{
         }
     }
 }
+
+export const getFilterLine = 
+//  ( _params: Object, _inputs: string[], _options?: any): {line: string, outputs: string[]} 
+    ( _inputs: string[], _outputs: number, chainFilter: FilterParams, filter: FilterOptions): {line: string, outputs: string[]} => {
+
+// INPUTS
+        //let inputs = _inputs.map( input => inBrackets(input.id)).join(''); // pass all the imputs to a format "[a][b][c]"
+        let inputs = _inputs.map( input => inBrackets(input) ).join(''); // pass all the strings imputs to a format "[a][b][c]"
+        
+// PARAMS        
+        let filterParams:string[] = [];
+
+        let default_params: any = {};
+        filter.default_params.forEach( param => default_params[param.key] = param.value); // prepare the default params
+
+        let params:any = Object.assign({}, default_params, chainFilter.params); // merge params and default params (Last overrides first)
+    
+        //Convert the filters in to a ffmpeg syntax
+        let filtersKeysList = Object.keys(params); //take the JSON params keys to push to the filterParams array 
+        filtersKeysList.forEach( (key:any) =>  
+            filterParams.push(key+'='+params[key])) //convert the param to a ffmpeg filter-complex syntax
+
+// OUTPUTS
+        let outputs = [];
+        for(var output = 1; output < _outputs; output++){
+            let outputString = [ filter.name.toUpperCase(), filter.label, getRandomNumber() ].join('_');
+            outputs.push(outputString);
+        }
+        //if(_options?.final) outputs = []; // reset the outputs if its the last filter
+        let lineOutputs = outputs.map( output => inBrackets(output) )
+
+// FINAL LINE (ffmpeg string)
+        let line = [
+            inputs,
+            filter.label,
+            '=',
+            filterParams.join(':'), //concat all the params with the ffmpeg filter-complex syntax
+            lineOutputs.join('')
+        ].join('');
+        
+        //this.func.forEach( (f) => f(this.params, this, this.resolveFunction));
+        return {
+            line: line,
+            outputs: outputs
+        }
+    }

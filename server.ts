@@ -21,6 +21,7 @@ app.use(bodyParser.json())
 const getFilters = (): Promise<FilterOptions[]> => getDataJSON('./dist/data/filters.json');
 
 app.post('/api/getWaveForm',  async (req: any, res: any) => {
+    /*
     let data: any = req.body;
     let serverDir = join('.\\','dist', 'server');
 
@@ -62,9 +63,11 @@ app.post('/api/getWaveForm',  async (req: any, res: any) => {
             }
         );
     }
+    */
 })
 
 app.post('/api/processAudio',  async (req: any, res: any) => {
+    /*
     let data: any = req.body;
     let serverDir = join('.\\','dist', 'server');
 
@@ -99,6 +102,7 @@ app.post('/api/processAudio',  async (req: any, res: any) => {
             }
         );
     
+        */
 })
 
 app.get('/', (req:any, res: any) => {

@@ -62,6 +62,7 @@ export class ChainFilterComponent implements OnInit {
 
   async filterIdChanged(){
     this.filter = await this.filtersService.getFilter(this.filterParams.id)
+    this.filterParams.params = {};
   }
 
   emit(){
