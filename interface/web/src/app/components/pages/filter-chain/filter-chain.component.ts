@@ -5,6 +5,7 @@ import { FiltersChainsService, FiltersChain } from 'src/app/services/filters-cha
 import { ActivatedRoute } from '@angular/router';
 import { FiltersService } from 'src/app/services/filters.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { MediaFile } from '../../../../../../../src/storage';
 
 @Component({
   selector: 'app-filter-chain',
@@ -21,14 +22,7 @@ export class FilterChainComponent implements OnInit {
     filters: []
   }
 
-  testMedia:{
-    type: string,
-    src: string
-  }[] = 
-  [
-    //{ src: 'media/far.ogg', type: 'audio/ogg'},
-    //{ src: 'media/noticiero.mp3', type: 'audio/mp3'},
-  ]
+  testMedia: MediaFile[] = []
 
   show = {
     filtersPanel: true
@@ -66,15 +60,28 @@ export class FilterChainComponent implements OnInit {
   deleteFilter = (index: number) => this.chain.filters = this.chain.filters.filter( (filter, filterIndex) => filterIndex != index );
   categoryDeleted = (index: number) => this.chain.categories = this.chain.categories.filter( (category, categoryIndex) => categoryIndex != index );
 
+  deleteMediaTest = (index: number) => {
+    this.testMedia = this.testMedia.filter( (media, media_index) => media_index != index);
+  }
+
   save = () => this.filtersChainService.writeFilter(this.chain);
   complex = () => this.complexOut = this.filtersChainService.getChainComplexLine(this.chain.filters, this.filtersService.filters)
 
   showStorage = async () => {
     let fileSelected = await this.storageService.showModal()
-    console.log("Archivo seleccionado:", fileSelected);
-    this.testMedia.push({
-      src: 'media/'+fileSelected.path.base+'/'+fileSelected.path.base,
-      type: fileSelected.mimetype
+
+    // checa por cada archivo de prueba si aún existe en los archivos del programa
+    // por la posibilidad de haber sido eliminados
+    // en dado caso los filtra y remueve para evitar que la app explote
+    this.testMedia = this.testMedia.filter( (media) => {
+      let exists = false;
+      this.storageService.localFiles.forEach( (local) => {
+        if(local.path.base == media.path.base) exists = true;
+      })
+      return exists;
     })
+    
+    // adjunta el archivo si se seleccionó alguno
+    if(fileSelected) this.testMedia.push(fileSelected);
   }
 }

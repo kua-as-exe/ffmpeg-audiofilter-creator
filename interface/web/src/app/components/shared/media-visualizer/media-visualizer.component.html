@@ -1,17 +1,20 @@
 <div class="card">
+    <button 
+        class="btn btn-sm btn-outline-danger p-1 moreButton hoverOpacity-50-100"
+        (click)="deleteVisualMedia()">x</button>
     
     <div class="card-body">
 
         <div 
             class="audioVisualizer"
-            *ngIf="media.visualOriginal">
+            *ngIf="metadata.visualOriginal">
 
             <div class="d-flex">
                 <div class="w-75">
-                    <span><b>{{media.src}}</b></span>
+                    <span><b>{{media.path.name}} </b></span>
+                    <span>({{media.path.base}})</span>
                 </div>
 
-                <span>{{test}}</span>
                 <div class="btn-group btn-group-toggle hoverOpacity-50-100" data-toggle="buttons">
                     <label class="btn btn-sm p-1 btn-outline-info">
                       <input type="radio" (click)="test='a'" > Filtro
@@ -44,7 +47,7 @@
                                 type="range"
                                 [min]="0"
                                 [max]="audioController.duration"
-                                [(ngModel)]="media.time"
+                                [(ngModel)]="metadata.time"
                                 step="0.01"
                                 (change)="timeUpdateFromBar()">
 
@@ -53,16 +56,16 @@
                                 type="range"
                                 [min]="0"
                                 [max]="audioController.duration"
-                                [(ngModel)]="media.time"
+                                [(ngModel)]="metadata.time"
                                 step="0.01"
                                 (change)="timeUpdateFromBar()">
 
                             <img 
-                            [src]="media.visualOriginal"
+                            [src]="metadata.visualOriginal"
                             [style]="'transform: scaleY('+visualizerZoomY+')'">>
 
                             <img 
-                            [src]="media.visualProcessed"
+                            [src]="metadata.visualProcessed"
                             [style]="'transform: scaleY('+visualizerZoomY+')'">>
                         </div>
 
@@ -88,8 +91,8 @@
             (timeupdate)="timeUpdate()">
 
             <source 
-                [src]="media.path" 
-                [type]="media.type">
+                [src]="mediaPath" 
+                [type]="media.mimetype">
           </audio>
         
 

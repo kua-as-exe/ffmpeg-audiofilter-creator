@@ -36,6 +36,15 @@ label.btn{
   line-height: 0.8rem;
 }
 
+.moreButton{
+  line-height: 0rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+}
+
 input.timelineBar{
     position: absolute;
     width: 100%;
