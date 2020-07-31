@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference, DocumentData } from '@angular/fire/firestore';
 import { interval } from 'rxjs';
 import { FiltersChain, getFilterComplex, FilterParams } from '../../../../../src/FilterChain';
+import { FilterOptions } from '../../../../../src/Filter';
 
-export {FiltersChain, getFilterComplex, FilterParams}
+export {FiltersChain, FilterParams}
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +62,6 @@ export class FiltersChainsService {
   }
 
   writeFilter = (filterChain: FiltersChain) => this.firestore.collection(this.firestoreCollection).doc(filterChain.id).set(filterChain) 
-
   
+  getChainComplexLine = (effectsParams: FilterParams[], filters: FilterOptions[]) => getFilterComplex( [], 0, effectsParams, filters)
 }

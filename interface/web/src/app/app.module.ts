@@ -27,7 +27,11 @@ import { InputFieldComponent } from './components/shared/input-field/input-field
 import { ChainFilterComponent } from './components/pages/filter-chain/chain-filter/chain-filter.component';
 import { MediaVisualizerComponent } from './components/shared/media-visualizer/media-visualizer.component';
 import { BadgeComponent } from './components/shared/badge/badge.component';
-//import { ModalModule } from 'ngx-bootstrap/modal';
+import { FilterComplexPreviewPipe } from './pipes/filter-complex-preview.pipe';
+import { StorageComponent } from './components/shared/storage/storage.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { UploadFileComponent } from './components/shared/storage/upload-file/upload-file.component';
+import { FileCardComponent } from './components/shared/storage/file-card/file-card.component';
 //import { ModalComponent } from './components/shared/modal/modal.component';
 
 @NgModule({
@@ -48,7 +52,12 @@ import { BadgeComponent } from './components/shared/badge/badge.component';
     InputFieldComponent,
     ChainFilterComponent,
     MediaVisualizerComponent,
-    BadgeComponent
+    BadgeComponent,
+    FilterComplexPreviewPipe,
+    StorageComponent,
+    UploadFileComponent,
+    FileCardComponent,
+    //ModalModule.forRoot()
   ],
   imports: [
     BrowserModule,
@@ -56,8 +65,8 @@ import { BadgeComponent } from './components/shared/badge/badge.component';
     APP_ROUTING,
     NgbModule,
     FormsModule,
-    AngularFireModule.initializeApp(environment.firebase)
-    //ModalModule
+    AngularFireModule.initializeApp(environment.firebase),
+    ModalModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -18,14 +18,11 @@ export interface FiltersChain {
     categories: string[]
 }
 
-export const getFilterComplex = (effectsParams: FilterParams[], filters: FilterOptions[]) => {
+export const getFilterComplex = (inputs: string[] = [], outputs: number = 1, effectsParams: FilterParams[], filters: FilterOptions[]) => {
 
     let effects_lines: string[] = []
 
     effectsParams.forEach( (effect) => {
-
-        let inputs: string[] = [];
-        let outputs: number = 1
 
         let currentFilter = filters.filter(filter => filter.id == effect.id)[0];
 

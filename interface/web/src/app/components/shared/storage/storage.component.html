@@ -1,0 +1,55 @@
+
+          
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">{{title}}</h4>
+        <button type="button" class="close pull-right" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div>
+            <div class="row mb-1">
+                <div class="col">
+                    <span>Archivos locales:</span>
+
+                    <button 
+                        class="btn btn-sm float-right"
+                        [ngClass]="{
+                            'btn-outline-warning': !showUpload,
+                            'btn-warning': showUpload
+                        }"
+                        (click)="showUpload = !showUpload">nuevo</button>
+
+                    <button 
+                        class="btn btn-sm float-right btn-info mr-2"
+                        disabled
+                        >administrar</button>
+
+                </div>
+            </div>
+
+            <div>
+                <app-upload-file
+                    [hidden]="!showUpload"
+                    (fileUploaded)="fileUploaded($event)"></app-upload-file>
+            </div>
+
+            <app-file-card
+                [hidden]="showUpload"
+                *ngFor="let file of localFiles; let i=index"
+                [file]="file"
+                (deleteFile)="deleteFile(i)"
+                (selectFile)="selectFile($event)">
+            </app-file-card>
+
+            <p class="w-100 text-center pt-3 alert" [hidden]="!localFiles.length == 0 || showUpload">
+                No hay archivos XD
+            </p>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        esto es otra cosa
+    </div>
+            
+        

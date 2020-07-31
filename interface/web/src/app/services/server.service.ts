@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Param, FilterOptions, Filter } from './../../../../../src/Filter'
+import { Param, FilterOptions } from './../../../../../src/Filter'
 import { Observable } from 'rxjs';
+import { MediaFile } from '../../../../../src/storage';
 //import { join } from 'path';
 
 @Injectable({
@@ -14,8 +15,8 @@ export class ServerService {
   ) { 
     console.log("SERVER SERVICE WORKING");
   }
-  requestGET = (url: string) => this.http.get(url)
-  requestPOST = (url: string, data:any) => this.http.post(url, data)
+  requestGET = (url: string): Observable<any> => this.http.get(url)
+  requestPOST = (url: string, data:any): Observable<any> => this.http.post(url, data)
 
    getFilters = () => this.http.get('/api/getFilters/')
 
@@ -25,6 +26,7 @@ export class ServerService {
     new Promise( (resolve, reject) => {
       console.log("sending post waveform: ", fileUrl);
       this.requestPOST('/api/getWaveForm', {fileUrl}).subscribe( (res:any) => {
+          console.log(res);
           resolve({
             waveFormUrl: res.waveFormUrl
           });
@@ -42,4 +44,14 @@ export class ServerService {
           });
         })
     })
+
+  deleteFile = async (fileToDelete: MediaFile): Promise<void> => {
+    await this.requestPOST('/api/deleteFile', {fileToDelete}).toPromise();
+  }
+
+  postFile(fileToUpload: File): Observable<MediaFile> {
+    const formData: FormData = new FormData();
+    formData.append('file', fileToUpload, fileToUpload.name);
+    return this.requestPOST('/api/upload', formData);
+  }
 }

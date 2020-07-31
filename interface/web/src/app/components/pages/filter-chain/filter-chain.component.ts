@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 //import {  } from 'src/app/services/filters-chains.service';
-import { FiltersChainsService, FiltersChain, getFilterComplex } from 'src/app/services/filters-chains.service';
+import { FiltersChainsService, FiltersChain } from 'src/app/services/filters-chains.service';
 //export { FiltersChain, FilterParams, getFilterComplex } from "src/../../src/FilterChain'
 import { ActivatedRoute } from '@angular/router';
 import { FiltersService } from 'src/app/services/filters.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-filter-chain',
@@ -25,7 +26,6 @@ export class FilterChainComponent implements OnInit {
     src: string
   }[] = 
   [
-    //{ src: 'media/11.ogg', type: 'audio/ogg'},
     //{ src: 'media/far.ogg', type: 'audio/ogg'},
     //{ src: 'media/noticiero.mp3', type: 'audio/mp3'},
   ]
@@ -39,7 +39,8 @@ export class FilterChainComponent implements OnInit {
   constructor(
     private filtersChainService: FiltersChainsService,
     private filtersService: FiltersService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private storageService: StorageService
   ) { }
 
   ngOnInit(): void {
@@ -66,6 +67,14 @@ export class FilterChainComponent implements OnInit {
   categoryDeleted = (index: number) => this.chain.categories = this.chain.categories.filter( (category, categoryIndex) => categoryIndex != index );
 
   save = () => this.filtersChainService.writeFilter(this.chain);
-  complex = () => this.complexOut = getFilterComplex(this.chain.filters, this.filtersService.filters)
+  complex = () => this.complexOut = this.filtersChainService.getChainComplexLine(this.chain.filters, this.filtersService.filters)
 
+  showStorage = async () => {
+    let fileSelected = await this.storageService.showModal()
+    console.log("Archivo seleccionado:", fileSelected);
+    this.testMedia.push({
+      src: 'media/'+fileSelected.path.base+'/'+fileSelected.path.base,
+      type: fileSelected.mimetype
+    })
+  }
 }

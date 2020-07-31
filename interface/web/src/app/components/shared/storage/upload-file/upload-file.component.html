@@ -1,0 +1,20 @@
+<div class="card border-info mb-2 mt-2 animated fadeIn fast">
+    <div class="card-header">Subir archivo</div>
+    <div class="card-body">
+
+        <input 
+            type="file"
+            class="mb-2"
+            name="sampleFile"
+            (change)="handleFileInput($event.target.files)"
+            #inputFile/>
+
+        <input 
+            type='button' 
+            value='Enviar' 
+            class="btn btn-sm btn-outline-info"
+            [disabled]="fileToUpload == null"
+            (click)="upload()"/>
+
+    </div>
+  </div>

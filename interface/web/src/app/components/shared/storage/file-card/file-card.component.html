@@ -1,0 +1,48 @@
+<div 
+    class="card option"
+    >
+
+    <div 
+        class="card-header"
+        (click)="showDetails = !showDetails">
+
+        <span> <b>{{file.path.name}}</b> </span>
+        <span [hidden]="!showDetails"> ({{file.mimetype}}) </span>
+        <div [hidden]="!showDetails" class="row">
+            <div class="col">
+                <small>{{file.uploadedTime | date:'medium'}}</small>
+            </div>
+        </div>
+        
+        
+    </div>
+    <div
+        class="card-body p-2 animated fadeIn"
+        [hidden]="!showDetails">
+
+        <div class="row">
+            <div class="col">
+                <audio controls>
+                    <source 
+                        [src]="mediaPath" 
+                        [type]="file.mimetype">
+                </audio>
+            </div>
+            <div class="col">
+                <button 
+                    class="btn btn-sm btn-outline-danger float-right"
+                    (click)="delete()"
+                    >Eliminar</button>
+                <button 
+                    class="btn btn-sm btn-outline-info float-right"
+                    (click)="select()"
+                    >Usar</button>
+            </div>
+        </div>
+
+        
+
+        
+    </div>
+
+</div>

@@ -17,6 +17,7 @@ export class MediaVisualizerComponent implements OnInit, AfterViewInit  {
 
   @Input() media = {
     src: 'media/11.ogg',
+    path: '',
     type: 'audio/ogg',
     visualOriginal: '',
     visualProcessed: '',
@@ -30,7 +31,8 @@ export class MediaVisualizerComponent implements OnInit, AfterViewInit  {
   ) { }
 
   ngOnInit(): void {
-    
+    this.media.path = 'media/'+this.media.src+'/'+this.media.src;
+    console.log(this.media.path);
   }
 
   ngAfterViewInit(){
@@ -51,7 +53,7 @@ export class MediaVisualizerComponent implements OnInit, AfterViewInit  {
   }
   
   async testServer(){
-    let visualOriginal = (await this.serverService.waveForm(this.media.src)).waveFormUrl;
+    let visualOriginal = (await this.serverService.waveForm(this.media.path)).waveFormUrl;
     console.log("VISUAL: ", {visualOriginal});
     this.media.visualOriginal = visualOriginal
   }

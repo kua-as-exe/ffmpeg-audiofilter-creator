@@ -34,6 +34,11 @@
                         class="btn btn-outline-info btn-sm"
                         (click)="show.filtersPanel = !show.filtersPanel"
                         >Filtros</button>
+
+                        <button 
+                        class="btn btn-outline-info btn-sm float-right"
+                        (click)="showStorage()"
+                        >Storage</button>
                 </div>
             </div>
         </div>
@@ -68,7 +73,6 @@
             ></app-media-visualizer>
 
             <button class="btn btn-sm btn-block btn-outline-info" (click)="complex()">complex</button>
-            <span class="w-100">{{complexOut}}</span>
 
         </div>
     </div>
@@ -79,7 +83,10 @@
             <app-json-preview [data]="chain"></app-json-preview>
         </div>
         <div class="col">
-            
+            <h2>Filter Complex</h2>
+            <pre>
+                {{complexOut | filterComplexPreview}}
+            </pre>
         </div>
     </div>
     

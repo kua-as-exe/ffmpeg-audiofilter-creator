@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.executeFFMPEG = void 0;
+exports.executeFFMPEG = exports.ffmpegPath = void 0;
 const child_process_1 = require("child_process");
+exports.ffmpegPath = './src/lib/ffmpeg.exe';
 exports.executeFFMPEG = (ffmpegCommand) => __awaiter(void 0, void 0, void 0, function* () { return yield child_process_1.spawnSync("powershell.exe", ffmpegCommand); });
