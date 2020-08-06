@@ -16,9 +16,12 @@ export class ServerService {
     console.log("SERVER SERVICE WORKING");
   }
   requestGET = (url: string): Observable<any> => this.http.get(url)
-  requestPOST = (url: string, data:any): Observable<any> => this.http.post(url, data)
+  apiGET = (query: string): Observable<any> => this.requestGET('/api/'+query)
 
-   getFilters = () => this.http.get('/api/getFilters/')
+  requestPOST = (url: string, data:any): Observable<any> => this.http.post(url, data)
+  apiPOST = (query: string, data:any): Observable<any> => this.http.post('/api/'+query, data)
+
+   getFilters = () => this.apiGET('getFilters')
 
    getFilter = (filterName: string) => this.http.get('/api/getFilter?filterName='+filterName)
 

@@ -32,8 +32,8 @@ import { StorageComponent } from './components/shared/storage/storage.component'
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { UploadFileComponent } from './components/shared/storage/upload-file/upload-file.component';
 import { FileCardComponent } from './components/shared/storage/file-card/file-card.component';
+//import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 //import { ModalComponent } from './components/shared/modal/modal.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,6 +67,8 @@ import { FileCardComponent } from './components/shared/storage/file-card/file-ca
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     ModalModule.forRoot()
+    //MatIconModule
+    //NoopAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

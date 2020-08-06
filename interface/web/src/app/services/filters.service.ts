@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference, DocumentData } from '@angular/fire/firestore';
 import { FilterOptions, Param } from '../../../../../src/Filter';
+import { FirebaseService } from 'src/app/services/firebase.service'
 import { interval } from 'rxjs';
 
 export type Filter = FilterOptions
@@ -16,9 +17,10 @@ export class FiltersService {
   filters: Filter[] = [];
 
   constructor(
-    private firestore:AngularFirestore
+    private firestore:AngularFirestore,
+    private firebaseService: FirebaseService
   ) {
-    this.firestore.collection(this.filterColection).stateChanges().subscribe( filtersFireSnapshot => {
+    this.firebaseService.getCollectionChanges(this.filterColection).subscribe( filtersFireSnapshot => {
       filtersFireSnapshot.forEach( fireFilter => {
         let filterData = this.firestore2Filter(fireFilter.payload.doc)
 

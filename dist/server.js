@@ -13,6 +13,8 @@ const utils_1 = require("./src/utils");
 const fs_1 = require("fs");
 const path_1 = require("path");
 const ffmpeg_1 = require("./src/ffmpeg");
+const uuid_1 = require("uuid");
+const firebase_1 = require("./src/firebase");
 const fileUpload = require('express-fileupload');
 const express = require('express');
 const app = express();
@@ -105,7 +107,7 @@ app.get('/api/getLocalFiles', (req, res) => __awaiter(void 0, void 0, void 0, fu
 }));
 app.post('/api/deleteFile', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let fileToDelete = req.body.fileToDelete;
-    let pathToDelete = path_1.join(mediaDirPath, fileToDelete.path.base);
+    let pathToDelete = path_1.join(mediaDirPath, fileToDelete.filename);
     console.log(pathToDelete);
     try {
         let out = fs_1.rmdirSync(pathToDelete, { recursive: true });
@@ -118,27 +120,65 @@ app.post('/api/upload', function (req, res) {
         return res.status(400).send('No files were uploaded.');
     let reqFile = req.files.file;
     // adapt request file to program type MediaFile to be returned
-    let nameParsed = path_1.parse(reqFile.name);
     let file = {
         mimetype: reqFile.mimetype,
-        path: {
-            name: nameParsed.name,
-            base: nameParsed.base,
-            dir: nameParsed.dir,
-            ext: nameParsed.ext
-        },
+        filename: reqFile.name,
         size: reqFile.size,
-        uploadedTime: new Date()
+        uploadedTime: new Date(),
+        id: utils_1.getRandomId()
     };
     console.log(file);
-    let filePath = path_1.join(mediaDirPath, file.path.base);
+    let filePath = path_1.join(mediaDirPath, file.filename);
     if (!fs_1.existsSync(filePath))
         fs_1.mkdirSync(filePath);
     fs_1.writeFileSync(path_1.join(filePath, 'metadata.json'), JSON.stringify(file));
     // Use the mv() method to place the file somewhere on your server
-    reqFile.mv(path_1.join(filePath, file.path.base), function (err) {
+    reqFile.mv(path_1.join(filePath, file.filename), function (err) {
         if (err)
             return res.status(500).send(err);
+        res.send(file);
+    });
+});
+app.post('/api/uploadToFirebase', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
+    let file = req.body;
+    if (!file) {
+        res.status(400).send({ error: 'No file was uploaded.' });
+        return;
+    }
+    let filePath = path_1.join(mediaDirPath, file.filename, file.filename);
+    let tokenUuid = uuid_1.v1();
+    let uploadResult = yield firebase_1.storage.bucket.upload(filePath, {
+        contentType: "media",
+        metadata: {
+            contentType: file.mimetype,
+            metadata: {
+                firebaseStorageDownloadTokens: tokenUuid
+            }
+        }
+    });
+    let resultFile = uploadResult[0];
+    console.log(resultFile);
+    let downloadUrl = "https://firebasestorage.googleapis.com/v0/b/" + firebase_1.storage.bucket.name + "/o/" + encodeURIComponent(resultFile.name) + "?alt=media&token=" + tokenUuid;
+    file.downloadToken = tokenUuid;
+    file.downloadUrl = downloadUrl;
+    file.uploadedTime = new Date();
+    let fileMetadataPath = path_1.join(mediaDirPath, file.filename, 'metadata.json');
+    fs_1.writeFileSync(fileMetadataPath, JSON.stringify(file));
+    console.log(file);
+    res.send(file);
+}));
+app.post('/api/downloadFromFirebase', function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let file = req.body;
+        let filePath = path_1.join(mediaDirPath, file.filename);
+        if (!fs_1.existsSync(filePath))
+            fs_1.mkdirSync(filePath);
+        fs_1.writeFileSync(path_1.join(filePath, 'metadata.json'), JSON.stringify(file));
+        let fireFile = firebase_1.storage.bucket.file(file.filename);
+        let downloadedFile = yield fireFile.download({
+            destination: path_1.join(filePath, file.filename)
+        });
         res.send(file);
     });
 });

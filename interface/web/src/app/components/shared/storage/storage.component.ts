@@ -12,7 +12,7 @@ export class StorageComponent implements OnInit {
 
   title: string;
   message: string;
-  localFiles: MediaFile[];
+  files: MediaFile[] = [];
 
   showUpload: boolean = false;
 
@@ -25,8 +25,10 @@ export class StorageComponent implements OnInit {
     
   }
     
-  ngOnInit(): void {
-    this.localFiles = this.storageService.localFiles
+  async ngOnInit() {
+    await this.storageService.getFiles();
+    this.files = this.storageService.files
+    console.log(this.files);
   }
 
   fileUploaded(e){
@@ -38,9 +40,17 @@ export class StorageComponent implements OnInit {
     this.modalRef.hide();
   } 
 
+  uploadFile(file: MediaFile){
+    this.storageService.uploadFileToFirebase(file);
+  }
+
+  downloadFile(file: MediaFile){
+    this.storageService.downloadFromFirebase(file);
+  }
+
   async deleteFile(index){
     await this.storageService.deleteFile(index);
-    this.localFiles = this.storageService.localFiles
+    this.files = this.storageService.files
   }
  
 }

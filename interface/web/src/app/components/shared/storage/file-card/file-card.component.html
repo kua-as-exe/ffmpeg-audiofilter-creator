@@ -6,7 +6,14 @@
         class="card-header"
         (click)="showDetails = !showDetails">
 
-        <span> <b>{{file.path.name}}</b> </span>
+        <span> 
+            <i class="material-icons icon">
+                <span *ngIf="file.status == 'firebase-local'">archive</span>
+                <span *ngIf="file.status == 'firebase'">cloud</span>
+                <span *ngIf="file.status == 'local'">computer</span>
+            </i>
+            <b>{{file.filename}}</b>
+        </span>
         <span [hidden]="!showDetails"> ({{file.mimetype}}) </span>
         <div [hidden]="!showDetails" class="row">
             <div class="col">
@@ -29,14 +36,30 @@
                 </audio>
             </div>
             <div class="col">
+                
                 <button 
-                    class="btn btn-sm btn-outline-danger float-right"
+                    class="btn ml-1 btn-sm btn-outline-danger float-right"
                     (click)="delete()"
                     >Eliminar</button>
-                <button 
-                    class="btn btn-sm btn-outline-info float-right"
+
+                <button
+                    *ngIf="file.status == 'local' || file.status == 'firebase-local'"
+                    class="btn ml-1 btn-sm btn-outline-info float-right"
                     (click)="select()"
                     >Usar</button>
+                <button
+                    *ngIf="file.status == 'local'"
+                    class="btn btn-sm btn-outline-secondary float-right"
+                    (click)="upload()"
+                    >Subir</button>
+                
+                <button
+                    *ngIf="file.status == 'firebase'"
+                    class="btn btn-sm btn-outline-warning float-right"
+                    (click)="download()"
+                    >Descargar</button>
+
+                
             </div>
         </div>
 

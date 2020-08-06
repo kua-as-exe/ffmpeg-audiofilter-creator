@@ -4,6 +4,7 @@ import { StorageComponent } from '../components/shared/storage/storage.component
 import { MediaFile } from './../../../../../src/storage'
 import { Observer, Observable } from 'rxjs';
 import { ServerService } from './server.service';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -11,39 +12,81 @@ import { ServerService } from './server.service';
 export class StorageService {
   bsModalRef: BsModalRef;
 
+  files: MediaFile[] = [];
   localFiles: MediaFile[] = [];
 
   constructor(
     private bsModalService: BsModalService,
-    private serverService: ServerService
+    private serverService: ServerService,
+    private firestore: AngularFirestore
   ) {
     console.log("Init storage service");
   }
 
-  async getLocalFiles(): Promise<MediaFile[]>{
+  async getFiles(): Promise<MediaFile[]>{
     let res: any = await this.serverService.requestGET('/api/getLocalFiles').toPromise();
-    this.localFiles = res.localFilesData
-    return this.localFiles;
+    let localFiles:MediaFile[] = res.localFilesData
+    
+    localFiles = localFiles.map( file => {
+      file.status = 'local';
+      return file
+    })
+
+    this.files = localFiles
+
+    let filesIDs = this.files.map( file => file.id)
+
+    this.firestore.collection('storageMediaData').get().toPromise().then( snapshot => {
+      snapshot.docs.forEach( fireFile => {
+        if(filesIDs.includes( fireFile.id )){
+          
+          this.files.filter(file => file.id == fireFile.id)[0].status = 'firebase-local'
+
+        }else{
+          console.log("Este archivo está completamente en la nube: ", fireFile.data());
+          let fireFileData: any = fireFile.data()
+          fireFileData.status = 'firebase'
+          this.files.push(fireFileData)
+        }
+      })
+    })
+
+    return this.files;
   }
 
   deleteFile = async (index: number): Promise<void> => {
-    this.serverService.deleteFile(this.localFiles[index])
-    this.localFiles = this.localFiles.filter( (f, f_index) => index != f_index)
+    this.serverService.deleteFile(this.files[index])
+    this.files = this.files.filter( (f, f_index) => index != f_index)
   }
 
   uploadFile = async (fileToUpload: File): Promise<MediaFile> => {
       let uploadedFile = await this.serverService.postFile(fileToUpload).toPromise()
-      this.localFiles.push(uploadedFile);
+      uploadedFile.status = 'local';
+      this.files.push(uploadedFile);
       return uploadedFile;
     }
+
+  uploadFileToFirebase = async (fileToUpload: MediaFile) => {
+    let uploadedMedia: MediaFile = await this.serverService.apiPOST('uploadToFirebase', fileToUpload).toPromise()    
+
+    await this.firestore.collection('storageMediaData')
+      .doc(uploadedMedia.id)
+      .set(uploadedMedia)
+    
+    fileToUpload.status = 'firebase-local';
+    
+  }
+
+  downloadFromFirebase = async (fileToDownload:MediaFile) => {
+    await this.serverService.apiPOST('downloadFromFirebase', fileToDownload).toPromise()
+
+    fileToDownload.status = 'firebase-local';
+  }
 
   showModal(initialState: object = {}): Promise<MediaFile>{
     return new Promise( async (resolve, reject) => {
       
       // adjunta el estado inicial de la función showModal la información de los archivos locales (Local Files)
-      initialState = Object.assign(initialState, {
-        localFiles: await this.getLocalFiles()
-      })
 
       // Inicia el modal
       this.bsModalRef = this.bsModalService.show(StorageComponent, { initialState })

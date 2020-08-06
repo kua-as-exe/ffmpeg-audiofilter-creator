@@ -7,7 +7,9 @@
         </button>
     </div>
     <div class="modal-body">
-        <div>
+
+        <!-- Files section -->
+        <div class="file-section">
             <div class="row mb-1">
                 <div class="col">
                     <span>Archivos locales:</span>
@@ -36,13 +38,15 @@
 
             <app-file-card
                 [hidden]="showUpload"
-                *ngFor="let file of localFiles; let i=index"
+                *ngFor="let file of files; let i=index"
                 [file]="file"
                 (deleteFile)="deleteFile(i)"
-                (selectFile)="selectFile($event)">
+                (selectFile)="selectFile($event)"
+                (downloadFile)="downloadFile($event)"
+                (uploadFile)="uploadFile($event)">
             </app-file-card>
 
-            <p class="w-100 text-center pt-3 alert" [hidden]="!localFiles.length == 0 || showUpload">
+            <p class="w-100 text-center pt-3 alert" [hidden]="!(files.length == 0) || showUpload">
                 No hay archivos XD
             </p>
 

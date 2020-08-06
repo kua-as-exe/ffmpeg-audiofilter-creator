@@ -2,3 +2,10 @@ audio{
     height: 2rem;
     width: 100%;
 }
+
+.icon{
+    margin-left: -5px;
+    vertical-align: middle;
+    margin-right: 3px;
+    font-size: 1.3rem;
+}

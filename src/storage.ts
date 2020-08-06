@@ -1,12 +1,11 @@
 
 export interface MediaFile {
-    path: {
-        name: string,
-        base: string,
-        ext: string,
-        dir: string
-    }
+    filename: string
     mimetype: string,
     size: number,
     uploadedTime: Date
+    status?: 'firebase' | 'firebase-local' | 'local'
+    id: string
+    downloadUrl?: string,
+    downloadToken?: string,
 }

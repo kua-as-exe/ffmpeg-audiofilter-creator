@@ -76,7 +76,7 @@ export class FilterChainComponent implements OnInit {
     this.testMedia = this.testMedia.filter( (media) => {
       let exists = false;
       this.storageService.localFiles.forEach( (local) => {
-        if(local.path.base == media.path.base) exists = true;
+        if(local.filename == media.filename) exists = true;
       })
       return exists;
     })

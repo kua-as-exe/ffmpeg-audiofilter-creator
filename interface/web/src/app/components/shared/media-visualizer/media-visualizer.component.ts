@@ -31,6 +31,8 @@ export class MediaVisualizerComponent implements OnInit, AfterViewInit  {
     time: 0
   }
 
+
+  test: string = 'a';
   constructor(
     private serverService: ServerService
   ) {
@@ -38,8 +40,7 @@ export class MediaVisualizerComponent implements OnInit, AfterViewInit  {
   }
 
   ngOnInit(): void {
-    this.mediaPath = 'media/'+this.media.path.base+'/'+this.media.path.base;
-    console.log(this.media.path);
+    this.mediaPath = 'media/'+this.media.filename+'/'+this.media.filename;
   }
 
   ngAfterViewInit(){

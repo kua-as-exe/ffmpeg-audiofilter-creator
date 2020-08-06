@@ -12,6 +12,8 @@ export class FileCardComponent implements OnInit {
   @Input() file: MediaFile;
   @Output() deleteFile: EventEmitter<any>;
   @Output() selectFile: EventEmitter<MediaFile>;
+  @Output() uploadFile: EventEmitter<MediaFile>;
+  @Output() downloadFile: EventEmitter<MediaFile>;
 
   showDetails: boolean = false;
   mediaPath:string = null;
@@ -19,10 +21,15 @@ export class FileCardComponent implements OnInit {
   constructor() {
     this.deleteFile = new EventEmitter();
     this.selectFile = new EventEmitter();
+    this.uploadFile = new EventEmitter();
+    this.downloadFile = new EventEmitter();
   }
 
   ngOnInit(): void {
-    this.mediaPath = 'media/'+this.file.path.base+'/'+this.file.path.base
+    if(this.file.status == 'local' || this.file.status == 'firebase-local')
+      this.mediaPath = 'media/'+this.file.filename+'/'+this.file.filename
+    else if(this.file.status == 'firebase')
+      this.mediaPath = this.file.downloadUrl
   }
 
   delete(){
@@ -31,6 +38,14 @@ export class FileCardComponent implements OnInit {
 
   select(){
     this.selectFile.emit(this.file)
+  }
+
+  upload(){
+    this.uploadFile.emit(this.file)
+  }
+
+  download(){
+    this.downloadFile.emit(this.file)
   }
 
 }
