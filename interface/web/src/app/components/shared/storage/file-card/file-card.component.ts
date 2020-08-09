@@ -10,7 +10,7 @@ import { MediaFile } from '../../../../../../../../src/storage';
 export class FileCardComponent implements OnInit {
 
   @Input() file: MediaFile;
-  @Output() deleteFile: EventEmitter<any>;
+  @Output() deleteFile: EventEmitter<MediaFile>;
   @Output() selectFile: EventEmitter<MediaFile>;
   @Output() uploadFile: EventEmitter<MediaFile>;
   @Output() downloadFile: EventEmitter<MediaFile>;
@@ -32,20 +32,16 @@ export class FileCardComponent implements OnInit {
       this.mediaPath = this.file.downloadUrl
   }
 
-  delete(){
-    this.deleteFile.emit()
-  }
+  delete = () => 
+    this.deleteFile.emit(this.file)
 
-  select(){
+  select = () => 
     this.selectFile.emit(this.file)
-  }
 
-  upload(){
+  upload = () => 
     this.uploadFile.emit(this.file)
-  }
 
-  download(){
+  download = () => 
     this.downloadFile.emit(this.file)
-  }
 
 }

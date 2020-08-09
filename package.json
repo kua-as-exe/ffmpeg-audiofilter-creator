@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc -w",
-    "server": "nodemon ./dist/server.js",
+    "server": "nodemon --config nodemon.json ./dist/server.js",
     "web": "cd ./interface/web && npm run start"
   },
   "author": "Jorge Arreola",

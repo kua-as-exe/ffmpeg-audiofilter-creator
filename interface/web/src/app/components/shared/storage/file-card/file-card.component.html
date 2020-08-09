@@ -8,8 +8,8 @@
 
         <span> 
             <i class="material-icons icon">
-                <span *ngIf="file.status == 'firebase-local'">archive</span>
                 <span *ngIf="file.status == 'firebase'">cloud</span>
+                <span *ngIf="file.status == 'firebase-local'">settings_system_daydream</span>
                 <span *ngIf="file.status == 'local'">computer</span>
             </i>
             <b>{{file.filename}}</b>
@@ -26,12 +26,11 @@
     <div
         class="card-body p-2 animated fadeIn"
         [hidden]="!showDetails">
-
         <div class="row">
             <div class="col">
                 <audio controls>
                     <source 
-                        [src]="mediaPath" 
+                        [src]="file | mediaFileSrc"
                         [type]="file.mimetype">
                 </audio>
             </div>

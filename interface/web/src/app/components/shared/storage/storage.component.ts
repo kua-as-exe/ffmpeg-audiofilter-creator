@@ -26,9 +26,7 @@ export class StorageComponent implements OnInit {
   }
     
   async ngOnInit() {
-    await this.storageService.getFiles();
-    this.files = this.storageService.files
-    console.log(this.files);
+    this.updateFiles()
   }
 
   fileUploaded(e){
@@ -40,17 +38,25 @@ export class StorageComponent implements OnInit {
     this.modalRef.hide();
   } 
 
-  uploadFile(file: MediaFile){
-    this.storageService.uploadFileToFirebase(file);
+  async uploadFile(file: MediaFile){
+    await this.storageService.uploadFileToFirebase(file);
+    this.updateFiles();
+
   }
 
-  downloadFile(file: MediaFile){
-    this.storageService.downloadFromFirebase(file);
+  async downloadFile(file: MediaFile){
+    await this.storageService.downloadFromFirebase(file);
+    this.updateFiles();
   }
 
-  async deleteFile(index){
-    await this.storageService.deleteFile(index);
-    this.files = this.storageService.files
+  async deleteFile(file: MediaFile){
+    await this.storageService.deleteFile(file);
+    this.updateFiles()
+  }
+
+  async updateFiles(){
+    await this.storageService.getFiles()
+    this.files = this.storageService.files;
   }
  
 }

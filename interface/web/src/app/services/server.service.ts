@@ -5,6 +5,12 @@ import { Observable } from 'rxjs';
 import { MediaFile } from '../../../../../src/storage';
 //import { join } from 'path';
 
+interface weveformResponse {
+  'waveFormUrl': string,
+  'proccess': any,
+  'processed': boolean
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,23 +22,24 @@ export class ServerService {
     console.log("SERVER SERVICE WORKING");
   }
   requestGET = (url: string): Observable<any> => this.http.get(url)
-  apiGET = (query: string): Observable<any> => this.requestGET('/api/'+query)
+  apiGET = (query: string): Promise<any> => this.requestGET('/api/'+query).toPromise()
 
   requestPOST = (url: string, data:any): Observable<any> => this.http.post(url, data)
-  apiPOST = (query: string, data:any): Observable<any> => this.http.post('/api/'+query, data)
+  apiPOST = (query: string, data:any): Promise<any> => this.http.post('/api/'+query, data).toPromise()
 
    getFilters = () => this.apiGET('getFilters')
 
    getFilter = (filterName: string) => this.http.get('/api/getFilter?filterName='+filterName)
 
-  waveForm = async (fileUrl: string): Promise<{'waveFormUrl': string}> => 
+
+  waveForm = async (fileUrl: string): 
+    Promise<weveformResponse> => 
     new Promise( (resolve, reject) => {
       console.log("sending post waveform: ", fileUrl);
-      this.requestPOST('/api/getWaveForm', {fileUrl}).subscribe( (res:any) => {
+      this.requestPOST('/api/getWaveForm', {fileUrl}).subscribe( (res:weveformResponse) => {
           console.log(res);
-          resolve({
-            waveFormUrl: res.waveFormUrl
-          });
+          res.proccess
+          resolve(res);
         })
     })
 

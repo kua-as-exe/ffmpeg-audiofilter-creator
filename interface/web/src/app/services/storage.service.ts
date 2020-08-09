@@ -13,7 +13,6 @@ export class StorageService {
   bsModalRef: BsModalRef;
 
   files: MediaFile[] = [];
-  localFiles: MediaFile[] = [];
 
   constructor(
     private bsModalService: BsModalService,
@@ -27,6 +26,7 @@ export class StorageService {
     let res: any = await this.serverService.requestGET('/api/getLocalFiles').toPromise();
     let localFiles:MediaFile[] = res.localFilesData
     
+    this.files = []; // reset the files array
     localFiles = localFiles.map( file => {
       file.status = 'local';
       return file
@@ -54,9 +54,9 @@ export class StorageService {
     return this.files;
   }
 
-  deleteFile = async (index: number): Promise<void> => {
-    this.serverService.deleteFile(this.files[index])
-    this.files = this.files.filter( (f, f_index) => index != f_index)
+  deleteFile = async (fileToDelete: MediaFile): Promise<void> => {
+    await this.serverService.apiPOST('deleteFile', {fileToDelete});
+    if(fileToDelete.status == 'firebase-local') fileToDelete.status = 'firebase'
   }
 
   uploadFile = async (fileToUpload: File): Promise<MediaFile> => {
@@ -67,20 +67,21 @@ export class StorageService {
     }
 
   uploadFileToFirebase = async (fileToUpload: MediaFile) => {
-    let uploadedMedia: MediaFile = await this.serverService.apiPOST('uploadToFirebase', fileToUpload).toPromise()    
+    let uploadedMedia: MediaFile = await this.serverService.apiPOST('uploadToFirebase', fileToUpload)   
 
     await this.firestore.collection('storageMediaData')
       .doc(uploadedMedia.id)
       .set(uploadedMedia)
     
     fileToUpload.status = 'firebase-local';
+    return fileToUpload;
     
   }
 
   downloadFromFirebase = async (fileToDownload:MediaFile) => {
-    await this.serverService.apiPOST('downloadFromFirebase', fileToDownload).toPromise()
-
-    fileToDownload.status = 'firebase-local';
+    let res = await this.serverService.apiPOST('downloadFromFirebase', fileToDownload)
+    if(res.file) fileToDownload = res.file
+    return fileToDownload;
   }
 
   showModal(initialState: object = {}): Promise<MediaFile>{

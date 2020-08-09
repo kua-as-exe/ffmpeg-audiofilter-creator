@@ -21,3 +21,4 @@ admin.initializeApp({
 export var storage = {
     bucket: admin.storage().bucket()
 }
+export var firestore = admin.firestore()

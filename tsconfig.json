@@ -1,6 +1,7 @@
 {
   "exclude": [
-    "./interface/web"
+    "./interface/web",
+    "./dist/server/media"
   ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */

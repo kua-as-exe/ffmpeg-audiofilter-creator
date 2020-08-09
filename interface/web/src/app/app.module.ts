@@ -32,6 +32,7 @@ import { StorageComponent } from './components/shared/storage/storage.component'
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { UploadFileComponent } from './components/shared/storage/upload-file/upload-file.component';
 import { FileCardComponent } from './components/shared/storage/file-card/file-card.component';
+import { MediaFileSrcPipe } from './components/shared/storage/file-card/media-file-src.pipe';
 //import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 //import { ModalComponent } from './components/shared/modal/modal.component';
 @NgModule({
@@ -57,6 +58,7 @@ import { FileCardComponent } from './components/shared/storage/file-card/file-ca
     StorageComponent,
     UploadFileComponent,
     FileCardComponent,
+    MediaFileSrcPipe,
     //ModalModule.forRoot()
   ],
   imports: [

@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.storage = exports.credentials = void 0;
+exports.firestore = exports.storage = exports.credentials = void 0;
 exports.credentials = {
     apiKey: "AIzaSyBRaeBRVNJAe-ezvNSPq_qeuYcTc2FsYQw",
     authDomain: "autoeditorprogram-v1.firebaseapp.com",
@@ -39,3 +39,4 @@ admin.initializeApp({
 exports.storage = {
     bucket: admin.storage().bucket()
 };
+exports.firestore = admin.firestore();

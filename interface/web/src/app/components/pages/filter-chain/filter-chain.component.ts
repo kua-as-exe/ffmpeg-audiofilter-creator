@@ -75,8 +75,10 @@ export class FilterChainComponent implements OnInit {
     // en dado caso los filtra y remueve para evitar que la app explote
     this.testMedia = this.testMedia.filter( (media) => {
       let exists = false;
-      this.storageService.localFiles.forEach( (local) => {
-        if(local.filename == media.filename) exists = true;
+      this.storageService.files.forEach( (file) => {
+        if(file.filename == media.filename && (file.status == 'firebase-local' || file.status == 'local')) {
+          exists = true;
+        }
       })
       return exists;
     })

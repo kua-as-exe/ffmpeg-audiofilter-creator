@@ -13,8 +13,8 @@ const utils_1 = require("./src/utils");
 const fs_1 = require("fs");
 const path_1 = require("path");
 const ffmpeg_1 = require("./src/ffmpeg");
-const uuid_1 = require("uuid");
 const firebase_1 = require("./src/firebase");
+const uuid_1 = require("uuid");
 const fileUpload = require('express-fileupload');
 const express = require('express');
 const app = express();
@@ -23,8 +23,6 @@ app.use('/media', express.static(__dirname + '/server/media'));
 app.use(fileUpload());
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
-//const session = require('express-session');
-//app.use(session({secret: 'idk'}))
 const getFilters = () => utils_1.getDataJSON('./dist/data/filters.json');
 app.post('/api/getWaveForm', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let data = req.body;
@@ -107,13 +105,32 @@ app.get('/api/getLocalFiles', (req, res) => __awaiter(void 0, void 0, void 0, fu
 }));
 app.post('/api/deleteFile', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let fileToDelete = req.body.fileToDelete;
-    let pathToDelete = path_1.join(mediaDirPath, fileToDelete.filename);
-    console.log(pathToDelete);
-    try {
-        let out = fs_1.rmdirSync(pathToDelete, { recursive: true });
-        res.status(200).send({ 'status': 'deleted' });
+    if (!fileToDelete) {
+        res.status(400).send({ error: 'file not found' });
+        return;
     }
-    catch (e) { }
+    if (fileToDelete.status == 'local' || fileToDelete.status == 'firebase-local') {
+        let pathToDelete = path_1.join(mediaDirPath, fileToDelete.filename);
+        try {
+            let out = fs_1.rmdirSync(pathToDelete, { recursive: true });
+            res.send({ 'status': 'deleted' });
+        }
+        catch (e) {
+            res.status(400).send({ message: 'error on delete file, check if have permissions', error: e });
+        }
+        return;
+    }
+    else if (fileToDelete.status == 'firebase') {
+        firebase_1.storage.bucket.file(fileToDelete.filename).delete().then(() => __awaiter(void 0, void 0, void 0, function* () {
+            yield firebase_1.firestore.collection('storageMediaData').doc(fileToDelete.id).delete();
+            res.status(200).send({ 'status': 'deleted' });
+        })).catch((reason) => {
+            console.log("Error on delete bucket object: ", reason);
+            res.status(400).send({ error: reason });
+        });
+        return;
+    }
+    res.status(400).send({ 'status': 'file not found' });
 }));
 app.post('/api/upload', function (req, res) {
     if (!req.files || Object.keys(req.files).length === 0)
@@ -163,25 +180,33 @@ app.post('/api/uploadToFirebase', (req, res) => __awaiter(void 0, void 0, void 0
     file.downloadToken = tokenUuid;
     file.downloadUrl = downloadUrl;
     file.uploadedTime = new Date();
+    file.status = 'firebase-local';
     let fileMetadataPath = path_1.join(mediaDirPath, file.filename, 'metadata.json');
     fs_1.writeFileSync(fileMetadataPath, JSON.stringify(file));
     console.log(file);
     res.send(file);
 }));
-app.post('/api/downloadFromFirebase', function (req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        let file = req.body;
-        let filePath = path_1.join(mediaDirPath, file.filename);
-        if (!fs_1.existsSync(filePath))
-            fs_1.mkdirSync(filePath);
-        fs_1.writeFileSync(path_1.join(filePath, 'metadata.json'), JSON.stringify(file));
-        let fireFile = firebase_1.storage.bucket.file(file.filename);
-        let downloadedFile = yield fireFile.download({
-            destination: path_1.join(filePath, file.filename)
-        });
-        res.send(file);
+app.post('/api/downloadFromFirebase', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let file = req.body;
+    if (!file.downloadUrl) {
+        res.status(400).send({ error: 'download Url not working' });
+        return;
+    }
+    let filePath = path_1.join(mediaDirPath, file.filename);
+    file.status = 'firebase-local';
+    if (!fs_1.existsSync(filePath))
+        fs_1.mkdirSync(filePath);
+    fs_1.writeFileSync(path_1.join(filePath, 'metadata.json'), JSON.stringify(file));
+    let fireFile = firebase_1.storage.bucket.file(file.filename);
+    fireFile.download({
+        destination: path_1.join(filePath, file.filename)
+    }).then(() => {
+        res.status(200).send({ file });
+    }).catch((error) => {
+        console.error({ error });
+        res.status(400).send({ error });
     });
-});
+}));
 app.get('/', (req, res) => {
     console.log(req);
     res.send("En proceso todavía c:");

@@ -40,7 +40,7 @@
                 [hidden]="showUpload"
                 *ngFor="let file of files; let i=index"
                 [file]="file"
-                (deleteFile)="deleteFile(i)"
+                (deleteFile)="deleteFile($event)"
                 (selectFile)="selectFile($event)"
                 (downloadFile)="downloadFile($event)"
                 (uploadFile)="uploadFile($event)">

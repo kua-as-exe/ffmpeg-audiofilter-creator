@@ -66,7 +66,8 @@ export class MediaVisualizerComponent implements OnInit, AfterViewInit  {
   }
   
   async testServer(){
-    let visualOriginal = (await this.serverService.waveForm(this.mediaPath)).waveFormUrl;
+    let getWaveformResponse = await this.serverService.waveForm(this.mediaPath);
+    let visualOriginal = getWaveformResponse.waveFormUrl;
     console.log("VISUAL: ", {visualOriginal});
     this.metadata.visualOriginal = visualOriginal
   }
