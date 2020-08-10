@@ -19,7 +19,7 @@ export interface FiltersChain {
     filterComplexLine?: string
 }
 
-export const getFilterComplex = (inputs: string[] = [], outputs: number = 1, effectsParams: FilterParams[], filters: FilterOptions[]) => {
+export const getFilterComplex = (inputs: string[] = [], outputs: number = 1, effectsParams: FilterParams[], filters: FilterOptions[], separator = ';') => {
 
     let effects_lines: string[] = []
 
@@ -34,5 +34,5 @@ export const getFilterComplex = (inputs: string[] = [], outputs: number = 1, eff
 
     console.log(effects_lines)
 
-    return effects_lines.join(';')
+    return effects_lines.join(separator);
 }

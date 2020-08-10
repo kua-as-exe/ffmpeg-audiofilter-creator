@@ -1,8 +1,26 @@
 <div class="filterChainPage m-5 animated fadeIn fast">
-    <a 
-        [routerLink]="[ '/filterChainsManager' ]" 
-        class="badge badge-primary mb-3"
-        (click)="save()"> <b></b> Atrás</a>
+    <div class="row mb-3">
+        <div class="col">
+            <a 
+                [routerLink]="[ '/filterChainsManager' ]" 
+                class="badge badge-primary float-left"
+                (click)="save()">Atrás</a>
+            <a 
+                [routerLink]="[ '/filterChainsManager' ]" 
+                class="badge badge-danger ml-2 float-right"
+                (click)="delete()">Eliminar</a>
+            <a 
+                [routerLink]="[ '/filterChainsManager' ]" 
+                class="badge badge-info ml-2 float-right"
+                (click)="clone()">Duplicar</a>
+            <a 
+                href=""
+                onclick="return false;"
+                class="badge badge-success ml-2 float-right"
+                (click)="save()">
+                Guardar</a>
+        </div>
+    </div>
 
     <div class="jumbotron p-5">
         <h1> <input type="text" [(ngModel)]="chain.name"> </h1>

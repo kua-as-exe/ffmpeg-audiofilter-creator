@@ -19,7 +19,10 @@ export class FiltersChainManagerComponent implements OnInit {
   }
 
   async newChain(){
+    
+    let chain = await this.filtersChainsService.addChain()
     console.log("NEW FILTER");
+    //this.filtersChain.push()
   }
 
   //filterChain

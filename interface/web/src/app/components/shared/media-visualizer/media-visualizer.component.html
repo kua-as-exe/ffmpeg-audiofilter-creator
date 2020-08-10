@@ -9,10 +9,20 @@
             class="audioVisualizer"
             *ngIf="metadata.visualOriginal">
 
-            <div class="d-flex">
+            <div class="d-flex visualizerTools">
                 <div class="w-75">
                     <span><b>{{media.filename}} </b></span>
                 </div>
+
+                <button
+                    class="btn btn-sm p-1 mr-1 hoverOpacity-50-100"
+                    [ngClass]="{
+                        'btn-outline-info': !showOutput,
+                        'btn-info': showOutput
+                    }"
+                    [hidden]="!(media.processed && media.processed.output)"
+                    (click)="showOutput = !showOutput"
+                    >Output</button>
 
                 <div class="btn-group btn-group-toggle hoverOpacity-50-100">
                     <label class="btn btn-sm p-1 btn-outline-info">
@@ -104,15 +114,6 @@
             </audio>
         
             <div>
-                <button
-                    class="btn btn-sm"
-                    [ngClass]="{
-                        'btn-outline-info': !showOutput,
-                        'btn-info': showOutput
-                    }"
-                    [hidden]="!(media.processed && media.processed.output)"
-                    (click)="showOutput = !showOutput"
-                    >Output</button>
                 <pre
                 class="overflow-auto output-visualizer"
                 *ngIf="media.processed && media.processed.output && showOutput">{{media.processed.output}}</pre>

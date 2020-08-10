@@ -32,7 +32,7 @@ audio{
     width: 100%;
 }
 
-label.btn{
+.visualizerTools .btn{
   line-height: 0.8rem;
 }
 

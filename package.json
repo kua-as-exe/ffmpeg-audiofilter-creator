@@ -7,7 +7,8 @@
     "tsc": "tsc -w",
     "server": "nodemon --config nodemon.json ./dist/server.js",
     "web": "cd ./interface/web && npm run start",
-    "build": "cd ./interface/web && ng build --prod && cd ../../ && rm -r ./dist/server/web && mv ./interface/web/dist/web ./dist/server/web && tsc",
+    "build": "cd ./interface/web && ng build --prod && cd ../../",
+    "end-build": "rm -r ./dist/server/web && mv ./interface/web/dist/web ./dist/server/web && tsc",
     "start": "node dist/server/server.js"
   },
   "author": "Jorge Arreola",

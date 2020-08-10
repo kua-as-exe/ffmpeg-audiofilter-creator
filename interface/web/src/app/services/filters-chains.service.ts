@@ -65,8 +65,11 @@ export class FiltersChainsService {
   }
 
   writeFilter = (filterChain: FiltersChain) => this.firestore.collection(this.firestoreCollection).doc(filterChain.id).set(filterChain) 
-  
-  getChainComplexLine = (effectsParams: FilterParams[], filters: FilterOptions[]) => getFilterComplex( [], 0, effectsParams, filters)
+  addChain = () => this.firestore.collection(this.firestoreCollection).add({})
+  deleteChain = (chainID: string) => this.firestore.collection(this.firestoreCollection).doc(chainID).delete()
+  cloneChain = (chain: FiltersChain) => this.firestore.collection(this.firestoreCollection).add(chain)
+
+  getChainComplexLine = (effectsParams: FilterParams[], filters: FilterOptions[]) => getFilterComplex( [], 0, effectsParams, filters, ',')
 
   processMedia = (media: MediaFile, filterChain: FiltersChain): Promise<any> => 
     this.server.apiPOST('processAudio', {media, filterChain})

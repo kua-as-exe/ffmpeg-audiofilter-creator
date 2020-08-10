@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 //import {  } from 'src/app/services/filters-chains.service';
 import { FiltersChainsService, FiltersChain, FilterParams } from 'src/app/services/filters-chains.service';
 //export { FiltersChain, FilterParams, getFilterComplex } from "src/../../src/FilterChain'
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FiltersService, FilterParam } from 'src/app/services/filters.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { MediaFile } from '../../../../../../../src/storage';
@@ -36,7 +36,8 @@ export class FilterChainComponent implements OnInit {
     private filtersChainService: FiltersChainsService,
     private filtersService: FiltersService,
     private activatedRoute: ActivatedRoute,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -72,6 +73,15 @@ export class FilterChainComponent implements OnInit {
   }
 
   save = () => this.filtersChainService.writeFilter(this.chain);
+  delete = () => {
+    this.filtersChainService.deleteChain(this.chain.id);
+    //this.router.navigate(['/filterChainsManager']);
+  }
+  clone = () => {
+    this.filtersChainService.cloneChain(this.chain);
+    //this.router.navigate(['/filterChainsManager']);
+  }
+  
   complex = () => this.chain.filterComplexLine = this.filtersChainService.getChainComplexLine(
     this.chain.filters.filter(filter => (filter.options && !filter.options.muted)),
     this.filtersService.filters

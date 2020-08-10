@@ -17,6 +17,7 @@ const SERVER_PORT = 1234;
 
 app.use('/', express.static(__dirname + '/web'));
 app.use('/media', express.static(__dirname + '/media'));
+if(!existsSync('/media')) mkdirSync('media');
 app.use(fileUpload());
 const bodyParser = require('body-parser');
 app.use(bodyParser.json())

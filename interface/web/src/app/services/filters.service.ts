@@ -68,7 +68,10 @@ export class FiltersService {
       })
     })
 
-  deleteFilter = (filterID:string) => this.firestore.collection(this.filterColection).doc(filterID).delete()
+  deleteFilter = (filterID:string) => {
+    this.firestore.collection(this.filterColection).doc(filterID).delete();
+    this.filters = this.filters.filter(filter => filter.id != filterID);
+  }
 
   writeFilter = (filterData: Filter) => this.firestore.collection(this.filterColection).doc(filterData.id).set(filterData) 
   
