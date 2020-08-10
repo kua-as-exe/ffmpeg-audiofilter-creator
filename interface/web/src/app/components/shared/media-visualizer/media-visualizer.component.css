@@ -114,3 +114,8 @@ input.timelineBar{
   ::-webkit-scrollbar-thumb:hover {
     background: rgb(0,0,0,0.3); 
   }
+
+
+.output-visualizer{
+  height: 15rem;
+}

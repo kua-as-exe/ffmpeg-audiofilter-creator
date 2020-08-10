@@ -10,29 +10,26 @@ import { MediaFile } from '../../../../../../../src/storage';
 export class MediaVisualizerComponent implements OnInit, AfterViewInit  {
   
   @ViewChild('audioController') audio: ElementRef<HTMLAudioElement>; 
+  @ViewChild('audioController2') audio2: ElementRef<HTMLAudioElement>; 
   audioController: HTMLAudioElement
+  audioController2: HTMLAudioElement
 
   audioTime: number;
   visualizerZoomX = 100;
   visualizerZoomY = 1;
 
   @Input() media: MediaFile;
-  // = {
-    //visualOriginal: '',
-    //visualProcessed: '',
-    //time: 0,
-  //}
   @Output() delete: EventEmitter<void>;
 
   mediaPath: string
   metadata = {
     visualOriginal: '',
     visualProcessed: '',
-    time: 0
+    time: 0,
   }
 
-
-  test: string = 'a';
+  mode: 'filter' | 'bypass' = 'bypass';
+  showOutput: boolean = false;
   constructor(
     private serverService: ServerService
   ) {
@@ -45,6 +42,7 @@ export class MediaVisualizerComponent implements OnInit, AfterViewInit  {
 
   ngAfterViewInit(){
     this.audioController = this.audio.nativeElement
+    this.audioController2 = this.audio2.nativeElement
     this.testServer()
   }
   
@@ -57,18 +55,19 @@ export class MediaVisualizerComponent implements OnInit, AfterViewInit  {
     console.log("Resource Lodaded");
   }
 
-  timeUpdate(){
-    this.metadata.time = this.audioController.currentTime
-  }
-  timeUpdateFromBar(){
-    this.audioController.currentTime = this.metadata.time
-
+  timeUpdate(controller: number){
+    if(controller == 0){
+      this.audioController.currentTime = this.metadata.time;
+      this.audioController2.currentTime = this.metadata.time;
+    }
+    if(controller == 1) this.metadata.time = this.audioController.currentTime
+    if(controller == 2) this.metadata.time = this.audioController2.currentTime
   }
   
   async testServer(){
     let getWaveformResponse = await this.serverService.waveForm(this.mediaPath);
     let visualOriginal = getWaveformResponse.waveFormUrl;
-    console.log("VISUAL: ", {visualOriginal});
+    //console.log("VISUAL: ", {visualOriginal});
     this.metadata.visualOriginal = visualOriginal
   }
 

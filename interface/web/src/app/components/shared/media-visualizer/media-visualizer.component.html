@@ -14,12 +14,12 @@
                     <span><b>{{media.filename}} </b></span>
                 </div>
 
-                <div class="btn-group btn-group-toggle hoverOpacity-50-100" data-toggle="buttons">
+                <div class="btn-group btn-group-toggle hoverOpacity-50-100">
                     <label class="btn btn-sm p-1 btn-outline-info">
-                      <input type="radio" (click)="test='a'" > Filtro
+                      <input type="radio" (click)="mode='filter'" > Filtro
                     </label>
                     <label class="btn btn-sm p-1 btn-outline-info">
-                      <input type="radio" (click)="test='b'" > ByPass
+                      <input type="radio" (click)="mode='bypass'" > ByPass
                     </label>
                   </div>
 
@@ -48,7 +48,7 @@
                                 [max]="audioController.duration"
                                 [(ngModel)]="metadata.time"
                                 step="0.01"
-                                (change)="timeUpdateFromBar()">
+                                (change)="timeUpdate(0)">
 
                                 <input 
                                 class="timelineBar shape"
@@ -57,14 +57,10 @@
                                 [max]="audioController.duration"
                                 [(ngModel)]="metadata.time"
                                 step="0.01"
-                                (change)="timeUpdateFromBar()">
+                                (change)="timeUpdate(0)">
 
                             <img 
-                            [src]="metadata.visualOriginal"
-                            [style]="'transform: scaleY('+visualizerZoomY+')'">>
-
-                            <img 
-                            [src]="metadata.visualProcessed"
+                            [src]="(mode == 'filter' && media.processed)? media.processed.localProcessedWaveform:metadata.visualOriginal"
                             [style]="'transform: scaleY('+visualizerZoomY+')'">>
                         </div>
 
@@ -78,8 +74,7 @@
                         step="0.01"
                         [(ngModel)]="visualizerZoomY">
                 </div>   
-            </div>
-        
+            </div>        
 
         </div>
 
@@ -87,14 +82,43 @@
             controls 
             #audioController
             (load)="loaded()"
-            (timeupdate)="timeUpdate()">
+            (timeupdate)="timeUpdate(1)">
 
             <source 
                 [src]="mediaPath" 
                 [type]="media.mimetype">
           </audio>
+
+          
+          <audio 
+            [hidden]="!(media.processed && media.processed.localProcessedUrl)"
+            controls 
+            #audioController2
+            (load)="loaded()"
+            (timeupdate)="timeUpdate(2)">
+
+            <source
+                *ngIf="media.processed"
+                [src]="media.processed.localProcessedUrl" 
+                [type]="media.mimetype">
+            </audio>
         
+            <div>
+                <button
+                    class="btn btn-sm"
+                    [ngClass]="{
+                        'btn-outline-info': !showOutput,
+                        'btn-info': showOutput
+                    }"
+                    [hidden]="!(media.processed && media.processed.output)"
+                    (click)="showOutput = !showOutput"
+                    >Output</button>
+                <pre
+                class="overflow-auto output-visualizer"
+                *ngIf="media.processed && media.processed.output && showOutput">{{media.processed.output}}</pre>
+            </div>
 
     </div>
+    
     
 </div>

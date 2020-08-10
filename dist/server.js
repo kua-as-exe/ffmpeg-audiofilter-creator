@@ -24,6 +24,8 @@ app.use(fileUpload());
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 const getFilters = () => utils_1.getDataJSON('./dist/data/filters.json');
+const mediaDirPath = './dist/server/media';
+const waveformFilterComplexLine = `-filter_complex "showwavespic=s=1280x480:draw=full" -frames:v 1 -y`;
 app.post('/api/getWaveForm', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let data = req.body;
     let serverDir = path_1.join('.\\', 'dist', 'server');
@@ -38,7 +40,7 @@ app.post('/api/getWaveForm', (req, res) => __awaiter(void 0, void 0, void 0, fun
     else {
         let ffmpegCommand = [
             ffmpeg_1.ffmpegPath, '-i', fileDir,
-            '-filter_complex "showwavespic=s=1280x480:draw=full" -frames:v 1 -y',
+            waveformFilterComplexLine,
             waveFormPath
         ];
         console.log(ffmpegCommand.join(" "));
@@ -52,6 +54,58 @@ app.post('/api/getWaveForm', (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 }));
 app.post('/api/processAudio', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let data = req.body;
+    let { media, filterChain } = data;
+    if (!data || !media || !filterChain) {
+        res.status(400).send('Some data is missing, check if all params are connected');
+        return;
+    }
+    else if (!filterChain.filterComplexLine) {
+        res.status(400).send('filterComplexLine not preprocessed, do that before bitch');
+        return;
+    }
+    let mediaDir = path_1.join(mediaDirPath, media.filename);
+    let inputMediaPath = path_1.join(mediaDir, media.filename);
+    let parsedFilename = path_1.parse(media.filename);
+    let outputMediaPath = path_1.join(mediaDir, `${parsedFilename.name}.processed${parsedFilename.ext}`);
+    console.log("Chain to work: ", filterChain.name, `(${filterChain.id})`);
+    console.log("Processing: ", inputMediaPath, " => ", outputMediaPath);
+    let ffmpegCommand = [
+        ffmpeg_1.ffmpegPath,
+        '-i', inputMediaPath,
+        `-filter_complex "${filterChain.filterComplexLine}"`,
+        '-y',
+        outputMediaPath // especificas el archivo de salida
+    ];
+    console.log(ffmpegCommand.join(" "));
+    console.log(ffmpegCommand);
+    let process = yield ffmpeg_1.executeFFMPEG(ffmpegCommand);
+    if (process.error) {
+        console.error("ERROR: ", process.error);
+        res.status(400).send({ error: process.error });
+        return;
+    }
+    console.log("Processing ended");
+    let output = process.output.filter(out => out != null).map(out => out.toString()).join('\n');
+    media.processed = {
+        localProcessedUrl: `media/${media.filename}/${parsedFilename.name}.processed${parsedFilename.ext}`,
+        output
+    };
+    // GET THE WAVEFORM
+    let outputWaveFormPath = `${outputMediaPath}.png`;
+    console.log("Getting Waveform from: ", outputMediaPath, " => ", outputWaveFormPath);
+    let wavewformProcess = yield ffmpeg_1.executeFFMPEG([
+        ffmpeg_1.ffmpegPath, '-i', outputMediaPath,
+        waveformFilterComplexLine,
+        outputWaveFormPath
+    ]);
+    if (!wavewformProcess.error)
+        media.processed.localProcessedWaveform = `media/${media.filename}/${parsedFilename.name}.processed${parsedFilename.ext}.png`;
+    res.send({
+        media,
+        inputMediaPath,
+        outputMediaPath
+    });
     /*
     let data: any = req.body;
     let serverDir = join('.\\','dist', 'server');
@@ -89,7 +143,6 @@ app.post('/api/processAudio', (req, res) => __awaiter(void 0, void 0, void 0, fu
     
         */
 }));
-const mediaDirPath = './dist/server/media';
 app.get('/api/getLocalFiles', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let localFiles = fs_1.readdirSync(mediaDirPath);
     let localFilesData = [];
@@ -142,7 +195,8 @@ app.post('/api/upload', function (req, res) {
         filename: reqFile.name,
         size: reqFile.size,
         uploadedTime: new Date(),
-        id: utils_1.getRandomId()
+        id: utils_1.getRandomId(),
+        processed: {}
     };
     console.log(file);
     let filePath = path_1.join(mediaDirPath, file.filename);
@@ -163,6 +217,7 @@ app.post('/api/uploadToFirebase', (req, res) => __awaiter(void 0, void 0, void 0
         res.status(400).send({ error: 'No file was uploaded.' });
         return;
     }
+    delete file.processed;
     let filePath = path_1.join(mediaDirPath, file.filename, file.filename);
     let tokenUuid = uuid_1.v1();
     let uploadResult = yield firebase_1.storage.bucket.upload(filePath, {

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 //import {  } from 'src/app/services/filters-chains.service';
-import { FiltersChainsService, FiltersChain } from 'src/app/services/filters-chains.service';
+import { FiltersChainsService, FiltersChain, FilterParams } from 'src/app/services/filters-chains.service';
 //export { FiltersChain, FilterParams, getFilterComplex } from "src/../../src/FilterChain'
 import { ActivatedRoute } from '@angular/router';
-import { FiltersService } from 'src/app/services/filters.service';
+import { FiltersService, FilterParam } from 'src/app/services/filters.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { MediaFile } from '../../../../../../../src/storage';
+import { FilterOptions } from '../../../../../../../src/Filter';
 
 @Component({
   selector: 'app-filter-chain',
@@ -19,7 +20,8 @@ export class FilterChainComponent implements OnInit {
     id: 'loading',
     description: 'loading',
     categories: [],
-    filters: []
+    filters: [],
+    filterComplexLine: ''
   }
 
   testMedia: MediaFile[] = []
@@ -44,18 +46,23 @@ export class FilterChainComponent implements OnInit {
     })
   }
 
-  firstFilter = () => this.filtersService.filters[0];
+  firstFilter = ():FilterOptions => Object.assign({}, this.filtersService.filters[0]);
   filterChanged = (filter, index) => this.chain.filters[index] = filter;
   categoryChanged = (newCategory, index) =>  this.chain.categories[index] = newCategory;
   addCategory = () => this.chain.categories.push('');
 
-  newFIlter = ()=>
-    this.chain.filters.push(Object.assign({}, {
+  newFIlter = ()=>{
+    let newFilter: FilterParams = {
       id: this.firstFilter().id,
       name: 'filter',
       comment: 'filter comment',
-      params: {}
-    }))
+      params: {},
+      options:{
+        muted: false
+      }
+    }
+    this.chain.filters.push(Object.assign({}, newFilter))
+  }
 
   deleteFilter = (index: number) => this.chain.filters = this.chain.filters.filter( (filter, filterIndex) => filterIndex != index );
   categoryDeleted = (index: number) => this.chain.categories = this.chain.categories.filter( (category, categoryIndex) => categoryIndex != index );
@@ -65,7 +72,10 @@ export class FilterChainComponent implements OnInit {
   }
 
   save = () => this.filtersChainService.writeFilter(this.chain);
-  complex = () => this.complexOut = this.filtersChainService.getChainComplexLine(this.chain.filters, this.filtersService.filters)
+  complex = () => this.chain.filterComplexLine = this.filtersChainService.getChainComplexLine(
+    this.chain.filters.filter(filter => (filter.options && !filter.options.muted)),
+    this.filtersService.filters
+    )
 
   showStorage = async () => {
     let fileSelected = await this.storageService.showModal()
@@ -86,4 +96,20 @@ export class FilterChainComponent implements OnInit {
     // adjunta el archivo si se seleccionó alguno
     if(fileSelected) this.testMedia.push(fileSelected);
   }
+
+  process = async () => {
+    console.log(this.complex());
+
+    this.filtersChainService.processMedia(this.testMedia[0], this.chain)
+    .then( res => {
+      if(res.media) this.testMedia[0] = res.media
+      console.log(res)
+    }).catch( err => {
+      console.log(err);
+    });
+    
+
+  }
+
+  
 }

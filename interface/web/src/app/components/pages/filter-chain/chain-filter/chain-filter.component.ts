@@ -39,7 +39,7 @@ export class ChainFilterComponent implements OnInit {
 
   async ngOnInit() {
     this.filter = await this.filtersService.getFilter(this.filterParams.id)
-    this.filters = this.filtersService.filters;
+    this.filters = [].concat(this.filtersService.filters); //unbind filters data to avoid conecctions on diferent filters params
     if(this.filterParams.options === undefined) this.filterParams.options = {
       muted: false
     }

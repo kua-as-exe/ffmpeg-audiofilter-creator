@@ -3,6 +3,8 @@ import { AngularFirestore, DocumentReference, DocumentData } from '@angular/fire
 import { interval } from 'rxjs';
 import { FiltersChain, getFilterComplex, FilterParams } from '../../../../../src/FilterChain';
 import { FilterOptions } from '../../../../../src/Filter';
+import { MediaFile } from '../../../../../src/storage';
+import { ServerService } from './server.service';
 
 export {FiltersChain, FilterParams}
 
@@ -15,7 +17,8 @@ export class FiltersChainsService {
   chains: FiltersChain[] = []
 
   constructor(
-    private firestore:AngularFirestore
+    private firestore:AngularFirestore,
+    private server: ServerService
   ) {
     this.firestore.collection(this.firestoreCollection).stateChanges().subscribe(chainFireSnapshot => {
       chainFireSnapshot.forEach( fireChain => {
@@ -64,4 +67,7 @@ export class FiltersChainsService {
   writeFilter = (filterChain: FiltersChain) => this.firestore.collection(this.firestoreCollection).doc(filterChain.id).set(filterChain) 
   
   getChainComplexLine = (effectsParams: FilterParams[], filters: FilterOptions[]) => getFilterComplex( [], 0, effectsParams, filters)
+
+  processMedia = (media: MediaFile, filterChain: FiltersChain): Promise<any> => 
+    this.server.apiPOST('processAudio', {media, filterChain})
 }

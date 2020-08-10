@@ -7,8 +7,8 @@ export class FilterComplexPreviewPipe implements PipeTransform {
 
   transform(text: string): unknown {
     if(!text) text = '';
-    text = text.replace(/:/g, ":\n");
-    text = text.replace(/;/g, ";\n\n");
+    //text = text.replace(/:/g, ":\n");
+    text = text.replace(/;/g, ";\n");
     return text;
   }
 

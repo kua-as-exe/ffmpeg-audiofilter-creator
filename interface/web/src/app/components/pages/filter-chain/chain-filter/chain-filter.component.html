@@ -12,7 +12,12 @@ class="card option animated fadeIn"
                 (mouseenter)="changeHover(true)"
                 >
 
-                <input type="text" [(ngModel)]="filterParams.name" class="m-0 ">
+                <input 
+                    type="text" 
+                    [(ngModel)]="filterParams.name" 
+                    class="m-0"
+                    [ngClass]="{'text-muted': filterParams.options.muted}">
+
                 <small [hidden]="!hover">
                     <select
                         (change)="filterIdChanged()"

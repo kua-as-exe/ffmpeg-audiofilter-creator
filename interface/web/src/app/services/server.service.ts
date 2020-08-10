@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Param, FilterOptions } from './../../../../../src/Filter'
 import { Observable } from 'rxjs';
 import { MediaFile } from '../../../../../src/storage';
+import { FiltersChain } from './filters-chains.service';
 //import { join } from 'path';
 
 interface weveformResponse {
@@ -43,17 +44,7 @@ export class ServerService {
         })
     })
 
-  processAudioFilter = async (fileUrl: string, filtersLine: string): Promise<{'processedAudioSrc': string}> => 
-    new Promise( (resolve, reject) => {
-
-      console.log("mandando petición de procesamiento: ", fileUrl);
-      this.requestPOST('/api/processAudio', {fileUrl, filtersLine}).subscribe( (res:any) => {
-        console.log(res.ffmpegOutput);
-          resolve({
-            processedAudioSrc: res.processedAudio
-          });
-        })
-    })
+    
 
   deleteFile = async (fileToDelete: MediaFile): Promise<void> => {
     await this.requestPOST('/api/deleteFile', {fileToDelete}).toPromise();

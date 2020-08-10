@@ -8,4 +8,9 @@ export interface MediaFile {
     id: string
     downloadUrl?: string,
     downloadToken?: string,
+    processed?: {
+        localProcessedUrl?: string,
+        localProcessedWaveform?: string,
+        output?: string
+    }
 }

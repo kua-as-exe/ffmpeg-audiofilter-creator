@@ -35,10 +35,14 @@
                         (click)="show.filtersPanel = !show.filtersPanel"
                         >Filtros</button>
 
-                        <button 
-                        class="btn btn-outline-info btn-sm float-right"
+                    <button
+                        class="btn btn-outline-info btn-sm ml-2 float-right"
                         (click)="showStorage()"
-                        >Storage</button>
+                        >Almacenamiento</button>
+                    <button 
+                        class="btn btn-outline-primary btn-sm ml-2 float-right"
+                        (click)="process()"
+                        >Procesar</button>
                 </div>
             </div>
         </div>
@@ -79,16 +83,19 @@
     </div>
     
     <hr>
+    <div class="row" *ngIf="chain.filterComplexLine">
+        <div class="col">
+            <h2>Filter Complex</h2>
+            <pre class="overflow-auto w-100">
+{{chain.filterComplexLine | filterComplexPreview}}
+            </pre>
+        </div>
+    </div>
     <div class="row">
         <div class="col">
             <app-json-preview [data]="chain"></app-json-preview>
         </div>
-        <div class="col">
-            <h2>Filter Complex</h2>
-            <pre>
-                {{complexOut | filterComplexPreview}}
-            </pre>
-        </div>
+        
     </div>
     
 </div>

@@ -15,7 +15,8 @@ export interface FiltersChain {
     name: string,
     description: string,
     filters: FilterParams[],
-    categories: string[]
+    categories: string[],
+    filterComplexLine?: string
 }
 
 export const getFilterComplex = (inputs: string[] = [], outputs: number = 1, effectsParams: FilterParams[], filters: FilterOptions[]) => {
