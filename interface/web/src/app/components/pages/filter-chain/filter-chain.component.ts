@@ -100,13 +100,16 @@ export class FilterChainComponent implements OnInit {
   process = async () => {
     console.log(this.complex());
 
-    this.filtersChainService.processMedia(this.testMedia[0], this.chain)
-    .then( res => {
-      if(res.media) this.testMedia[0] = res.media
-      console.log(res)
-    }).catch( err => {
-      console.log(err);
-    });
+    this.testMedia.forEach( (media, index) => {
+      this.filtersChainService.processMedia(media, this.chain)
+      .then( res => {
+        if(res.media) this.testMedia[index] = res.media
+        console.log(res)
+      }).catch( err => {
+        console.log(err);
+      });
+      
+    })
     
 
   }

@@ -1,12 +1,12 @@
-import { getDataJSON, getRandomId } from "./src/utils";
-import { FilterOptions } from "./src/Filter";
-import { MediaFile } from "./src/storage";
+import { getDataJSON, getRandomId } from "../src/utils";
+import { FilterOptions } from "../src/Filter";
+import { MediaFile } from "../src/storage";
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync, rmdirSync, createWriteStream } from "fs";
 import { join, parse } from "path";
-import { executeFFMPEG, ffmpegPath } from "./src/ffmpeg";
-import { storage, firestore } from "./src/firebase";
+import { executeFFMPEG, ffmpegPath } from "../src/ffmpeg";
+import { storage, firestore } from "../src/firebase";
 import { v1 as uuidv1} from 'uuid';
-import { FiltersChain } from "./src/FilterChain";
+import { FiltersChain } from "../src/FilterChain";
 
 const fileUpload = require('express-fileupload');
 const express = require('express');
@@ -15,7 +15,8 @@ const app = express();
 
 const SERVER_PORT = 1234;
 
-app.use('/media', express.static(__dirname + '/server/media'));
+app.use('/', express.static(__dirname + '/web'));
+app.use('/media', express.static(__dirname + '/media'));
 app.use(fileUpload());
 const bodyParser = require('body-parser');
 app.use(bodyParser.json())
@@ -301,9 +302,14 @@ app.post('/api/downloadFromFirebase', async (req: any, res: any) => {
     })
   });
 
+const index = __dirname+'/web/index.html'
 app.get('/', (req:any, res: any) => {
-    console.log(req);
-    res.send("En proceso todavía c:")
+    res.sendFile(index);
+})
+app.get('/home', (req:any, res: any) => {
+    res.sendFile(index);
 })
 
 app.listen(SERVER_PORT, ()=>console.log("Server running"))
+
+// Jorge Arreola - 2020

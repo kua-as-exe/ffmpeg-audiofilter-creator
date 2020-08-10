@@ -9,17 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("./src/utils");
+const utils_1 = require("../src/utils");
 const fs_1 = require("fs");
 const path_1 = require("path");
-const ffmpeg_1 = require("./src/ffmpeg");
-const firebase_1 = require("./src/firebase");
+const ffmpeg_1 = require("../src/ffmpeg");
+const firebase_1 = require("../src/firebase");
 const uuid_1 = require("uuid");
 const fileUpload = require('express-fileupload');
 const express = require('express');
 const app = express();
 const SERVER_PORT = 1234;
-app.use('/media', express.static(__dirname + '/server/media'));
+app.use('/', express.static(__dirname + '/web'));
+app.use('/media', express.static(__dirname + '/media'));
 app.use(fileUpload());
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -262,8 +263,12 @@ app.post('/api/downloadFromFirebase', (req, res) => __awaiter(void 0, void 0, vo
         res.status(400).send({ error });
     });
 }));
+const index = __dirname + '/web/index.html';
 app.get('/', (req, res) => {
-    console.log(req);
-    res.sendFile(__dirname + '/server/index.html');
+    res.sendFile(index);
+});
+app.get('/home', (req, res) => {
+    res.sendFile(index);
 });
 app.listen(SERVER_PORT, () => console.log("Server running"));
+// Jorge Arreola - 2020
