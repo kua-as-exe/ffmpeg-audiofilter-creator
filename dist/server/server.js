@@ -19,10 +19,10 @@ const fileUpload = require('express-fileupload');
 const express = require('express');
 const app = express();
 const SERVER_PORT = 1234;
+if (!fs_1.existsSync('./dist/server/media'))
+    fs_1.mkdirSync('./dist/server/media'); // crea la carpeta media si no existe (corrección 18/8/20)
 app.use('/', express.static(__dirname + '/web'));
 app.use('/media', express.static(__dirname + '/media'));
-if (!fs_1.existsSync('/media'))
-    fs_1.mkdirSync('media');
 app.use(fileUpload());
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
