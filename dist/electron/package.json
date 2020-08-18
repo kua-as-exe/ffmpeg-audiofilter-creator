@@ -1,0 +1,13 @@
+{
+  "name": "ffmpeg-commander-electron",
+  "version": "1.0.0",
+  "description": "Adaptación PWA con electron de ffmpeg commander",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Jorge Arreola",
+  "devDependencies": {
+    "electron": "^9.2.0"
+  }
+}

@@ -7,6 +7,7 @@ import { executeFFMPEG, ffmpegPath } from "../src/ffmpeg";
 import { storage, firestore } from "../src/firebase";
 import { v1 as uuidv1} from 'uuid';
 import { FiltersChain } from "../src/FilterChain";
+import { spawn } from "child_process";
 
 const fileUpload = require('express-fileupload');
 const express = require('express');
@@ -311,6 +312,16 @@ app.get('/home', (req:any, res: any) => {
     res.sendFile(index);
 })
 
-app.listen(SERVER_PORT, ()=>console.log("Server running"))
+app.listen(SERVER_PORT, ()=> {
+    console.log("Server running")
+    let electron = spawn('powershell', ['npm run electron'])
+    electron.stdout.on('data', (data: Buffer) => {
+        console.log(data.toString());
+    })
+    electron.on('exit', (code)=> {
+        console.log("Exited with: ", code);
+        process.exit(0)
+    })
+})
 
 // Jorge Arreola - 2020

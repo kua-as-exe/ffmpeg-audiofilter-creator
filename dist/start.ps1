@@ -1,9 +1,9 @@
 if(-not (Test-Path node_modules)) {
-    echo "Packages not founded\nInstalling Packages..";
+    echo "Packages not founded"
+    echo "Installing Packages.."
     npm install
 }else{
     echo "Packages founded"
 }
 echo "Starting server"
-start http://localhost:1234/
 npm run start

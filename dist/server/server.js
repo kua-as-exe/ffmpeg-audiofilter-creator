@@ -15,6 +15,7 @@ const path_1 = require("path");
 const ffmpeg_1 = require("../src/ffmpeg");
 const firebase_1 = require("../src/firebase");
 const uuid_1 = require("uuid");
+const child_process_1 = require("child_process");
 const fileUpload = require('express-fileupload');
 const express = require('express');
 const app = express();
@@ -272,5 +273,15 @@ app.get('/', (req, res) => {
 app.get('/home', (req, res) => {
     res.sendFile(index);
 });
-app.listen(SERVER_PORT, () => console.log("Server running"));
+app.listen(SERVER_PORT, () => {
+    console.log("Server running");
+    let electron = child_process_1.spawn('powershell', ['npm run electron']);
+    electron.stdout.on('data', (data) => {
+        console.log(data.toString());
+    });
+    electron.on('exit', (code) => {
+        console.log("Exited with: ", code);
+        process.exit(0);
+    });
+});
 // Jorge Arreola - 2020

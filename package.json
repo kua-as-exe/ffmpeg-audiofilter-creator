@@ -9,7 +9,8 @@
     "web": "cd ./interface/web && npm run start",
     "build": "cd ./interface/web && ng build --prod && cd ../../",
     "end-build": "rm -r ./dist/server/web && mv ./interface/web/dist/web ./dist/server/web && tsc",
-    "start": "node dist/server/server.js"
+    "start": "node dist/server/server.js",
+    "electron": "cd ./dist/electron && electron ."
   },
   "author": "Jorge Arreola",
   "license": "ISC",
@@ -19,6 +20,7 @@
     "@types/express": "^4.17.7",
     "@types/node": "^14.0.14",
     "@types/uuid": "^8.0.1",
+    "electron": "^9.2.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.8",
     "firebase-admin": "^9.0.0",
